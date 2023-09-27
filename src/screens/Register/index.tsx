@@ -35,8 +35,8 @@ const App = () => {
           </View>
         </View>
         <View style={styles.copyRightContainer}>
-          <Text style={styles.copyRightTextContainer}>Copyright © 2016 FKN Informática.</Text>
-          <Text style={styles.copyRightTextContainer}>Todos os direitos reservados.</Text>
+          <Text style={styles.copyRightTextContainer}>{FKNconstants.copyRight1}</Text>
+          <Text style={styles.copyRightTextContainer}>{FKNconstants.copyRight2}</Text>
         </View>
       </View>
     </SafeAreaView>

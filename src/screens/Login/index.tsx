@@ -4,6 +4,7 @@ import Login from './Login';
 import RegisterIndex from '../Register';
 import Home from '../Home/home';
 import Register from '../Register/register';
+import Verify from './Verify';
 
 const Stack = createNativeStackNavigator();
 function AuthNavigator({ initialRouteName }: { initialRouteName: string }): JSX.Element {
@@ -17,6 +18,8 @@ function AuthNavigator({ initialRouteName }: { initialRouteName: string }): JSX.
             <Stack.Screen name='onboarding' component={RegisterIndex} />
             <Stack.Screen name='register' component={Register} />
             <Stack.Screen name='home' component={Home} />
+            <Stack.Screen name='verify' component={Verify} />
+
         </Stack.Navigator>
     );
 }

@@ -10,10 +10,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RegisterRequest } from '../../store/reducer/registerReducer/registerActions';
 import { AppDispatch } from '../../store';
 import Loader from '../../components/common/Loader';
+import { setChaveCredentials } from '../../store/reducer/registerReducer';
 
 const Register = () => {
     const [isFocused, setIsFocused] = useState<Number>(0);
-    const [chaveInput, setChaveInput] = useState<String>('');
+    const [chaveInput, setChaveInput] = useState<string>('');
+    const [required, setRequired] = useState<Boolean>(false);
     const dispatch = useDispatch<any>();
 
     const handleFocus = (value: Number) => {
@@ -30,14 +32,24 @@ const Register = () => {
     const isLoading = registerData.loading;
     console.log("register", registerData);
 
-    const onHandleButton = () => {
-        // NavigationService.navigate('login')
-        const payload = {
-            chave: chaveInput
-        }
-        console.log("Payload", payload);
-        dispatch(RegisterRequest(payload))
+    const handleOnChangeText = (value: string) => {
+        setChaveInput(value.trim());
+        setRequired(false);
+    }
 
+    const onHandleButton = () => {
+        NavigationService.navigate('login')
+        // setRequired(false);
+        // if (chaveInput === '') {
+        //     setRequired(true);
+        //     return
+        // }
+        // const payload = {
+        //     chave: chaveInput
+        // }
+        // console.log("Payload", payload);
+        // dispatch(RegisterRequest(payload))
+        //dispatch(setChaveCredentials(chaveInput));
     }
 
     return (
@@ -56,7 +68,7 @@ const Register = () => {
                             <View style={styles.mainContainer}>
                                 <View style={styles.logoContainer}>
                                     <Image resizeMode={'stretch'} source={FKNlogo} style={styles.logo} />
-                                    <Text style={styles.title}>FKN Vendas Externas</Text>
+                                    <Text style={styles.title}>{FKNconstants.appFullTitle}</Text>
                                 </View>
                                 <View style={styles.inputContainer}>
                                     {/* <View style={styles.inputSubContainer}>
@@ -77,11 +89,10 @@ const Register = () => {
                                             onBlur={() => handleBlur(0)}
                                             style={[styles.textInput, { borderColor: isFocused === 2 ? theme.COLORS.GREEN_DARK : theme.COLORS.DARK_GREY }]}
                                             placeholder='Chave'
-                                            onChangeText={(value) => {
-                                                setChaveInput(value);
-                                                console.log("value", value)
-                                            }}
+                                            onChangeText={handleOnChangeText}
+                                            value={chaveInput}
                                         />
+                                        {required && <Text style={styles.textRequired}>{FKNconstants.required}</Text>}
                                     </View>
                                 </View>
                                 <View style={styles.buttonContainer}>

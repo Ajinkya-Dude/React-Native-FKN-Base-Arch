@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Image, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
-import styles from './styles';
+import {styles} from './styles';
 import { FKNlogo } from '../../assets';
 import Button from '../../components/common/Button';
 import { FKNconstants } from '../../components/constants';
@@ -22,7 +22,10 @@ const Login = () => {
         Keyboard.dismiss();
     };
     const loginData: any = useSelector((state: any) => state.loginReducer.login);
-    
+
+    const onHandleSubmit = () => {
+        NavigationService.navigate('verify')
+    }
     return (
         <SafeAreaView>
             <TouchableWithoutFeedback onPress={handleScreenPress}>
@@ -78,11 +81,11 @@ const Login = () => {
                                     </View>
                                 </View>
                                 <View style={styles.buttonContainer}>
-                                    <Button label={FKNconstants.access} onClick={() => { NavigationService.goBack() }} />
+                                    <Button label={FKNconstants.access} onClick={onHandleSubmit} />
                                 </View>
                                 <View style={styles.copyRightContainer}>
-                                    <Text style={styles.copyRightTextContainer}>Copyright © 2016 FKN Informática.</Text>
-                                    <Text style={styles.copyRightTextContainer}>Todos os direitos reservados.</Text>
+                                    <Text style={styles.copyRightTextContainer}>{FKNconstants.copyRight1}</Text>
+                                    <Text style={styles.copyRightTextContainer}>{FKNconstants.copyRight2}</Text>
                                 </View>
                             </View>
                         </ScrollView>

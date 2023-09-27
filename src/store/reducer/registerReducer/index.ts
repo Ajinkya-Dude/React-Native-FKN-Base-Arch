@@ -6,6 +6,7 @@ interface RegisterState {
     loading: boolean;
     data: any;
     error: boolean;
+    chaveCreds: string
 }
 // const defaultProps = {
 //   loading: false,
@@ -17,24 +18,22 @@ const initialState: RegisterState = {
     loading: false,
     data: false,
     error: false,
-
+    chaveCreds: ''
 };
 
 const RegisterReucer = createSlice({
     name: "register",
     initialState,
     reducers: {
-        // setUser: (state, action: PayloadAction<any>) => {
-        //     state.login = action.payload;
-        // },
-        // clearUser: (state) => {
-        //     state.login = { data: 0 };
-        // }
+        setChaveCredentials: (state, action: PayloadAction<any>) => {
+            state.chaveCreds = action.payload;
+        },
+        clearChaveCredentials: (state) => {
+            state.chaveCreds = '';
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(RegisterRequest.pending, (state, action: PayloadAction<any>) => {
-            console.log("RegisterRequest.pending", action)
-
             state.loading = true
             //     state.data = true
         })
@@ -50,6 +49,6 @@ const RegisterReucer = createSlice({
     },
 });
 
-export const { } = RegisterReucer.actions;
+export const { setChaveCredentials, clearChaveCredentials } = RegisterReucer.actions;
 export const selectUser = (state: any) => state.register;
 export default RegisterReucer.reducer;

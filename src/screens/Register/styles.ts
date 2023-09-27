@@ -92,6 +92,10 @@ const styles = StyleSheet.create({
         color: theme.COLORS.BLACK,
         fontSize: theme.SIZES.MEDIUM
     },
+    textRequired: {
+        color: 'red',
+        fontSize: theme.SIZES.SAMLL
+    },
     textInput: {
         color: theme.COLORS.BLACK,
         fontFamily: theme.FONTFAMILY.BLACK,

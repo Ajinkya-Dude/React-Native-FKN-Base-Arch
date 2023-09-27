@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import theme from "../../theme";
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     // onbording Register
     mainContainer: {
         //justifyContent: 'space-between',
@@ -12,13 +12,13 @@ const styles = StyleSheet.create({
     },
     subContainer: {
         width: '100%',
-        flex: 3,
+        //flex: ,
         paddingTop: theme.verticalScale(15)
     },
-    loginTitle:{
-        alignItems:'center',
-        width:'100%',
-        margin:10
+    loginTitle: {
+        alignItems: 'center',
+        width: '100%',
+        margin: 10
     },
     titleContainer: {
         alignItems: 'center',
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     logoContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        margin:10
+        margin: 10,
         //flex: 0.5,
     },
     logo: {
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     buttonContainer: {
         //flex:0.5 ,
         width: '100%',
-        margin:10
+        margin: 10
     },
     registerButtonContainer: {
         width: '70%',
@@ -75,12 +75,12 @@ const styles = StyleSheet.create({
     copyRightContainer: {
         width: '100%',
         // justifyContent: 'center',
-         alignItems: 'center',
+        alignItems: 'center',
         //paddingBottom: 10,
         //flex: 0.5,
         //position:'absolute',
-        bottom:0,
-        marginTop:100
+        bottom: 0,
+        marginTop: 100
     },
     copyRightTextContainer: {
         fontSize: theme.SIZES.BASE,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         justifyContent: 'center',
-        margin:10
+        margin: 10
     },
     inputSubContainer: {
         width: theme.horizontalScale(260),
@@ -115,4 +115,42 @@ const styles = StyleSheet.create({
     }
 
 });
-export default styles;
+export const verifyStyles = StyleSheet.create({
+    mainContainer: { height: '100%', justifyContent: 'space-between', alignItems: 'center' },
+    titleButtonContainer:{ width: '100%', alignItems: 'center' },
+    title: {
+        fontSize: theme.SIZES.EXTRA_LARGE,
+        fontFamily: theme.FONTFAMILY.BOLD,
+        color: theme.COLORS.BLACK,
+        fontWeight: 'bold'
+    },
+    logoContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 0, marginTop: 20
+    },
+    logo: {
+        height: theme.horizontalScale(80),
+        width: theme.horizontalScale(80)
+    },
+    descriptionContainer:{ width: '80%', justifyContent: 'center', alignItems: 'center' },
+    descriptionText:{ fontSize: 16, color: theme.COLORS.BLACK },
+    copyRightContainer: {
+        width: '100%',
+        // justifyContent: 'center',
+        alignItems: 'center',
+        //paddingBottom: 10,
+        //flex: 0.5,
+        //position:'absolute',
+        marginBottom: 40
+    },
+    copyRightTextContainer: {
+        fontSize: theme.SIZES.BASE,
+        color: theme.COLORS.BLACK
+    },
+    buttonContainer: {
+        width: '100%',
+        marginTop: 40, 
+        margin: 0
+    },
+})

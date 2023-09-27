@@ -15,6 +15,7 @@ To start Metro, run the following command from the _root_ of your React Native p
 npm start
 
 # OR using Yarn
+# We are using Yarn for FKN
 yarn start
 ```
 

@@ -1,48 +1,44 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { LoginRequest } from './loginActions';
 
-// interface LoginState {
-//   loginData: any;
-//   loading: boolean;
-//   data: any;
-//   error: boolean;
-// }
+interface LoginState {
+  loading: boolean;
+  data: any;
+  error: boolean;
+}
 // const defaultProps = {
 //   loading: false,
 //   data: {},
 //   error: false
 // };
-// const initialState: LoginState = {
-//   ...defaultProps,
-//   // loading: false,
-//   // data: false,
-//   // error: false,
-//   loginData: { ...defaultProps }
-// };
+const initialState: LoginState = {
+  loading: false,
+  data: false,
+  error: false,
+};
 
 const LoginReducer = createSlice({
   name: "login",
-  initialState:{
-    login:{
-      data:1
-    }
-  },
+  initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<any>) => {
-      state.login = action.payload;
-    },
-    clearUser: (state) => {
-      state.login = {data:0};
-    }
+    // setUser: (state, action: PayloadAction<any>) => {
+    //   state.login = action.payload;
+    // },
+    // clearUser: (state) => {
+    //   state.login = {data:0};
+    // }
   },
-  // extraReducers(builder) {
-  //   builder.addCase(LoginRequest.pending, (state, action: PayloadAction<any>) => {
-  //     state.loading = true,
-  //       state.loginData = true
-  //   })
-  //     .addCase(LoginRequest.fulfilled, (state, action: PayloadAction<any>) => { })
-  //     .addCase(LoginRequest.rejected, (state, action: PayloadAction<any>) => { })
-  // },
+  extraReducers(builder) {
+    builder.addCase(LoginRequest.pending, (state, action: PayloadAction<any>) => {
+      state.loading = true
+    })
+      .addCase(LoginRequest.fulfilled, (state, action: PayloadAction<any>) => {
+        state.loading = false
+      })
+      .addCase(LoginRequest.rejected, (state, action: PayloadAction<any>) => {
+        state.loading = false
+      })
+  },
 });
 
 export const { } = LoginReducer.actions;
