@@ -33,7 +33,8 @@ const LoginReducer = createSlice({
       state.loading = true
     })
       .addCase(LoginRequest.fulfilled, (state, action: PayloadAction<any>) => {
-        state.loading = false
+        state.loading = false,
+          state.data = action.payload
       })
       .addCase(LoginRequest.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false

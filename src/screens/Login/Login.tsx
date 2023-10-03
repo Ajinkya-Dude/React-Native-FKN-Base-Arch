@@ -1,15 +1,36 @@
-import React, { useState } from 'react';
-import { Image, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
-import {styles} from './styles';
+import React, { useEffect, useState } from 'react';
+import { Alert, Image, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { styles } from './styles';
 import { FKNlogo } from '../../assets';
 import Button from '../../components/common/Button';
 import { FKNconstants } from '../../components/constants';
 import theme from '../../theme';
-import * as NavigationService from '../../navigation/NavigationService';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { LoginRequest } from '../../store/reducer/loginReducer/loginActions';
+import Loader from '../../components/common/Loader';
 
 const Login = () => {
     const [isFocused, setIsFocused] = useState<Number>(0);
+    const [deviceName, setDeviceName] = useState<string>('');
+    const [userName, setUserName] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const dispatch = useDispatch<any>();
+
+
+    const loginData: any = useSelector((state: any) => state.loginReducer);
+    const registerData: any = useSelector((state: any) => state.registerReducer);
+
+    const isLoading = loginData.loading;
+
+    const handleOnChange = (value: string, type: String) => {
+        if (type === 'name') {
+            setDeviceName(value)
+        } else if (type === 'user') {
+            setUserName(value);
+        } else if (type === 'pass') {
+            setPassword(value)
+        }
+    }
 
     const handleFocus = (value: Number) => {
         setIsFocused(value);
@@ -21,10 +42,35 @@ const Login = () => {
     const handleScreenPress = () => {
         Keyboard.dismiss();
     };
-    const loginData: any = useSelector((state: any) => state.loginReducer.login);
+
+    const onAlert = () => {
+        Alert.alert(FKNconstants.alertLoginTitle, FKNconstants.alertLoginMessage,
+            [
+                {
+                    text: 'Ok',
+                    onPress: () => console.log('Ok Pressed'),
+                    style: 'cancel',
+                },
+            ])
+    }
 
     const onHandleSubmit = () => {
-        NavigationService.navigate('verify')
+        if ((deviceName || userName || password) === '') {
+            onAlert();
+            return
+        }
+        const payload = {
+            url: registerData && registerData.data.FKN.url,
+            loginPayload: {
+                "usuario_api": {
+                    "email": userName,
+                    "pass": password
+                }
+            }
+        }
+        dispatch(LoginRequest(payload));
+        //NavigationService.navigate('verify');
+
     }
     return (
         <SafeAreaView>
@@ -52,31 +98,47 @@ const Login = () => {
                                     <View style={styles.inputSubContainer}>
                                         <Text style={styles.textInputLabel}>{FKNconstants.registerLable1}</Text>
                                         <TextInput
+                                            //ref={input => (this.userInput = input)}
                                             onFocus={() => handleFocus(1)}
                                             onBlur={() => handleBlur(0)}
                                             style={[styles.textInput, { borderColor: isFocused === 1 ? theme.COLORS.GREEN_DARK : theme.COLORS.DARK_GREY }]}
                                             placeholder='Ex. Pessol, Trabalho, Tablet, Celular, etc..'
                                             placeholderTextColor={theme.COLORS.DARK_GREY}
+                                            onChangeText={(value) => { handleOnChange(value, 'name') }}
+                                            value={deviceName}
+                                            onSubmitEditing={() => {
+                                                this.userInput.focus();
+                                            }}
                                         />
                                     </View>
                                     <View style={styles.inputSubContainer}>
                                         <Text style={styles.textInputLabel}>{FKNconstants.userName}</Text>
                                         <TextInput
+                                            ref={input => (this.userInput = input)}
                                             onFocus={() => handleFocus(3)}
                                             onBlur={() => handleBlur(0)}
                                             style={[styles.textInput, { borderColor: isFocused === 3 ? theme.COLORS.GREEN_DARK : theme.COLORS.DARK_GREY }]}
                                             placeholder={FKNconstants.userName}
                                             placeholderTextColor={theme.COLORS.DARK_GREY}
+                                            onChangeText={(value) => { handleOnChange(value, 'user') }}
+                                            value={userName}
+                                            onSubmitEditing={() => {
+                                                this.password.focus();
+                                            }}
                                         />
                                     </View>
                                     <View style={styles.inputSubContainer}>
                                         <Text style={styles.textInputLabel}>{FKNconstants.password}</Text>
                                         <TextInput
+                                            ref={input => (this.password = input)}
                                             placeholderTextColor={theme.COLORS.DARK_GREY}
                                             onFocus={() => handleFocus(2)}
                                             onBlur={() => handleBlur(0)}
                                             style={[styles.textInput, { borderColor: isFocused === 2 ? theme.COLORS.GREEN_DARK : theme.COLORS.DARK_GREY }]}
                                             placeholder={FKNconstants.password}
+                                            onChangeText={(value) => { handleOnChange(value, 'pass') }}
+                                            value={password}
+                                            secureTextEntry
                                         />
                                     </View>
                                 </View>
@@ -92,6 +154,7 @@ const Login = () => {
                     </KeyboardAvoidingView>
                 </View>
             </TouchableWithoutFeedback>
+            {isLoading && <Loader />}
         </SafeAreaView>
     );
 }

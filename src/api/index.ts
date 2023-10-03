@@ -18,6 +18,8 @@ export function get<T>(url: string, config?: AxiosRequestConfig) {
 
 // Define a function to make a POST request
 export function post<T>(url: string, data?: any, config?: AxiosRequestConfig) {
+    console.log("Post api",url,"Data",data);
+    
     return api.post<T>(url, data, config);
 }
 

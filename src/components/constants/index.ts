@@ -13,5 +13,7 @@ export const FKNconstants = {
     verifyDescription:'Aguardando aprovação, contate o administrador do sistema para liberação do dispositivo',
     copyRight1:'Copyright © 2016 FKN Informática.',
     copyRight2:'Todos os direitos reservados.',
-    required:'Required',
+    registerRequired:'Favor preencher o chave!',
+    alertLoginTitle:'Mensagem',
+    alertLoginMessage:'Campo(s) obrigatorios em branco!'
 }

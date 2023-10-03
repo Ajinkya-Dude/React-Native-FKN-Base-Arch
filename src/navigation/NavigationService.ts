@@ -16,3 +16,12 @@ export const goBack = () => {
 export const popToStack = () => {
   navigationRef.current?.dispatch(StackActions.popToTop());
 };
+
+export const resetNavigation = ({ index, routeName }: any) => {
+  console.log("Calling resetNavigation ", routeName, "index", index);
+
+  navigationRef.current?.reset({
+    index: index,
+    routes: [{ name: routeName }]
+  })
+}

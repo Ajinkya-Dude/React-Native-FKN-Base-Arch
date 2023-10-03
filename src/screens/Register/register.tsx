@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import styles from './styles';
 import { FKNlogo } from '../../assets';
@@ -32,28 +32,34 @@ const Register = () => {
     const isLoading = registerData.loading;
     console.log("register", registerData);
 
+    // useEffect(() => {
+    //     if (registerData && registerData.data && registerData.data.FKN ) {
+    //         NavigationService.navigate('login');
+    //     }
+    // }, [registerData]);
+
     const handleOnChangeText = (value: string) => {
         setChaveInput(value.trim());
         setRequired(false);
     }
 
     const onHandleButton = () => {
-        NavigationService.navigate('login')
-        // setRequired(false);
-        // if (chaveInput === '') {
-        //     setRequired(true);
-        //     return
-        // }
-        // const payload = {
-        //     chave: chaveInput
-        // }
-        // console.log("Payload", payload);
-        // dispatch(RegisterRequest(payload))
-        //dispatch(setChaveCredentials(chaveInput));
+         //NavigationService.navigate('login')
+        setRequired(false);
+        if (chaveInput === '') {
+            setRequired(true);
+            return
+        }
+        const payload = {
+            chave: chaveInput
+        }
+        console.log("Payload", payload);
+        dispatch(RegisterRequest(payload))
+        dispatch(setChaveCredentials(chaveInput));
     }
 
     return (
-        <SafeAreaView>
+         <SafeAreaView>
             <TouchableWithoutFeedback onPress={handleScreenPress}>
                 <View style={{ height: '100%' }}>
                     <KeyboardAvoidingView
@@ -91,8 +97,9 @@ const Register = () => {
                                             placeholder='Chave'
                                             onChangeText={handleOnChangeText}
                                             value={chaveInput}
+                                            secureTextEntry={true}
                                         />
-                                        {required && <Text style={styles.textRequired}>{FKNconstants.required}</Text>}
+                                        {required && <Text style={styles.textRequired}>{FKNconstants.registerRequired}</Text>}
                                     </View>
                                 </View>
                                 <View style={styles.buttonContainer}>
@@ -101,10 +108,10 @@ const Register = () => {
                             </View>
                         </ScrollView>
                     </KeyboardAvoidingView>
+                    {isLoading && <Loader />}
                 </View>
             </TouchableWithoutFeedback>
-            {isLoading && <Loader />}
-        </SafeAreaView>
+        </SafeAreaView> 
     );
 }
 
