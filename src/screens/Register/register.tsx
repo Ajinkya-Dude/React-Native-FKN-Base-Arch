@@ -44,7 +44,7 @@ const Register = () => {
     }
 
     const onHandleButton = () => {
-         //NavigationService.navigate('login')
+        //NavigationService.navigate('login')
         setRequired(false);
         if (chaveInput === '') {
             setRequired(true);
@@ -59,9 +59,9 @@ const Register = () => {
     }
 
     return (
-         <SafeAreaView>
+        <SafeAreaView>
             <TouchableWithoutFeedback onPress={handleScreenPress}>
-                <View style={{ height: '100%' }}>
+                <View style={{ height: '100%',backgroundColor:'red' }}>
                     <KeyboardAvoidingView
                         contentContainerStyle={{
                             padding: 5,
@@ -76,34 +76,26 @@ const Register = () => {
                                     <Image resizeMode={'stretch'} source={FKNlogo} style={styles.logo} />
                                     <Text style={styles.title}>{FKNconstants.appFullTitle}</Text>
                                 </View>
-                                <View style={styles.inputContainer}>
-                                    {/* <View style={styles.inputSubContainer}>
-                                        <Text style={styles.textInputLabel}>{FKNconstants.registerLable1}</Text>
-                                        <TextInput
-                                            onFocus={() => handleFocus(1)}
-                                            onBlur={() => handleBlur(0)}
-                                            style={[styles.textInput, { borderColor: isFocused === 1 ? theme.COLORS.GREEN_DARK : theme.COLORS.DARK_GREY }]}
-                                            placeholder='Ex. Pessol, Trabalho, Tablet, Celular, etc..'
-                                            placeholderTextColor={theme.COLORS.DARK_GREY}
-                                        />
-                                    </View> */}
-                                    <View style={styles.inputSubContainer}>
-                                        <Text style={styles.textInputLabel}>{FKNconstants.registerLabel2}</Text>
-                                        <TextInput
-                                            placeholderTextColor={theme.COLORS.DARK_GREY}
-                                            onFocus={() => handleFocus(2)}
-                                            onBlur={() => handleBlur(0)}
-                                            style={[styles.textInput, { borderColor: isFocused === 2 ? theme.COLORS.GREEN_DARK : theme.COLORS.DARK_GREY }]}
-                                            placeholder='Chave'
-                                            onChangeText={handleOnChangeText}
-                                            value={chaveInput}
-                                            secureTextEntry={true}
-                                        />
-                                        {required && <Text style={styles.textRequired}>{FKNconstants.registerRequired}</Text>}
+                                <View style={{backgroundColor:'white',padding:20,borderRadius:20,width:'80%',marginTop:theme.verticalScale(100)}}>
+                                    <View style={styles.inputContainer}>
+                                        <View style={styles.inputSubContainer}>
+                                            <Text style={styles.textInputLabel}>{FKNconstants.registerLabel2}</Text>
+                                            <TextInput
+                                                placeholderTextColor={theme.COLORS.DARK_GREY}
+                                                onFocus={() => handleFocus(2)}
+                                                onBlur={() => handleBlur(0)}
+                                                style={[styles.textInput, { borderColor: isFocused === 2 ? theme.COLORS.GREEN_DARK : theme.COLORS.DARK_GREY }]}
+                                                placeholder='Chave'
+                                                onChangeText={handleOnChangeText}
+                                                value={chaveInput}
+                                                secureTextEntry={true}
+                                            />
+                                            {required && <Text style={styles.textRequired}>{FKNconstants.registerRequired}</Text>}
+                                        </View>
                                     </View>
-                                </View>
-                                <View style={styles.buttonContainer}>
-                                    <Button label={FKNconstants.confirm} onClick={onHandleButton} />
+                                    <View style={styles.buttonContainer}>
+                                        <Button label={FKNconstants.confirm} onClick={onHandleButton} />
+                                    </View>
                                 </View>
                             </View>
                         </ScrollView>
@@ -111,7 +103,7 @@ const Register = () => {
                     {isLoading && <Loader />}
                 </View>
             </TouchableWithoutFeedback>
-        </SafeAreaView> 
+        </SafeAreaView>
     );
 }
 

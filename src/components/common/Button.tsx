@@ -32,13 +32,13 @@ const styles = StyleSheet.create({
         backgroundColor: theme.COLORS.BUTTON_BG,
         alignSelf: 'center',
         borderRadius: theme.moderateScale(10),
-        elevation: 16,
-        shadowColor: theme.COLORS.BLACK_LIGHT,
-        shadowOffset: {
-            width: theme.horizontalScale(3),
-            height: theme.verticalScale(3)
-        },
-        shadowOpacity: 0.6
+        // elevation: 16,
+        // shadowColor: theme.COLORS.BLACK_LIGHT,
+        // shadowOffset: {
+        //     width: theme.horizontalScale(3),
+        //     height: theme.verticalScale(3)
+        // },
+        // shadowOpacity: 0.6
     },
     buttonText: {
         fontSize: theme.SIZES.MEDIUM,

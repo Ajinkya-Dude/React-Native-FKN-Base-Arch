@@ -27,6 +27,8 @@
 	<key>NSAppTransportSecurity</key>
 	<!-- <key>NSContactsUsageDescription</key>
   	<string>FKN Vendas wants to manage phone calls</string> -->
+	<!-- <key>NSMicrophoneUsageDescription</key>
+  	<string>FKN Vendas wants to manage phone calls</string> -->
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>

@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         height: '100%',
         width: '100%',
-        backgroundColor: theme.COLORS.WHITE
+        backgroundColor: theme.COLORS.GRAY
     },
     subContainer: {
         width: '100%',
@@ -25,6 +25,12 @@ export const styles = StyleSheet.create({
         flex: 1,
     },
     title: {
+        fontSize: theme.SIZES.LARGE,
+        fontFamily: theme.FONTFAMILY.BOLD,
+        color: theme.COLORS.BLACK,
+        fontWeight: 'bold'
+    },
+    pagetitle: {
         fontSize: theme.SIZES.EXTRA_LARGE,
         fontFamily: theme.FONTFAMILY.BOLD,
         color: theme.COLORS.BLACK,
@@ -37,8 +43,8 @@ export const styles = StyleSheet.create({
         //flex: 0.5,
     },
     logo: {
-        height: theme.horizontalScale(80),
-        width: theme.horizontalScale(80)
+        height: theme.horizontalScale(40),
+        width: theme.horizontalScale(40)
     },
     greenLogo: {
         height: theme.horizontalScale(50),
@@ -47,30 +53,8 @@ export const styles = StyleSheet.create({
     },
     buttonContainer: {
         //flex:0.5 ,
-        width: '100%',
-        margin: 10
-    },
-    registerButtonContainer: {
-        width: '70%',
-        paddingVertical: theme.verticalScale(15),
-        paddingHorizontal: theme.horizontalScale(15),
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: theme.COLORS.BUTTON_BG,
-        alignSelf: 'center',
-        borderRadius: theme.moderateScale(10),
-        elevation: 16,
-        shadowColor: theme.COLORS.BLACK_LIGHT,
-        shadowOffset: {
-            width: theme.horizontalScale(3),
-            height: theme.verticalScale(3)
-        },
-        shadowOpacity: 0.6
-    },
-    registerButtonText: {
-        fontSize: theme.SIZES.MEDIUM,
-        color: theme.COLORS.WHITE,
-        fontWeight: 'bold'
+        //width: '100%',
+        //margin: 10
     },
     copyRightContainer: {
         width: '100%',
@@ -80,7 +64,7 @@ export const styles = StyleSheet.create({
         //flex: 0.5,
         //position:'absolute',
         bottom: 0,
-        marginTop: 100
+        marginTop: theme.verticalScale(80)
     },
     copyRightTextContainer: {
         fontSize: theme.SIZES.BASE,
@@ -92,7 +76,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         justifyContent: 'center',
-        margin: 10
+        margin: theme.verticalScale(10)
     },
     inputSubContainer: {
         width: theme.horizontalScale(260),
@@ -119,7 +103,7 @@ export const verifyStyles = StyleSheet.create({
     mainContainer: { height: '100%', justifyContent: 'space-between', alignItems: 'center' },
     titleButtonContainer:{ width: '100%', alignItems: 'center' },
     title: {
-        fontSize: theme.SIZES.EXTRA_LARGE,
+        fontSize: theme.SIZES.LARGE,
         fontFamily: theme.FONTFAMILY.BOLD,
         color: theme.COLORS.BLACK,
         fontWeight: 'bold'
@@ -127,13 +111,13 @@ export const verifyStyles = StyleSheet.create({
     logoContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 0, marginTop: 20
+        margin: 0, marginTop: theme.verticalScale(20)
     },
     logo: {
-        height: theme.horizontalScale(80),
-        width: theme.horizontalScale(80)
+        height: theme.horizontalScale(40),
+        width: theme.horizontalScale(40)
     },
-    descriptionContainer:{ width: '80%', justifyContent: 'center', alignItems: 'center' },
+    descriptionContainer:{ width: '80%', justifyContent: 'center', alignItems: 'center',paddingHorizontal:20},
     descriptionText:{ fontSize: 16, color: theme.COLORS.BLACK },
     copyRightContainer: {
         width: '100%',
@@ -141,8 +125,9 @@ export const verifyStyles = StyleSheet.create({
         alignItems: 'center',
         //paddingBottom: 10,
         //flex: 0.5,
-        //position:'absolute',
-        marginBottom: 40
+        // position:'absolute',
+        // bottom: 0,
+        marginBottom: theme.verticalScale(70)
     },
     copyRightTextContainer: {
         fontSize: theme.SIZES.BASE,

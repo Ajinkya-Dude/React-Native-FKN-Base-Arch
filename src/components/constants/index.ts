@@ -3,6 +3,7 @@ export const FKNconstants = {
     appTitle:'Vendas Externas',
     appFullTitle:'FKN Vendas Externas',
     register:'REGISTRAR',
+    permissionPhonecall:'Permissão necessãria para verificar a liberação do celular para acesso ao aplicativo.',
     confirm:'CONFIRMAR',
     registerLable1:'Informe um nome para seu dispositivo',
     registerLabel2:'Informe a chave para autenticação',

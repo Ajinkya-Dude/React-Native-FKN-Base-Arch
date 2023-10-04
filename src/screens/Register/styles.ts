@@ -4,11 +4,11 @@ import theme from "../../theme";
 const styles = StyleSheet.create({
     // onbording Register
     mainContainer: {
-        justifyContent: 'space-between',
+        //justifyContent: 'space-between',
         alignItems: 'center',
         height: '100%',
         width: '100%',
-        backgroundColor: theme.COLORS.WHITE
+        backgroundColor: theme.COLORS.GRAY
     },
     subContainer: {
         width: '100%',
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     title: {
-        fontSize: theme.SIZES.EXTRA_LARGE,
+        fontSize: theme.SIZES.LARGE,
         fontFamily: theme.FONTFAMILY.BOLD,
         color: theme.COLORS.BLACK,
         fontWeight: 'bold'
@@ -28,49 +28,27 @@ const styles = StyleSheet.create({
     logoContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 0.8,
+        marginVertical:theme.verticalScale(20),
+        //flex: 0.8,
         //backgroundColor:'red'
     },
     logo: {
-        height: theme.horizontalScale(80),
-        width: theme.horizontalScale(80)
+        height: theme.horizontalScale(40),
+        width: theme.horizontalScale(40)
     },
     greenLogo: {
         height: theme.horizontalScale(50),
         width: theme.horizontalScale(150),
-        marginBottom: 10
+        marginBottom: theme.verticalScale(10)
     },
     buttonContainer: {
-        flex: 1,
-        width: '100%'
-    },
-    registerButtonContainer: {
-        width: '70%',
-        paddingVertical: theme.verticalScale(15),
-        paddingHorizontal: theme.horizontalScale(15),
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: theme.COLORS.BUTTON_BG,
-        alignSelf: 'center',
-        borderRadius: theme.moderateScale(10),
-        elevation: 16,
-        shadowColor: theme.COLORS.BLACK_LIGHT,
-        shadowOffset: {
-            width: theme.horizontalScale(3),
-            height: theme.verticalScale(3)
-        },
-        shadowOpacity: 0.6
-    },
-    registerButtonText: {
-        fontSize: theme.SIZES.MEDIUM,
-        color: theme.COLORS.WHITE,
-        fontWeight: 'bold'
+        //flex: 1,
+       // width: '100%'
     },
     copyRightContainer: {
         width: '70%',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingBottom: 10,
         flex: 1,
     },
     copyRightTextContainer: {
