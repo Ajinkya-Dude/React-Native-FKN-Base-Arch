@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
         color: theme.COLORS.BLACK
     },
     // register
+    cardContainer:{backgroundColor:'white',padding:20,borderRadius:20,width:'80%',marginTop:theme.verticalScale(100)},
     inputContainer: {
         //flex: 1,
         alignItems: 'center',

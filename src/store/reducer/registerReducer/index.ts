@@ -6,7 +6,7 @@ interface RegisterState {
     loading: boolean;
     data: any;
     error: boolean;
-    chaveCreds: string
+    chaveCreds: string,
 }
 // const defaultProps = {
 //   loading: false,
@@ -18,7 +18,7 @@ const initialState: RegisterState = {
     loading: false,
     data: false,
     error: false,
-    chaveCreds: ''
+    chaveCreds: '',
 };
 
 const RegisterReucer = createSlice({

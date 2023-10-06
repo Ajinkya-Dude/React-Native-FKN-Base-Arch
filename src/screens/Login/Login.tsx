@@ -57,9 +57,9 @@ const Login = () => {
     }
 
     const onHandleSubmit = () => {
-        if ((deviceName || userName || password) === '') {
+        if (deviceName === '' || userName === '' || password === '') {
             onAlert();
-            return
+            return;
         }
         const payload = {
             url: registerData && registerData.data.FKN.url,
@@ -72,7 +72,7 @@ const Login = () => {
         }
         dispatch(LoginRequest(payload));
         dispatch(setDeviceNameEnter(deviceName))
-       // NavigationService.navigate('verify');
+        // NavigationService.navigate('verify');
 
     }
     return (
@@ -97,7 +97,7 @@ const Login = () => {
                                 <View style={styles.loginTitle}>
                                     <Text style={styles.pagetitle}>Força de Vendas FKN</Text>
                                 </View>
-                                <View style={{backgroundColor:theme.COLORS.WHITE,padding:theme.moderateScale(20),borderRadius:theme.moderateScale(20),marginVertical:theme.verticalScale(20)}}>
+                                <View style={styles.cardContainer}>
                                     <View style={styles.inputContainer}>
                                         <View style={styles.inputSubContainer}>
                                             <Text style={styles.textInputLabel}>{FKNconstants.registerLable1}</Text>

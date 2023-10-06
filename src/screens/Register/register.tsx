@@ -76,7 +76,7 @@ const Register = () => {
                                     <Image resizeMode={'stretch'} source={FKNlogo} style={styles.logo} />
                                     <Text style={styles.title}>{FKNconstants.appFullTitle}</Text>
                                 </View>
-                                <View style={{backgroundColor:'white',padding:20,borderRadius:20,width:'80%',marginTop:theme.verticalScale(100)}}>
+                                <View style={styles.cardContainer}>
                                     <View style={styles.inputContainer}>
                                         <View style={styles.inputSubContainer}>
                                             <Text style={styles.textInputLabel}>{FKNconstants.registerLabel2}</Text>

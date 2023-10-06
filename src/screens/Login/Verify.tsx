@@ -24,6 +24,8 @@ const Verify = () => {
     const loginData: any = useSelector((state: any) => state.loginReducer);
     const registerData: any = useSelector((state: any) => state.registerReducer);
 
+    console.log("loginData", loginData.verifyData);
+
     const isLoading = loginData.loading;
 
     const handleOnVerify = () => {

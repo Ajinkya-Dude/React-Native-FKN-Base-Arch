@@ -51,6 +51,7 @@ export const styles = StyleSheet.create({
         width: theme.horizontalScale(150),
         marginBottom: 10
     },
+    cardContainer:{ backgroundColor: theme.COLORS.WHITE, padding: theme.moderateScale(20), borderRadius: theme.moderateScale(20), marginVertical: theme.verticalScale(20) },
     buttonContainer: {
         //flex:0.5 ,
         //width: '100%',

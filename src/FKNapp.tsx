@@ -11,11 +11,15 @@ const FKNapp = () => {
     const [initialScreen, setInitialScreen] = useState<string>('onboarding');
 
     const registerData: any = useSelector((state: any) => state.registerReducer);
-    // useEffect(() => {
-    //     if (registerData && registerData.data && registerData.data.FKN) {
-    //         setInitialScreen('login')
-    //     }
-    // }, [registerData]);
+    const loginData: any = useSelector((state: any) => state.loginReducer);
+    useEffect(() => {
+        if (loginData && loginData.data && loginData.data.usuario_api && loginData.data.usuario_api.token) {
+            setInitialScreen('verify')
+        } else
+            if (registerData && registerData.data && registerData.data.FKN && registerData.data.FKN.contrato) {
+                setInitialScreen('login')
+            }
+    }, [registerData, loginData]);
     useEffect(() => {
         const timer = setTimeout(async () => {
             await setShowSplash(false);

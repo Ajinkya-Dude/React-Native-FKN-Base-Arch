@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Image, Platform, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, PermissionsAndroid, Platform, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import * as NavigationService from "../../navigation/NavigationService";
 import styles from "./styles";
 import { FKNconstants } from "../../components/constants";
@@ -13,13 +13,11 @@ interface Props {
 
 const App = () => {
 
-  const [permissionDenied, setPermissionDenied] = useState(false);
   const handleonRegister = () => {
     NavigationService.navigate('register');
   }
 
   const PermissionAlert = () => {
-    setPermissionDenied(true);
     Alert.alert('Permission', FKNconstants.permissionPhonecall,
       [
         {
@@ -29,33 +27,54 @@ const App = () => {
         },
         {
           text: 'Ok',
-          onPress: () => requestCallPermissions(),
+          onPress: () => requestCallPermissions(1),
           //style: 'cancel',
         },
       ])
   }
-  const requestCallPermissions = async () => {
+  // const requestPhoneCallPermission = async () => {
+  //   try {
+  //     const status = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CALL_PHONE);
+  //     console.log("Status permission", status);
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.CALL_PHONE
+  //       // {
+  //       //   title: 'Cool Photo App Camera Permission',
+  //       //   message:
+  //       //     'Cool Photo App needs access to your camera ' +
+  //       //     'so you can take awesome pictures.',
+  //       //   buttonNeutral: 'Ask Me Later',
+  //       //   buttonNegative: 'Cancel',
+  //       //   buttonPositive: 'OK',
+  //       // },
+  //     );
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //       console.log('You can use the camera');
+  //     } else {
+  //       console.log('Camera permission denied',granted);
+  //       requestPhoneCallPermission();
+  //     }
+  //   } catch (err) {
+  //     console.warn(err);
+  //   }
+  // };
+  const requestCallPermissions = async (value: number) => {
     if (Platform.OS === 'android') {
       const status = await check(PERMISSIONS.ANDROID.CALL_PHONE);
       console.log("Status permission", status);
       if (status === RESULTS.BLOCKED) {
         // Handle the case where the user has denied permission and blocked it.
+        //PermissionAlert();
       } else {
         const result = await request(PERMISSIONS.ANDROID.CALL_PHONE);
-        console.log("result permission", result, "RESULTS", RESULTS);
+        console.log("result permissions", result, "RESULT", RESULTS,"value",value);
         if (result === RESULTS.GRANTED) {
           // Permission granted, you can now manage calls.
         } else if (result === RESULTS.DENIED) {
-          console.log("Permission denied------------", permissionDenied);
           PermissionAlert();
-        } else {
-          console.log("Permission bloked after ok denied------------", permissionDenied);
-          // if (permissionDenied) {
-          //   console.log("Permission Denied with value------------",permissionDenied);
-          // } else {
-          //   requestCallPermissions();
-          // }
-          // Permission denied, handle accordingly.
+        } else if(result === RESULTS.BLOCKED) {
+          // if (!value)
+          //   requestCallPermissions(0);
         }
       }
     } else {
@@ -75,7 +94,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    requestCallPermissions();
+    requestCallPermissions(1);
   }, []);
 
   return (
