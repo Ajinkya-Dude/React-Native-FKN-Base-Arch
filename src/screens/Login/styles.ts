@@ -4,7 +4,7 @@ import theme from "../../theme";
 export const styles = StyleSheet.create({
     // onbording Register
     mainContainer: {
-        //justifyContent: 'space-between',
+        justifyContent: 'space-between',
         alignItems: 'center',
         height: '100%',
         width: '100%',
@@ -64,7 +64,7 @@ export const styles = StyleSheet.create({
         //paddingBottom: 10,
         //flex: 0.5,
         //position:'absolute',
-        bottom: 0,
+        bottom: 20,
         marginTop: theme.verticalScale(80)
     },
     copyRightTextContainer: {

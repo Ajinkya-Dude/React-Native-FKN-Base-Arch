@@ -5,6 +5,7 @@ import Auth from './screens/Login'
 import { navigationRef } from './navigation/NavigationService';
 import SplashScreen from './screens/SplashScreen';
 import { useSelector } from 'react-redux';
+import Routes from './routes';
 
 const FKNapp = () => {
     const [showSplash, setShowSplash] = useState<Boolean>(true);
@@ -13,9 +14,9 @@ const FKNapp = () => {
     const registerData: any = useSelector((state: any) => state.registerReducer);
     const loginData: any = useSelector((state: any) => state.loginReducer);
     useEffect(() => {
-        if (loginData && loginData.data && loginData.data.usuario_api && loginData.data.usuario_api.token) {
-            setInitialScreen('verify')
-        } else
+        // if (loginData && loginData.data && loginData.data.usuario_api && loginData.data.usuario_api.token) {
+        //     setInitialScreen('verify')
+        // } else
             if (registerData && registerData.data && registerData.data.FKN && registerData.data.FKN.contrato) {
                 setInitialScreen('login')
             }
@@ -32,6 +33,7 @@ const FKNapp = () => {
                 showSplash ?
                     <SplashScreen /> :
                     <Auth initialRouteName={initialScreen} />
+                    // <Routes />
 
             }
         </NavigationContainer>

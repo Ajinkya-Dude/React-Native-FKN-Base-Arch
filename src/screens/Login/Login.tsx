@@ -16,6 +16,7 @@ const Login = () => {
     const [deviceName, setDeviceName] = useState<string>('');
     const [userName, setUserName] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [hideDeviceField, setHideDeviceField] = useState<boolean>(true);
     const dispatch = useDispatch<any>();
 
 
@@ -23,10 +24,18 @@ const Login = () => {
     const registerData: any = useSelector((state: any) => state.registerReducer);
 
     const isLoading = loginData.loading;
+    console.log("Login data", loginData);
+
+    useEffect(() => {
+        if (loginData && loginData.data && loginData.data.usuario_api && loginData.data.usuario_api.token) {
+            setHideDeviceField(false);
+        }
+    }, [loginData]);
 
     const handleOnChange = (value: string, type: String) => {
         if (type === 'name') {
-            setDeviceName(value)
+            setDeviceName(value);
+            setHideDeviceField(true);
         } else if (type === 'user') {
             setUserName(value);
         } else if (type === 'pass') {
@@ -57,7 +66,7 @@ const Login = () => {
     }
 
     const onHandleSubmit = () => {
-        if (deviceName === '' || userName === '' || password === '') {
+        if ((hideDeviceField && deviceName === '') || userName === '' || password === '') {
             onAlert();
             return;
         }
@@ -65,13 +74,13 @@ const Login = () => {
             url: registerData && registerData.data.FKN.url,
             loginPayload: {
                 "usuario_api": {
-                    "email": userName,
-                    "pass": password
+                    "email": userName.trim(),
+                    "pass": password.trim()
                 }
             }
         }
         dispatch(LoginRequest(payload));
-        dispatch(setDeviceNameEnter(deviceName))
+        dispatch(setDeviceNameEnter(deviceName.trim()));
         // NavigationService.navigate('verify');
 
     }
@@ -90,31 +99,34 @@ const Login = () => {
                     >
                         <ScrollView contentContainerStyle={{ height: '100%' }}>
                             <View style={styles.mainContainer}>
-                                <View style={styles.logoContainer}>
-                                    <Image resizeMode={'stretch'} source={FKNlogo} style={styles.logo} />
-                                    <Text style={styles.title}>FKN Vendas Externas</Text>
-                                </View>
-                                <View style={styles.loginTitle}>
-                                    <Text style={styles.pagetitle}>Força de Vendas FKN</Text>
+                                <View>
+                                    <View style={styles.logoContainer}>
+                                        <Image resizeMode={'stretch'} source={FKNlogo} style={styles.logo} />
+                                        <Text style={styles.title}>{FKNconstants.appFullTitle}</Text>
+                                    </View>
+                                    <View style={styles.loginTitle}>
+                                        <Text style={styles.pagetitle}>{FKNconstants.loginPageTitle}</Text>
+                                    </View>
                                 </View>
                                 <View style={styles.cardContainer}>
                                     <View style={styles.inputContainer}>
-                                        <View style={styles.inputSubContainer}>
-                                            <Text style={styles.textInputLabel}>{FKNconstants.registerLable1}</Text>
-                                            <TextInput
-                                                //ref={input => (this.userInput = input)}
-                                                onFocus={() => handleFocus(1)}
-                                                onBlur={() => handleBlur(0)}
-                                                style={[styles.textInput, { borderColor: isFocused === 1 ? theme.COLORS.GREEN_DARK : theme.COLORS.DARK_GREY }]}
-                                                placeholder='Ex. Pessol, Trabalho, Tablet, Celular, etc..'
-                                                placeholderTextColor={theme.COLORS.DARK_GREY}
-                                                onChangeText={(value) => { handleOnChange(value, 'name') }}
-                                                value={deviceName}
-                                                onSubmitEditing={() => {
-                                                    this.userInput.focus();
-                                                }}
-                                            />
-                                        </View>
+                                        {hideDeviceField ?
+                                            <View style={styles.inputSubContainer}>
+                                                <Text style={styles.textInputLabel}>{FKNconstants.registerLable1}</Text>
+                                                <TextInput
+                                                    //ref={input => (this.userInput = input)}
+                                                    onFocus={() => handleFocus(1)}
+                                                    onBlur={() => handleBlur(0)}
+                                                    style={[styles.textInput, { borderColor: isFocused === 1 ? theme.COLORS.GREEN_DARK : theme.COLORS.DARK_GREY }]}
+                                                    placeholder='Ex. Pessol, Trabalho, Tablet, Celular, etc..'
+                                                    placeholderTextColor={theme.COLORS.DARK_GREY}
+                                                    onChangeText={(value) => { handleOnChange(value, 'name') }}
+                                                    value={deviceName}
+                                                    onSubmitEditing={() => {
+                                                        this.userInput.focus();
+                                                    }}
+                                                />
+                                            </View> : null}
                                         <View style={styles.inputSubContainer}>
                                             <Text style={styles.textInputLabel}>{FKNconstants.userName}</Text>
                                             <TextInput
