@@ -17,9 +17,9 @@ const FKNapp = () => {
         // if (loginData && loginData.data && loginData.data.usuario_api && loginData.data.usuario_api.token) {
         //     setInitialScreen('verify')
         // } else
-            if (registerData && registerData.data && registerData.data.FKN && registerData.data.FKN.contrato) {
-                setInitialScreen('login')
-            }
+        if (registerData && registerData.data && registerData.data.FKN && registerData.data.FKN.contrato) {
+            setInitialScreen('login')
+        }
     }, [registerData, loginData]);
     useEffect(() => {
         const timer = setTimeout(async () => {
@@ -32,8 +32,8 @@ const FKNapp = () => {
             {
                 showSplash ?
                     <SplashScreen /> :
-                    <Auth initialRouteName={initialScreen} />
-                    // <Routes />
+                    // <Auth initialRouteName={initialScreen} />
+                <Routes />
 
             }
         </NavigationContainer>

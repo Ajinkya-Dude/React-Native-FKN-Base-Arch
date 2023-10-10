@@ -6,10 +6,12 @@ import Button from '../../components/common/Button';
 import { FKNconstants } from '../../components/constants';
 import theme from '../../theme';
 import { useDispatch, useSelector } from 'react-redux';
-import { LoginRequest } from '../../store/reducer/loginReducer/loginActions';
+import { LoginRequest, VerifyRequest } from '../../store/reducer/loginReducer/loginActions';
 import Loader from '../../components/common/Loader';
 import { setDeviceNameEnter } from '../../store/reducer/loginReducer';
 import * as NavigationService from '../../navigation/NavigationService';
+import DeviceInfo from "react-native-device-info";
+import { version } from "../../../package.json";
 
 const Login = () => {
     const [isFocused, setIsFocused] = useState<Number>(0);
@@ -18,6 +20,8 @@ const Login = () => {
     const [password, setPassword] = useState<string>('');
     const [hideDeviceField, setHideDeviceField] = useState<boolean>(true);
     const dispatch = useDispatch<any>();
+    const [uniqueId, setUniqueId] = useState<string>('')
+    const [deviceModel, setDeviceModel] = useState<string>('');
 
 
     const loginData: any = useSelector((state: any) => state.loginReducer);
@@ -63,6 +67,23 @@ const Login = () => {
                     style: 'cancel',
                 },
             ])
+    }
+    const handleOnVerify = () => {
+        //NavigationService.navigate('onboarding')
+        const payload = {
+            url: `${registerData && registerData.data.FKN.url}vendedor/listar?formato=JSON&nome=Thinkitive&nomeAndroid=${deviceModel}&idAndroid=${uniqueId}&idSerial=unknown&usuario=${loginData.data.usuario_api.email}&download=0&filial=1&versao=${version}&token=${loginData.data.usuario_api.token}`
+        }
+        dispatch(VerifyRequest(payload))
+    }
+    useEffect(() => {
+        GetDeviceUniqueID();
+    }, []);
+    const GetDeviceUniqueID = () => {
+        const model = DeviceInfo.getModel();
+        setDeviceModel(model);
+        DeviceInfo.getUniqueId().then((uniqueId) => {
+            setUniqueId(uniqueId);
+        });
     }
 
     const onHandleSubmit = () => {
