@@ -7,6 +7,7 @@ interface LoginState {
   error: boolean;
   verifyData: any;
   deviceName: string;
+  isLoggedIn:boolean;
 }
 // const defaultProps = {
 //   loading: false,
@@ -18,7 +19,8 @@ const initialState: LoginState = {
   data: false,
   error: false,
   verifyData: false,
-  deviceName: ''
+  deviceName: '',
+  isLoggedIn:false,
 };
 
 const LoginReducer = createSlice({
@@ -30,7 +32,19 @@ const LoginReducer = createSlice({
     },
     clearDeviceName: (state) => {
       state.deviceName = '';
-    }
+    },
+    clearLoginData:(state) =>{
+      state.data=false;
+    },
+    clearVerifyData:(state)=>{
+      state.verifyData=false;
+    },
+    setUserIsLoggedIn: (state, action: PayloadAction<any>) => {
+      state.isLoggedIn = true;
+    },
+    setUserIsLoggedOut: (state, action: PayloadAction<any>) => {
+      state.isLoggedIn = false;
+    },
   },
   extraReducers(builder) {
     builder.addCase(LoginRequest.pending, (state, action: PayloadAction<any>) => {
@@ -56,6 +70,6 @@ const LoginReducer = createSlice({
   },
 });
 
-export const { setDeviceNameEnter,clearDeviceName} = LoginReducer.actions;
+export const { setDeviceNameEnter,clearDeviceName,clearLoginData,clearVerifyData,setUserIsLoggedIn,setUserIsLoggedOut} = LoginReducer.actions;
 export const selectUser = (state: any) => state.login;
 export default LoginReducer.reducer;

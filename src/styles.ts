@@ -7,7 +7,7 @@ const style = StyleSheet.create({
         width: width,
         borderBottomWidth: 1,
         borderBottomColor: '#E5E5E5',
-        backgroundColor: theme.COLORS.WHITE,
+        backgroundColor: theme.COLORS.GREEN_DARK,
         height:theme.verticalScale(60)
     },
     drawerIconStyle:{

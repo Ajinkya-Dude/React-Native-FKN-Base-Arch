@@ -7,7 +7,7 @@ const COLORS = {
     THEME: '#349e37',
     PRIMARY: '#349e37',
     INFO: '#1232FF',
-    ERROR: '#FE2472',
+    ERROR: '#f21630',
     WARNING: '#FF9C09',
     SUCCESS: '#45DF31',
     TRANSPARENT: 'transparent',

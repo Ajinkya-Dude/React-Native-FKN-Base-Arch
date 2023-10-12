@@ -8,7 +8,7 @@ import theme from '../../theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { LoginRequest, VerifyRequest } from '../../store/reducer/loginReducer/loginActions';
 import Loader from '../../components/common/Loader';
-import { setDeviceNameEnter } from '../../store/reducer/loginReducer';
+import { clearLoginData, clearVerifyData, setDeviceNameEnter } from '../../store/reducer/loginReducer';
 import * as NavigationService from '../../navigation/NavigationService';
 import DeviceInfo from "react-native-device-info";
 import { version } from "../../../package.json";
@@ -31,7 +31,13 @@ const Login = () => {
     console.log("Login data", loginData);
 
     useEffect(() => {
-        if (loginData && loginData.data && loginData.data.usuario_api && loginData.data.usuario_api.token) {
+        if (loginData && loginData.data && loginData.data.usuario_api && loginData.data.usuario_api.token && !loginData.verifyData) {
+            setHideDeviceField(false);
+            handleOnVerify();
+            if (loginData.deviceName === '')
+                dispatch(setDeviceNameEnter(deviceName.trim()));
+        }
+        if(loginData.deviceName !== '' ){
             setHideDeviceField(false);
         }
     }, [loginData]);
@@ -69,14 +75,18 @@ const Login = () => {
             ])
     }
     const handleOnVerify = () => {
-        //NavigationService.navigate('onboarding')
+        console.log("Handle on verify called");
+
         const payload = {
-            url: `${registerData && registerData.data.FKN.url}vendedor/listar?formato=JSON&nome=Thinkitive&nomeAndroid=${deviceModel}&idAndroid=${uniqueId}&idSerial=unknown&usuario=${loginData.data.usuario_api.email}&download=0&filial=1&versao=${version}&token=${loginData.data.usuario_api.token}`
+            url: `${registerData && registerData.data.FKN.url}vendedor/listar?formato=JSON&nome=${loginData.deviceName}&nomeAndroid=${deviceModel}&idAndroid=${uniqueId}&idSerial=unknown&usuario=${loginData.data.usuario_api.email}&download=0&filial=1&versao=${version}&token=${loginData.data.usuario_api.token}`,
+            fromLogin: true
         }
         dispatch(VerifyRequest(payload))
     }
     useEffect(() => {
         GetDeviceUniqueID();
+        dispatch(clearLoginData());
+        dispatch(clearVerifyData());
     }, []);
     const GetDeviceUniqueID = () => {
         const model = DeviceInfo.getModel();
@@ -101,7 +111,6 @@ const Login = () => {
             }
         }
         dispatch(LoginRequest(payload));
-        dispatch(setDeviceNameEnter(deviceName.trim()));
         // NavigationService.navigate('verify');
 
     }

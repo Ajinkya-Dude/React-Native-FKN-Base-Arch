@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
 import { SafeAreaView, StatusBar, View, Dimensions } from 'react-native';
-import { HomeNavigator, SincronizarNavigator } from './screens';
+import { AgendaNavigator, ClienteNavigator, ConfiguracaoNavigator, DuplicatasNavigator, HomeNavigator, InicioNavigator, PedidoNavigator, ProdutoNavigator, ProspeccaoNavigator, RelatoriosNavigator, SairNavigator, SincronizarNavigator, SobreNavigator, SuporteNavigator } from './screens';
 import { FKNconstants } from './components/constants';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconOcticons from 'react-native-vector-icons/Octicons';
@@ -11,6 +11,7 @@ import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import style from './styles';
 import theme from './theme';
 import FKNDrawer from './components/common/FKNdrawer';
+import OrdemNavigator from './screens/Ordem';
 
 const { width, height } = Dimensions.get('window');
 
@@ -34,7 +35,7 @@ const Routes = (props: any) => {
                         // }}
                         {...props} />}
                 >
-                    <Drawer.Screen name={FKNconstants.inicio} component={HomeNavigator}
+                    <Drawer.Screen name={FKNconstants.inicio} component={InicioNavigator}
                         options={{
                             title: FKNconstants.inicio,
                             drawerIcon: ({ focused }) => {
@@ -43,7 +44,7 @@ const Routes = (props: any) => {
                                 );
                             }
                         }} />
-                    <Drawer.Screen name={FKNconstants.cliente} component={HomeNavigator}
+                    <Drawer.Screen name={FKNconstants.cliente} component={ClienteNavigator}
                         options={{
                             title: FKNconstants.cliente,
                             drawerIcon: ({ focused }) => {
@@ -52,7 +53,7 @@ const Routes = (props: any) => {
                                 );
                             }
                         }} />
-                    <Drawer.Screen name={FKNconstants.prospeccao} component={HomeNavigator}
+                    <Drawer.Screen name={FKNconstants.prospeccao} component={ProspeccaoNavigator}
                         options={{
                             title: FKNconstants.prospeccao,
                             drawerIcon: ({ focused }) => {
@@ -61,7 +62,7 @@ const Routes = (props: any) => {
                                 );
                             }
                         }} />
-                    <Drawer.Screen name={FKNconstants.produto} component={HomeNavigator}
+                    <Drawer.Screen name={FKNconstants.produto} component={ProdutoNavigator}
                         options={{
                             title: FKNconstants.produto,
                             drawerIcon: ({ focused }) => {
@@ -70,7 +71,7 @@ const Routes = (props: any) => {
                                 );
                             }
                         }} />
-                    <Drawer.Screen name={FKNconstants.pedido} component={HomeNavigator}
+                    <Drawer.Screen name={FKNconstants.pedido} component={PedidoNavigator}
                         options={{
                             title: FKNconstants.pedido,
                             drawerIcon: ({ focused }) => {
@@ -79,7 +80,7 @@ const Routes = (props: any) => {
                                 );
                             }
                         }} />
-                    <Drawer.Screen name={FKNconstants.duplicatas} component={HomeNavigator}
+                    <Drawer.Screen name={FKNconstants.duplicatas} component={DuplicatasNavigator}
                         options={{
                             title: FKNconstants.duplicatas,
                             drawerIcon: ({ focused }) => {
@@ -88,7 +89,7 @@ const Routes = (props: any) => {
                                 );
                             }
                         }} />
-                    <Drawer.Screen name={FKNconstants.agenda} component={HomeNavigator}
+                    <Drawer.Screen name={FKNconstants.agenda} component={AgendaNavigator}
                         options={{
                             title: FKNconstants.agenda,
                             drawerIcon: ({ focused }) => {
@@ -97,7 +98,7 @@ const Routes = (props: any) => {
                                 );
                             }
                         }} />
-                    <Drawer.Screen name={FKNconstants.ordem} component={HomeNavigator}
+                    <Drawer.Screen name={FKNconstants.ordem} component={OrdemNavigator}
                         options={{
                             title: FKNconstants.ordem,
                             drawerIcon: ({ focused }) => {
@@ -106,7 +107,7 @@ const Routes = (props: any) => {
                                 );
                             }
                         }} />
-                    <Drawer.Screen name={FKNconstants.relatorios} component={HomeNavigator}
+                    <Drawer.Screen name={FKNconstants.relatorios} component={RelatoriosNavigator}
                         options={{
                             title: FKNconstants.relatorios,
                             drawerIcon: ({ focused }) => {
@@ -124,7 +125,7 @@ const Routes = (props: any) => {
                                 );
                             }
                         }} />
-                    <Drawer.Screen name={FKNconstants.configuraccao} component={HomeNavigator}
+                    <Drawer.Screen name={FKNconstants.configuraccao} component={ConfiguracaoNavigator}
                         options={{
                             title: FKNconstants.configuraccao,
                             drawerIcon: ({ focused }) => {
@@ -133,7 +134,7 @@ const Routes = (props: any) => {
                                 );
                             }
                         }} />
-                    <Drawer.Screen name={FKNconstants.suporte} component={HomeNavigator}
+                    <Drawer.Screen name={FKNconstants.suporte} component={SuporteNavigator}
                         options={{
                             title: FKNconstants.suporte,
                             drawerIcon: ({ focused }) => {
@@ -142,7 +143,7 @@ const Routes = (props: any) => {
                                 );
                             }
                         }} />
-                    <Drawer.Screen name={FKNconstants.sobre} component={HomeNavigator}
+                    <Drawer.Screen name={FKNconstants.sobre} component={SobreNavigator}
                         options={{
                             title: FKNconstants.sobre,
                             drawerIcon: ({ focused }) => {
@@ -151,7 +152,7 @@ const Routes = (props: any) => {
                                 );
                             }
                         }} />
-                    <Drawer.Screen name={FKNconstants.sair} component={HomeNavigator}
+                    <Drawer.Screen name={FKNconstants.sair} component={SairNavigator}
                         options={{
                             title: FKNconstants.sair,
                             drawerIcon: ({ focused }) => {

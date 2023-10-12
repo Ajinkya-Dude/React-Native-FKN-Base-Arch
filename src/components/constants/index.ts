@@ -35,6 +35,33 @@ export const FKNconstants = {
     section2:'Suporte',
     suporte:'Suporte',
     sobre:'Sobre',
-    sair:'Sair'
+    sair:'Sair',
+
+
+    // Sincronizar 
+    attention:'Atenção, não feche o aplicativo durante a sincronização.',
+    lastSync:'Última Sincronização:',
+    lastCompleteSync:'Última Sincronização Completa:',
+    synchronization:'Sincronização',
+    syncChangesOnly:`Sincronizar Somente Alterações\n(Enviar Alterações/Receber Alterações)`,
+    syncChangesOnlyPlaceholder:'(Enviar Alterações/Receber Alterações)',
+    forceFullSync:`Forçar Sincronização Total\n(Enviar/Receber)`,
+    forceFullSyncPlaceholder:'(Enviar/Receber)',
+    optional:'Opcional',
+    textProduce:'Texto Produtos (Receber)*',
+    generalHistory:'Historico Geral Compras (Receber)**',
+    productImages:'Imagens Produtos (Receber)*',
+    sendOnly:'Somente Enviar',
+    submitOrders:'Enviar Pedidos/Clientes/Agendas (Enviar)',
+    synchronizeButtonText:'SINCRONIZAR',
+    recommendedWifi:'Recomendado que esteja utilizando uma conexão Wi-Fi, para maior velocidade e redução do consumo de dados.',
+    largeDataAttention:'* (Atenção, grande consumo de dados, pode levar alguns minutos) (Receber)',
+    longTimeProcess:'** Atenção, este processo é tem um tempo grande de processamento.',
+
+    // Attention Modal
+    attentionModal:'Atenção',
+    content:'É necessário realizar a primeira sincronização antes de utilizar o aplicativo!',
+    close:'FECHAR',
+    ok:'OK'
     
 }

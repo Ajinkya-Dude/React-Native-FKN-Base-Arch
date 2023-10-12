@@ -13,10 +13,8 @@ const FKNapp = () => {
 
     const registerData: any = useSelector((state: any) => state.registerReducer);
     const loginData: any = useSelector((state: any) => state.loginReducer);
+    const isLoggedIn = loginData && loginData.isLoggedIn;
     useEffect(() => {
-        // if (loginData && loginData.data && loginData.data.usuario_api && loginData.data.usuario_api.token) {
-        //     setInitialScreen('verify')
-        // } else
         if (registerData && registerData.data && registerData.data.FKN && registerData.data.FKN.contrato) {
             setInitialScreen('login')
         }
@@ -32,8 +30,10 @@ const FKNapp = () => {
             {
                 showSplash ?
                     <SplashScreen /> :
-                    // <Auth initialRouteName={initialScreen} />
-                <Routes />
+                    // !isLoggedIn ?
+                    //     <Auth initialRouteName={initialScreen} />
+                        //:
+                        <Routes />
 
             }
         </NavigationContainer>
