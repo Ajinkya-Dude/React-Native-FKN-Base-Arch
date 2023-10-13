@@ -31,9 +31,9 @@ const FKNapp = () => {
                 showSplash ?
                     <SplashScreen /> :
                     // !isLoggedIn ?
-                    //     <Auth initialRouteName={initialScreen} />
-                        //:
-                        <Routes />
+                     <Auth initialRouteName={initialScreen} />
+                    //     :
+                    //    <Routes />
 
             }
         </NavigationContainer>

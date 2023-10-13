@@ -12,7 +12,8 @@ import Checkbox from "../../components/common/Checkbox";
 import Button from "../../components/common/Button";
 import { check, PERMISSIONS, request, RESULTS } from "react-native-permissions";
 import { useIsFocused } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { AgendaRequest } from "../../store/reducer/agendaReducer/agendaActions";
 
 const Sincronizar = (props: any) => {
     const { navigation } = props && props;
@@ -24,15 +25,18 @@ const Sincronizar = (props: any) => {
     const [submitOrdersBox, setSubmitOrdersCheckBox] = useState<boolean>(false);
     const [openModal, setOpenModal] = useState<boolean>(true);
 
+    const dispatch = useDispatch<any>();
+
     const isFocused = useIsFocused();
     const registerData: any = useSelector((state: any) => state.registerReducer);
-    console.log("registerData.data.FKN.url",registerData.data.FKN);
-    
+    const loginData: any = useSelector((state: any) => state.loginReducer);
+    console.log("registerData.data.FKN.url", registerData.data,"Login Data",JSON.stringify(loginData.verifyData));
+
 
     const drawerOpen = () => {
         navigation.openDrawer();
     };
-    const requestCallPermissions = async (value: number) => {
+    const requestCallPermissions = async () => {
         if (Platform.OS === 'android') {
             const status = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
             console.log("Status permission android", status);
@@ -41,7 +45,7 @@ const Sincronizar = (props: any) => {
                 //PermissionAlert();
             } else {
                 const result = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-                console.log("result permissions", result, "RESULT", RESULTS, "value", value);
+                console.log("result permissions", result, "RESULT", RESULTS);
                 if (result === RESULTS.GRANTED) {
                     // Permission granted, you can now manage calls.
                 } else if (result === RESULTS.DENIED) {
@@ -69,24 +73,22 @@ const Sincronizar = (props: any) => {
     };
 
     useEffect(() => {
-        requestCallPermissions(1);
-    }, []);
-    useEffect(()=>{
-if(isFocused){
-    setOpenModal(true);
-}
-    },[isFocused])
+        if (isFocused) {
+            setOpenModal(true);
+            requestCallPermissions();
+        }
+    }, [isFocused])
 
-    const onCloseModal = () =>{
+    const onCloseModal = () => {
         setOpenModal(false);
     }
-    const onOkModal = () =>{
+    const onOkModal = () => {
         setOpenModal(false);
     }
 
     const attentionModal = () => {
-        console.log("Opnmodal",openModal);
-        
+        console.log("Opnmodal", openModal);
+
         return (
             <Modal
                 animationType={'fade'}
@@ -113,6 +115,20 @@ if(isFocused){
                 </View>
             </Modal>
         );
+    }
+
+    const onSynchronize = () =>{
+        // const payload = {
+        //     url:registerData && registerData.data.FKN.url,
+        //     agenda:{
+        //         idVendedor:loginData.verifyData.FKN.vendedores[0].vendedor.idVendedorWeb,
+        //         idEmpresa:loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+        //         download:1,
+        //         formato:'JSON',
+        //         token:loginData.data.usuario_api.token
+        //     }
+        // }
+        // dispatch(AgendaRequest(payload));
     }
 
     return (
@@ -166,7 +182,7 @@ if(isFocused){
                         </View>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <Button buttonStyle={styles.buttonStyle} label={FKNconstants.synchronizeButtonText} onClick={() => { }} />
+                        <Button buttonStyle={styles.buttonStyle} label={FKNconstants.synchronizeButtonText} onClick={onSynchronize} />
                     </View>
                     <View style={styles.conatiner6}>
                         <Text style={styles.container5Text}>{FKNconstants.recommendedWifi}</Text>
