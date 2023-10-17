@@ -69,6 +69,11 @@ export const FKNconstants = {
     wait:'Aguarde',
     // Success Alert
     message:'Mensagem',
-    successMessage:'Sincronizado com sucesso!'
+    successMessage:'Sincronizado com sucesso!',
+
+    // Alerts
+    internetConnection:'Necessário estar conectado a internet para realizar a sincronização.',
+    selectAnyOption:'Selecione uma opção para sincronizar.',
+    
     
 }

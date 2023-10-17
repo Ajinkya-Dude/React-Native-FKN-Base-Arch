@@ -105,8 +105,6 @@ const Sincronizar = (props: any) => {
     }
 
     const attentionModal = () => {
-        console.log("Opnmodal", openModal);
-
         return (
             <Modal
                 animationType={'fade'}
