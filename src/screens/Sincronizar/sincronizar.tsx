@@ -1,4 +1,4 @@
-import { Modal, Platform, ScrollView, Text, View } from "react-native";
+import { Alert, Modal, Platform, ScrollView, Text, View } from "react-native";
 import styles from "./styles";
 import { Appbar } from "react-native-paper";
 import style from "../../styles";
@@ -29,16 +29,19 @@ import { CnpjVendedorRequest } from "../../store/reducer/cnpjVendedorReducer/cnp
 import { ClienteMediaRequest } from "../../store/reducer/clienteMediaReducer/clienteMediaActions";
 import { ComodatoRequest } from "../../store/reducer/comodatoReducer/comodatoActions";
 import { ContatoRequest } from "../../store/reducer/contatoReducer/contatoActions";
+import ProcessModal from "./sincronizarModal";
 
 const Sincronizar = (props: any) => {
     const { navigation } = props && props;
-    const [syncChangesOnlyBox, setSyncChangesOnlyCheckBox] = useState<boolean>(false);
+    const [syncChangesOnlyBox, setSyncChangesOnlyCheckBox] = useState<boolean>(true);
     const [forceFullSyncBox, setForceFullSyncCheckBox] = useState<boolean>(false);
     const [generalHistoryBox, setGeneralHistoryCheckBox] = useState<boolean>(false);
     const [textProduceBox, setTextProduceCheckBox] = useState<boolean>(false);
     const [productImagesBox, setProductImagesCheckBox] = useState<boolean>(false);
     const [submitOrdersBox, setSubmitOrdersCheckBox] = useState<boolean>(false);
     const [openModal, setOpenModal] = useState<boolean>(true);
+    const [openSynchronizeModal, setOpenSynchronizeModal] = useState<boolean>(false);
+    const [apiProgress, setApiProgress] = useState(0);
 
     const dispatch = useDispatch<any>();
 
@@ -132,6 +135,16 @@ const Sincronizar = (props: any) => {
         );
     }
 
+    const SuccessAlertOnSynchronization = () =>{
+        Alert.alert(FKNconstants.message,FKNconstants.successMessage,[
+            {
+                text: 'Ok',
+                onPress: () => console.log('Ok Pressed'),
+                style: 'cancel',
+            },
+        ]);
+    }
+
     const onSynchronize = async () => {
         const payloadAgenda = {
             url: registerData && registerData.data.FKN.url,
@@ -146,7 +159,7 @@ const Sincronizar = (props: any) => {
         const payloadAbas = {
             url: registerData && registerData.data.FKN.url,
             abas: {
-                //idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
                 formato: 'JSON',
                 token: loginData.data.usuario_api.token
             }
@@ -250,28 +263,51 @@ const Sincronizar = (props: any) => {
         const apiArray = [
             dispatch(AgendaRequest(payloadAgenda)),
             dispatch(AbasRequest(payloadAbas)),
-            // dispatch(ClientsRequest(payloadClient)),
-            // dispatch(ClassificationRequest(payloadClassification)),
-            // dispatch(ClienteMediaRequest(payloadClientMedia)),
-            // dispatch(CnpjVendedorRequest(payloadCnpjVendedor)),
-            // dispatch(ComodatoRequest(payloadComodato)),
-            // dispatch(ContatoRequest(payloadContacts)),
-            // dispatch(DepartmentRequest(payloadDepartment)),
-            // dispatch(DuplicataRequest(payloadDuplicata)),
-            // dispatch(CompanyRequest(payloadCompany)),
-            // dispatch(AddressRequest(payloadCompany)),
-            // dispatch(FilialRequest(payloadDepartment)),
-            // dispatch(NotasRequest(payloadNotas)),
-            // dispatch(ModificationRequest(payloadDepartment)),
-            // dispatch(ReasonRequest(payloadDepartment))
-        ]
-
+            dispatch(ClientsRequest(payloadClient)),
+            dispatch(ClassificationRequest(payloadClassification)),
+            dispatch(ClienteMediaRequest(payloadClientMedia)),
+            dispatch(CnpjVendedorRequest(payloadCnpjVendedor)),
+            dispatch(ComodatoRequest(payloadComodato)),
+            dispatch(ContatoRequest(payloadContacts)),
+            dispatch(DepartmentRequest(payloadDepartment)),
+            dispatch(DuplicataRequest(payloadDuplicata)),
+            dispatch(CompanyRequest(payloadCompany)),
+            dispatch(AddressRequest(payloadCompany)),
+            dispatch(FilialRequest(payloadDepartment)),
+            dispatch(NotasRequest(payloadNotas)),
+            dispatch(ModificationRequest(payloadDepartment)),
+            dispatch(ReasonRequest(payloadDepartment))
+        ];
+        setApiProgress(0);
         try {
-            await Promise.all(apiArray)
+            setOpenSynchronizeModal(true);
+            await Promise.all(
+                // apiArray)
+                apiArray.map((apiCall) => {
+                    return apiCall
+                        .then(() => {
+                            // Calculate the percentage of completed API calls
+                            const completedCalls: any = apiArray.filter((call) => {
+                                console.log("calling api in promise",call);
+                                if(call._j !== null){
+                                    return 1
+                                }
+                            }).length;
+                            const percentage = (completedCalls / apiArray.length) * 100;
+                            console.log("Calling success after api calls", percentage);
+                            setApiProgress(percentage);
+                        })
+                        .catch((error: any) => {
+                            // Handle errors as needed
+                            console.error('API Error:', error);
+                        });
+                })
+            )
+            SuccessAlertOnSynchronization();
         } catch (error) {
             console.log("Api all error", error)
         } finally {
-
+            setOpenSynchronizeModal(false);
         }
     }
 
@@ -336,6 +372,7 @@ const Sincronizar = (props: any) => {
                 </ScrollView>
             </View>
             {attentionModal()}
+            {openSynchronizeModal && <ProcessModal visible={openSynchronizeModal} value={apiProgress.toFixed(0)} />}
         </View>
     );
 }

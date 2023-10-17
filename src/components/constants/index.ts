@@ -62,6 +62,13 @@ export const FKNconstants = {
     attentionModal:'Atenção',
     content:'É necessário realizar a primeira sincronização antes de utilizar o aplicativo!',
     close:'FECHAR',
-    ok:'OK'
+    ok:'OK',
+
+    // Synchronization Modal
+    processing:'Processando...',
+    wait:'Aguarde',
+    // Success Alert
+    message:'Mensagem',
+    successMessage:'Sincronizado com sucesso!'
     
 }
