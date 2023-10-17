@@ -40,7 +40,7 @@ export const VerifyRequest = createAsyncThunk('verifyRequest', async (payload: a
     try {
         console.log("Calling Verify api", payload);
         const response: any = await get(`${payload.url}`);
-        console.log("Response Verify", JSON.stringify(response));
+        console.log("Response Verify", JSON.stringify(response.data));
         if (response && response.data && response.data.FKN && response.data.FKN.vendedores && response.data.FKN.vendedores.vendedor && response.data.FKN.vendedores.vendedor.dispositivos && response.data.FKN.vendedores.vendedor.dispositivos.length > 0) {
             dispatch(setUserIsLoggedIn(true));
         }
@@ -48,13 +48,16 @@ export const VerifyRequest = createAsyncThunk('verifyRequest', async (payload: a
             Alert.alert('Mensagem', response.data.FKN.Processamento.mensagemRetorno, [
                 {
                     text: 'Ok',
-                    onPress: () => console.log('Ok Pressed'),
+                    onPress: () => dispatch(setUserIsLoggedIn(true)),
                     style: 'cancel',
                 },
             ]);
         } else {
-            NavigationService.resetNavigation({ index: 0, routeName: 'verify' });
-            dispatch(setUserIsLoggedIn(true));
+            if (!payload.fromLogin) {
+                dispatch(setUserIsLoggedIn(true));
+            } else {
+                NavigationService.resetNavigation({ index: 0, routeName: 'verify' });
+            }
         }
         return response.data
     } catch (error: any) {

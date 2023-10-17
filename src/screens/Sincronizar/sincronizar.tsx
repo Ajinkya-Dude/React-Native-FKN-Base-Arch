@@ -14,6 +14,21 @@ import { check, PERMISSIONS, request, RESULTS } from "react-native-permissions";
 import { useIsFocused } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { AgendaRequest } from "../../store/reducer/agendaReducer/agendaActions";
+import { AbasRequest } from "../../store/reducer/abasReducer/adasActions";
+import { ClientsRequest } from "../../store/reducer/clientsReducer/clientsActions";
+import { ClassificationRequest } from "../../store/reducer/classificationReducer/classificationActions";
+import { DepartmentRequest } from "../../store/reducer/departmentsReducer/departmentActions";
+import { DuplicataRequest } from "../../store/reducer/duplicataReducer/duplicataActions";
+import { CompanyRequest } from "../../store/reducer/companyReducer/companyActions";
+import { AddressRequest } from "../../store/reducer/addressReducer/addressActions";
+import { FilialRequest } from "../../store/reducer/filialReducer/filialActions";
+import { NotasRequest } from "../../store/reducer/notasReducer/notasActions";
+import { ModificationRequest } from "../../store/reducer/modificationReducer/modificationActions";
+import { ReasonRequest } from "../../store/reducer/reasonReducer/ReasonActions";
+import { CnpjVendedorRequest } from "../../store/reducer/cnpjVendedorReducer/cnpjVendedorActions";
+import { ClienteMediaRequest } from "../../store/reducer/clienteMediaReducer/clienteMediaActions";
+import { ComodatoRequest } from "../../store/reducer/comodatoReducer/comodatoActions";
+import { ContatoRequest } from "../../store/reducer/contatoReducer/contatoActions";
 
 const Sincronizar = (props: any) => {
     const { navigation } = props && props;
@@ -30,7 +45,7 @@ const Sincronizar = (props: any) => {
     const isFocused = useIsFocused();
     const registerData: any = useSelector((state: any) => state.registerReducer);
     const loginData: any = useSelector((state: any) => state.loginReducer);
-    console.log("registerData.data.FKN.url", registerData.data,"Login Data",JSON.stringify(loginData.verifyData));
+    console.log("registerData.data.FKN.url---", registerData.data, "Login Data", JSON.stringify(loginData.verifyData), "new Date()", new Date());
 
 
     const drawerOpen = () => {
@@ -117,18 +132,147 @@ const Sincronizar = (props: any) => {
         );
     }
 
-    const onSynchronize = () =>{
-        // const payload = {
-        //     url:registerData && registerData.data.FKN.url,
-        //     agenda:{
-        //         idVendedor:loginData.verifyData.FKN.vendedores[0].vendedor.idVendedorWeb,
-        //         idEmpresa:loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
-        //         download:1,
-        //         formato:'JSON',
-        //         token:loginData.data.usuario_api.token
-        //     }
-        // }
-        // dispatch(AgendaRequest(payload));
+    const onSynchronize = async () => {
+        const payloadAgenda = {
+            url: registerData && registerData.data.FKN.url,
+            agenda: {
+                idVendedor: loginData.verifyData.FKN.vendedores[0].vendedor.idVendedorWeb,
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                download: 1,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadAbas = {
+            url: registerData && registerData.data.FKN.url,
+            abas: {
+                //idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadClient = {
+            url: registerData && registerData.data.FKN.url,
+            clients: {
+                idVendedor: loginData.verifyData.FKN.vendedores[0].vendedor.idVendedorWeb,
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                download: 1,
+                formato: 'JSON',
+                requisicao: 1,
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadClassification = {
+            url: registerData && registerData.data.FKN.url,
+            classification: {
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadClientMedia = {
+            url: registerData && registerData.data.FKN.url,
+            clienteMedia: {
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                idVendedor: loginData.verifyData.FKN.vendedores[0].vendedor.idVendedorWeb,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadCnpjVendedor = {
+            url: registerData && registerData.data.FKN.url,
+            cnpjVendedor: {
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                idVendedor: loginData.verifyData.FKN.vendedores[0].vendedor.idVendedorWeb,
+                requisicao: 1,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadComodato = {
+            url: registerData && registerData.data.FKN.url,
+            comodato: {
+                idVendedor: loginData.verifyData.FKN.vendedores[0].vendedor.idVendedorWeb,
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                requisicao: 1,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadContacts = {
+            url: registerData && registerData.data.FKN.url,
+            contato: {
+                idContato: 10002,
+                idVendedor: loginData.verifyData.FKN.vendedores[0].vendedor.idVendedorWeb,
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                requisicao: 1,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadDepartment = {
+            url: registerData && registerData.data.FKN.url,
+            department: {
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadDuplicata = {
+            url: registerData && registerData.data.FKN.url,
+            duplicata: {
+                idVendedor: loginData.verifyData.FKN.vendedores[0].vendedor.idVendedorWeb,
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadCompany = {
+            url: registerData && registerData.data.FKN.url,
+            company: {
+                idVendedor: loginData.verifyData.FKN.vendedores[0].vendedor.idVendedorWeb,
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadNotas = {
+            url: registerData && registerData.data.FKN.url,
+            notas: {
+                formato: 'JSON',
+                date: new Date(),
+                requisicao: 1,
+                idVendedor: loginData.verifyData.FKN.vendedores[0].vendedor.idVendedorWeb,
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const apiArray = [
+            dispatch(AgendaRequest(payloadAgenda)),
+            dispatch(AbasRequest(payloadAbas)),
+            // dispatch(ClientsRequest(payloadClient)),
+            // dispatch(ClassificationRequest(payloadClassification)),
+            // dispatch(ClienteMediaRequest(payloadClientMedia)),
+            // dispatch(CnpjVendedorRequest(payloadCnpjVendedor)),
+            // dispatch(ComodatoRequest(payloadComodato)),
+            // dispatch(ContatoRequest(payloadContacts)),
+            // dispatch(DepartmentRequest(payloadDepartment)),
+            // dispatch(DuplicataRequest(payloadDuplicata)),
+            // dispatch(CompanyRequest(payloadCompany)),
+            // dispatch(AddressRequest(payloadCompany)),
+            // dispatch(FilialRequest(payloadDepartment)),
+            // dispatch(NotasRequest(payloadNotas)),
+            // dispatch(ModificationRequest(payloadDepartment)),
+            // dispatch(ReasonRequest(payloadDepartment))
+        ]
+
+        try {
+            await Promise.all(apiArray)
+        } catch (error) {
+            console.log("Api all error", error)
+        } finally {
+
+        }
     }
 
     return (

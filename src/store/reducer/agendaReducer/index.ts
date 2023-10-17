@@ -31,11 +31,11 @@ const AgendaReducer = createSlice({
             .addCase(AgendaRequest.fulfilled, (state, action: PayloadAction<any>) => {
                 state.loading = false,
                 state.agendaData = action.payload
-                console.log("RegisterRequest.fulfilled", action)
+                console.log("AgendaRequest.fulfilled", action)
             })
             .addCase(AgendaRequest.rejected, (state, action: PayloadAction<any>) => {
                 state.loading = false
-                console.log("RegisterRequest.rejected", action)
+                console.log("AgendaRequest.rejected", action)
             })
     },
 });
