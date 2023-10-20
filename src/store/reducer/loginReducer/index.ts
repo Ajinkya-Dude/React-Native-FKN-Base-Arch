@@ -8,6 +8,8 @@ interface LoginState {
   verifyData: any;
   deviceName: string;
   isLoggedIn:boolean;
+  userCreds:any;
+  firstSync: boolean;
 }
 // const defaultProps = {
 //   loading: false,
@@ -21,6 +23,8 @@ const initialState: LoginState = {
   verifyData: false,
   deviceName: '',
   isLoggedIn:false,
+  userCreds:false,
+  firstSync: false,
 };
 
 const LoginReducer = createSlice({
@@ -32,6 +36,12 @@ const LoginReducer = createSlice({
     },
     clearDeviceName: (state) => {
       state.deviceName = '';
+    },
+    setUserCredentials: (state, action: PayloadAction<any>) => {
+      state.userCreds = action.payload;
+    },
+    clearUserCredentials: (state) => {
+      state.userCreds = false;
     },
     clearLoginData:(state) =>{
       state.data=false;
@@ -45,14 +55,19 @@ const LoginReducer = createSlice({
     setUserIsLoggedOut: (state, action: PayloadAction<any>) => {
       state.isLoggedIn = false;
     },
+    setUserFirstSync:(state,action: PayloadAction<any>) =>{
+      state.firstSync = action.payload
+  }
   },
   extraReducers(builder) {
     builder.addCase(LoginRequest.pending, (state, action: PayloadAction<any>) => {
       state.loading = true
+      state.firstSync = false;
     })
       .addCase(LoginRequest.fulfilled, (state, action: PayloadAction<any>) => {
         state.loading = false,
-          state.data = action.payload
+          state.data = action.payload,
+          state.firstSync = true
       })
       .addCase(LoginRequest.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false
@@ -70,6 +85,6 @@ const LoginReducer = createSlice({
   },
 });
 
-export const { setDeviceNameEnter,clearDeviceName,clearLoginData,clearVerifyData,setUserIsLoggedIn,setUserIsLoggedOut} = LoginReducer.actions;
+export const { setDeviceNameEnter,clearDeviceName,clearLoginData,clearVerifyData,setUserIsLoggedIn,setUserIsLoggedOut,setUserCredentials,clearUserCredentials,setUserFirstSync} = LoginReducer.actions;
 export const selectUser = (state: any) => state.login;
 export default LoginReducer.reducer;

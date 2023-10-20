@@ -48,16 +48,17 @@ export const VerifyRequest = createAsyncThunk('verifyRequest', async (payload: a
             Alert.alert('Mensagem', response.data.FKN.Processamento.mensagemRetorno, [
                 {
                     text: 'Ok',
+                    // onPress: () => {},
                     onPress: () => dispatch(setUserIsLoggedIn(true)),
                     style: 'cancel',
                 },
             ]);
         } else {
-            if (!payload.fromLogin) {
-                dispatch(setUserIsLoggedIn(true));
-            } else {
+            // if (!payload.fromLogin) {
+            //     dispatch(setUserIsLoggedIn(true));
+            // } else {
                 NavigationService.resetNavigation({ index: 0, routeName: 'verify' });
-            }
+            //}
         }
         return response.data
     } catch (error: any) {

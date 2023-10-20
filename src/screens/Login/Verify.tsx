@@ -24,14 +24,14 @@ const Verify = () => {
     const loginData: any = useSelector((state: any) => state.loginReducer);
     const registerData: any = useSelector((state: any) => state.registerReducer);
 
-    console.log("loginData", loginData.verifyData);
+    console.log("loginData", loginData);
 
     const isLoading = loginData.loading;
 
     const handleOnVerify = () => {
         //NavigationService.navigate('onboarding')
         const payload = {
-            url: `${registerData && registerData.data.FKN.url}vendedor/listar?formato=JSON&nome=Thinkitive&nomeAndroid=${deviceModel}&idAndroid=${uniqueId}&idSerial=unknown&usuario=${loginData.data.usuario_api.email}&download=0&filial=1&versao=${version}&token=${loginData.data.usuario_api.token}`,
+            url: `${registerData && registerData.data.FKN.url}vendedor/listar?nome=${loginData.deviceName}&nomeAndroid=${deviceModel}&idAndroid=${uniqueId}&idSerial=unknown&usuario=${loginData.data.usuario_api.email}&senha=${loginData.userCreds.pass}&versao=${version}&download=0&filial=1&formato=JSON&token=${loginData.data.usuario_api.token}`,
             fromLogin:false
         }
         dispatch(VerifyRequest(payload));

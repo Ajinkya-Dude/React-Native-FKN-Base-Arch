@@ -7,18 +7,16 @@ interface RegisterState {
     data: any;
     error: boolean;
     chaveCreds: string,
+    firstSync: boolean
 }
-// const defaultProps = {
-//   loading: false,
-//   data: {},
-//   error: false
-// };
+
 const initialState: RegisterState = {
     //...defaultProps,
     loading: false,
     data: false,
     error: false,
     chaveCreds: '',
+    firstSync: false,
 };
 
 const RegisterReucer = createSlice({
@@ -30,16 +28,21 @@ const RegisterReucer = createSlice({
         },
         clearChaveCredentials: (state) => {
             state.chaveCreds = '';
+        },
+        setUserFirstSync:(state,action: PayloadAction<any>) =>{
+            state.firstSync = action.payload
         }
     },
     extraReducers: (builder) => {
         builder.addCase(RegisterRequest.pending, (state, action: PayloadAction<any>) => {
-            state.loading = true
+            state.loading = true;
+            state.firstSync = false;
             //     state.data = true
         })
             .addCase(RegisterRequest.fulfilled, (state, action: PayloadAction<any>) => {
                 state.loading = false,
-                    state.data = action.payload
+                    state.data = action.payload,
+                    state.firstSync = true;
                 console.log("RegisterRequest.fulfilled", action)
             })
             .addCase(RegisterRequest.rejected, (state, action: PayloadAction<any>) => {
@@ -49,6 +52,6 @@ const RegisterReucer = createSlice({
     },
 });
 
-export const { setChaveCredentials, clearChaveCredentials } = RegisterReucer.actions;
+export const { setChaveCredentials, clearChaveCredentials,setUserFirstSync } = RegisterReucer.actions;
 export const selectUser = (state: any) => state.register;
 export default RegisterReucer.reducer;

@@ -21,7 +21,7 @@ export const FKNconstants = {
 
     // Drawer Items
     inicio:'Início',
-    cliente:'Cliente',
+    cliente:'Clientes',
     prospeccao:'Prospecção',
     produto:'Produto',
     pedido:'Pedido',
@@ -74,6 +74,16 @@ export const FKNconstants = {
     // Alerts
     internetConnection:'Necessário estar conectado a internet para realizar a sincronização.',
     selectAnyOption:'Selecione uma opção para sincronizar.',
-    
-    
+
+    // Sair
+    sairUser:'Usuário:',
+    sairButton:'SAIR',
+    sairCheckboxText:'Remover autenticação com o servidor? (Caso essa opção esteja marcada, será necessário informar a chave de autenticação novamente!).',
+    sairAttentionText:'Atenção, ao sair do sistema todos os dados serão apagados, tenha certeza de realizar uma sincronização e enviar as alterações antes de sair.',
+    // Sair Alert
+    sairTitle:'Sair',
+    sairMessage:'Deseja realmente sair do sistema?',
+    sairCancel:'NÃO',
+    sairYes:'SIM'
+
 }

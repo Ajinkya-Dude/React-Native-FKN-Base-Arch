@@ -7,7 +7,7 @@ export const RegisterRequest = createAsyncThunk('registerRequest', async (payloa
     try {
         console.log("calling api", payload);
         const response = await api.get(`admin/api_android_autenticacao.php?&chave=${payload.chave}`);
-        console.log("Response", response.status, JSON.stringify(response.data));
+        console.log("Register API Response", response.status, JSON.stringify(response.data));
         if (response && response.data && response.data.FKN && response.data.FKN.contrato) {
             // NavigationService.navigate('login');
             NavigationService.resetNavigation({ index: 0, routeName: 'login' });

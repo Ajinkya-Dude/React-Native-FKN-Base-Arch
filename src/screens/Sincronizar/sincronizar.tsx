@@ -30,6 +30,8 @@ import { ClienteMediaRequest } from "../../store/reducer/clienteMediaReducer/cli
 import { ComodatoRequest } from "../../store/reducer/comodatoReducer/comodatoActions";
 import { ContatoRequest } from "../../store/reducer/contatoReducer/contatoActions";
 import ProcessModal from "./sincronizarModal";
+import NetInfo from "@react-native-community/netinfo";
+import { setUserFirstSync } from "../../store/reducer/loginReducer";
 
 const Sincronizar = (props: any) => {
     const { navigation } = props && props;
@@ -48,7 +50,9 @@ const Sincronizar = (props: any) => {
     const isFocused = useIsFocused();
     const registerData: any = useSelector((state: any) => state.registerReducer);
     const loginData: any = useSelector((state: any) => state.loginReducer);
-    console.log("registerData.data.FKN.url---", registerData.data, "Login Data", JSON.stringify(loginData.verifyData), "new Date()", new Date());
+
+    const firstSync = loginData && loginData.firstSync;
+    console.log("registerData.data.FKN.url---", registerData, "Login Data", JSON.stringify(loginData.verifyData), "new Date()", new Date());
 
 
     const drawerOpen = () => {
@@ -74,19 +78,19 @@ const Sincronizar = (props: any) => {
                 }
             }
         } else {
-            const status = await check(PERMISSIONS.IOS.CAMERA);
-            console.log("Status permission ios", status);
-            if (status === RESULTS.BLOCKED) {
-                // Handle the case where the user has denied permission and blocked it.
-            } else {
-                const result = await request(PERMISSIONS.IOS.CAMERA);
-                console.log("Request permission ios", result);
-                if (result === RESULTS.GRANTED) {
-                    // Permission granted, you can now manage calls.
-                } else {
-                    // Permission denied, handle accordingly.
-                }
-            }
+            // const status = await check(PERMISSIONS.IOS.CAMERA);
+            // console.log("Status permission ios", status);
+            // if (status === RESULTS.BLOCKED) {
+            //     // Handle the case where the user has denied permission and blocked it.
+            // } else {
+            //     const result = await request(PERMISSIONS.IOS.CAMERA);
+            //     console.log("Request permission ios", result);
+            //     if (result === RESULTS.GRANTED) {
+            //         // Permission granted, you can now manage calls.
+            //     } else {
+            //         // Permission denied, handle accordingly.
+            //     }
+            // }
         }
     };
 
@@ -95,7 +99,72 @@ const Sincronizar = (props: any) => {
             setOpenModal(true);
             requestCallPermissions();
         }
-    }, [isFocused])
+    }, [isFocused]);
+
+    useEffect(() => {
+        if (firstSync) {
+            setSubmitOrdersCheckBox(false);
+        }
+        //else if () {}
+
+        else {
+            if (submitOrdersBox) {
+                setSyncChangesOnlyCheckBox(false);
+                setForceFullSyncCheckBox(false);
+                setTextProduceCheckBox(false);
+                setProductImagesCheckBox(false);
+            }
+        }
+    }, [submitOrdersBox]);
+
+    useEffect(() => {
+        if(firstSync){
+            setSyncChangesOnlyCheckBox(true);
+            setForceFullSyncCheckBox(true);
+        }else{
+        if (syncChangesOnlyBox) {
+            setSubmitOrdersCheckBox(false);
+        } else {
+            setForceFullSyncCheckBox(false);
+        }
+    }
+    }, [syncChangesOnlyBox]);
+
+    useEffect(() => {
+        if (firstSync) {
+            setForceFullSyncCheckBox(true);
+        }
+    }, []);
+    useEffect(() => {
+        if(firstSync){
+            setSyncChangesOnlyCheckBox(true);
+            setForceFullSyncCheckBox(true);
+        }else{
+        if (forceFullSyncBox) {
+            setSyncChangesOnlyCheckBox(true);
+            setSubmitOrdersCheckBox(false);
+        }}
+    }, [forceFullSyncBox]);
+
+    useEffect(() => {
+        if(firstSync){
+            setSyncChangesOnlyCheckBox(true);
+            setForceFullSyncCheckBox(true);
+        }else{
+        if (textProduceBox) {
+            setSubmitOrdersCheckBox(false);
+        }}
+    }, [textProduceBox]);
+
+    useEffect(() => {
+        if(firstSync){
+            setSyncChangesOnlyCheckBox(true);
+            setForceFullSyncCheckBox(true);
+        }else{
+        if (productImagesBox) {
+            setSubmitOrdersCheckBox(false);
+        }}
+    }, [productImagesBox]);
 
     const onCloseModal = () => {
         setOpenModal(false);
@@ -133,8 +202,9 @@ const Sincronizar = (props: any) => {
         );
     }
 
-    const SuccessAlertOnSynchronization = () =>{
-        Alert.alert(FKNconstants.message,FKNconstants.successMessage,[
+    const SuccessAlertOnSynchronization = () => {
+        dispatch(setUserFirstSync(true));
+        Alert.alert(FKNconstants.message, FKNconstants.successMessage, [
             {
                 text: 'Ok',
                 onPress: () => console.log('Ok Pressed'),
@@ -142,8 +212,31 @@ const Sincronizar = (props: any) => {
             },
         ]);
     }
-
+    const SynchronizationAlert = (value: number) => {
+        Alert.alert(FKNconstants.message, value ? FKNconstants.internetConnection : FKNconstants.selectAnyOption, [
+            {
+                text: 'Ok',
+                onPress: () => console.log('Ok Pressed'),
+                style: 'cancel',
+            },
+        ]);
+    }
     const onSynchronize = async () => {
+        var internetConnection = false;
+        await NetInfo.fetch().then(state => {
+            if (state.isConnected) {
+                internetConnection = true
+            }
+        });
+        if (!internetConnection) {
+            SynchronizationAlert(1);
+            return;
+        }
+        if (!syncChangesOnlyBox && !textProduceBox && !productImagesBox  && !submitOrdersBox) {
+            SynchronizationAlert(0);
+            return;
+        }
+
         const payloadAgenda = {
             url: registerData && registerData.data.FKN.url,
             agenda: {
@@ -286,8 +379,8 @@ const Sincronizar = (props: any) => {
                         .then(() => {
                             // Calculate the percentage of completed API calls
                             const completedCalls: any = apiArray.filter((call) => {
-                                console.log("calling api in promise",call);
-                                if(call._j !== null){
+                                console.log("calling api in promise", call);
+                                if (call._j !== null) {
                                     return 1
                                 }
                             }).length;
