@@ -84,6 +84,18 @@ export const FKNconstants = {
     sairTitle:'Sair',
     sairMessage:'Deseja realmente sair do sistema?',
     sairCancel:'NÃO',
-    sairYes:'SIM'
+    sairYes:'SIM',
+
+    // Cliente
+    orderModalTitle:'Ordenar',
+    orderOk:'OK',
+    orderCancel:'CANCELAR',
+    //Cliente Order Values
+    code:'Código',
+    fantasy:'Fantasia',
+    reasonSocial:'Razão Social',
+    uvGreen: 'UV Verde',
+    uvRed:'UV Vermelho'
+
 
 }

@@ -96,8 +96,10 @@ const Sincronizar = (props: any) => {
 
     useEffect(() => {
         if (isFocused) {
-            setOpenModal(true);
-            requestCallPermissions();
+            setTimeout(()=>{
+                setOpenModal(true);
+                requestCallPermissions();
+            },200);
         }
     }, [isFocused]);
 
