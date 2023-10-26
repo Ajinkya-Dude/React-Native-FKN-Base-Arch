@@ -32,6 +32,17 @@ import { ContatoRequest } from "../../store/reducer/contatoReducer/contatoAction
 import ProcessModal from "./sincronizarModal";
 import NetInfo from "@react-native-community/netinfo";
 import { setUserFirstSync } from "../../store/reducer/loginReducer";
+import { ParameterRequest } from "../../store/reducer/parameterReducer/parameterActions";
+import { PedidosCFOPRequest } from "../../store/reducer/pedidosCFOPSReducer/pedidosCFOPActions";
+import { PortadoreRequest } from "../../store/reducer/portadoresReducer/portadoreActions";
+import { RamosRequest } from "../../store/reducer/ramosReducer/ramosActions";
+import { RecadosRequest } from "../../store/reducer/recadosReducer/recadosActions";
+import { RegioesRequest } from "../../store/reducer/regioesReducer/regioesActions";
+import { ResultRequest } from "../../store/reducer/resultadosReducer/resultActions";
+import { SeparacaoRequest } from "../../store/reducer/separacaoReducer/separacaoActions";
+import { SituacoesRequest } from "../../store/reducer/situacoesReducer/situacoesActions";
+import { TabelaRequest } from "../../store/reducer/tabelaReducer/tabelaActions";
+import { TransportadoraRequest } from "../../store/reducer/transportadoraReducer/transportadoraActions";
 
 const Sincronizar = (props: any) => {
     const { navigation } = props && props;
@@ -96,10 +107,10 @@ const Sincronizar = (props: any) => {
 
     useEffect(() => {
         if (isFocused) {
-            setTimeout(()=>{
+            setTimeout(() => {
                 setOpenModal(true);
                 requestCallPermissions();
-            },200);
+            }, 300);
         }
     }, [isFocused]);
 
@@ -120,16 +131,16 @@ const Sincronizar = (props: any) => {
     }, [submitOrdersBox]);
 
     useEffect(() => {
-        if(firstSync){
+        if (firstSync) {
             setSyncChangesOnlyCheckBox(true);
             setForceFullSyncCheckBox(true);
-        }else{
-        if (syncChangesOnlyBox) {
-            setSubmitOrdersCheckBox(false);
         } else {
-            setForceFullSyncCheckBox(false);
+            if (syncChangesOnlyBox) {
+                setSubmitOrdersCheckBox(false);
+            } else {
+                setForceFullSyncCheckBox(false);
+            }
         }
-    }
     }, [syncChangesOnlyBox]);
 
     useEffect(() => {
@@ -138,34 +149,37 @@ const Sincronizar = (props: any) => {
         }
     }, []);
     useEffect(() => {
-        if(firstSync){
+        if (firstSync) {
             setSyncChangesOnlyCheckBox(true);
             setForceFullSyncCheckBox(true);
-        }else{
-        if (forceFullSyncBox) {
-            setSyncChangesOnlyCheckBox(true);
-            setSubmitOrdersCheckBox(false);
-        }}
+        } else {
+            if (forceFullSyncBox) {
+                setSyncChangesOnlyCheckBox(true);
+                setSubmitOrdersCheckBox(false);
+            }
+        }
     }, [forceFullSyncBox]);
 
     useEffect(() => {
-        if(firstSync){
+        if (firstSync) {
             setSyncChangesOnlyCheckBox(true);
             setForceFullSyncCheckBox(true);
-        }else{
-        if (textProduceBox) {
-            setSubmitOrdersCheckBox(false);
-        }}
+        } else {
+            if (textProduceBox) {
+                setSubmitOrdersCheckBox(false);
+            }
+        }
     }, [textProduceBox]);
 
     useEffect(() => {
-        if(firstSync){
+        if (firstSync) {
             setSyncChangesOnlyCheckBox(true);
             setForceFullSyncCheckBox(true);
-        }else{
-        if (productImagesBox) {
-            setSubmitOrdersCheckBox(false);
-        }}
+        } else {
+            if (productImagesBox) {
+                setSubmitOrdersCheckBox(false);
+            }
+        }
     }, [productImagesBox]);
 
     const onCloseModal = () => {
@@ -234,7 +248,7 @@ const Sincronizar = (props: any) => {
             SynchronizationAlert(1);
             return;
         }
-        if (!syncChangesOnlyBox && !textProduceBox && !productImagesBox  && !submitOrdersBox) {
+        if (!syncChangesOnlyBox && !textProduceBox && !productImagesBox && !submitOrdersBox) {
             SynchronizationAlert(0);
             return;
         }
@@ -308,7 +322,7 @@ const Sincronizar = (props: any) => {
         const payloadContacts = {
             url: registerData && registerData.data.FKN.url,
             contato: {
-                idContato: 10002,
+                //idContato: 10002,
                 idVendedor: loginData.verifyData.FKN.vendedores[0].vendedor.idVendedorWeb,
                 idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
                 requisicao: 1,
@@ -353,6 +367,96 @@ const Sincronizar = (props: any) => {
                 token: loginData.data.usuario_api.token
             }
         }
+        const payloadParameter = {
+            url: registerData && registerData.data.FKN.url,
+            parametro: {
+                formato: 'JSON',
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                idVendedor: loginData.verifyData.FKN.vendedores[0].vendedor.idVendedorWeb,
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadPedidoCFOP = {
+            url: registerData && registerData.data.FKN.url,
+            pedidoCFOP: {
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadPortadore = {
+            url: registerData && registerData.data.FKN.url,
+            portador: {
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadRamos = {
+            url: registerData && registerData.data.FKN.url,
+            ramos: {
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadRecados = {
+            url: registerData && registerData.data.FKN.url,
+            recado: {
+                idVendedor: loginData.verifyData.FKN.vendedores[0].vendedor.idVendedorWeb,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadRegioes = {
+            url: registerData && registerData.data.FKN.url,
+            regiao: {
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadResult = {
+            url: registerData && registerData.data.FKN.url,
+            resultado: {
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadSeparacao = {
+            url: registerData && registerData.data.FKN.url,
+            separacao: {
+                separacao:3,
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadSituacoes = {
+            url: registerData && registerData.data.FKN.url,
+            situacao: {
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadTabela = {
+            url: registerData && registerData.data.FKN.url,
+            tabela: {
+                formato: 'JSON',
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                idVendedor: loginData.verifyData.FKN.vendedores[0].vendedor.idVendedorWeb,
+                token: loginData.data.usuario_api.token
+            }
+        }
+        const payloadTransport = {
+            url: registerData && registerData.data.FKN.url,
+            transportadora: {
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
         const apiArray = [
             dispatch(AgendaRequest(payloadAgenda)),
             dispatch(AbasRequest(payloadAbas)),
@@ -369,7 +473,18 @@ const Sincronizar = (props: any) => {
             dispatch(FilialRequest(payloadDepartment)),
             dispatch(NotasRequest(payloadNotas)),
             dispatch(ModificationRequest(payloadDepartment)),
-            dispatch(ReasonRequest(payloadDepartment))
+            dispatch(ReasonRequest(payloadDepartment)),
+            dispatch(ParameterRequest(payloadParameter)),
+            dispatch(PedidosCFOPRequest(payloadPedidoCFOP)),
+            dispatch(PortadoreRequest(payloadPortadore)),
+            dispatch(RamosRequest(payloadRamos)),
+            dispatch(RecadosRequest(payloadRecados)),
+            dispatch(RegioesRequest(payloadRegioes)),
+            dispatch(ResultRequest(payloadResult)),
+            dispatch(SeparacaoRequest(payloadSeparacao)),
+            dispatch(SituacoesRequest(payloadSituacoes)),
+            dispatch(TabelaRequest(payloadTabela)),
+            dispatch(TransportadoraRequest(payloadTransport))
         ];
         setApiProgress(0);
         try {
@@ -398,7 +513,7 @@ const Sincronizar = (props: any) => {
             )
             SuccessAlertOnSynchronization();
         } catch (error) {
-            console.log("Api all error", error)
+            console.log("Api call error", error)
         } finally {
             setOpenSynchronizeModal(false);
         }

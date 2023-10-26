@@ -41,7 +41,7 @@ export const VerifyRequest = createAsyncThunk('verifyRequest', async (payload: a
         console.log("Calling Verify api", payload);
         const response: any = await get(`${payload.url}`);
         console.log("Response Verify", JSON.stringify(response.data));
-        if (response && response.data && response.data.FKN && response.data.FKN.vendedores && response.data.FKN.vendedores.vendedor && response.data.FKN.vendedores.vendedor.dispositivos && response.data.FKN.vendedores.vendedor.dispositivos.length > 0) {
+        if (response && response.data && response.data.FKN && response.data.FKN.vendedores && response.data.FKN.vendedores[0].vendedor && response.data.FKN.vendedores[0].vendedor.dispositivos && response.data.FKN.vendedores[0].vendedor.dispositivos.length > 0) {
             dispatch(setUserIsLoggedIn(true));
         }
         else if (response && response.data && response.data.FKN && response.data.FKN.Processamento && response.data.FKN.Processamento.mensagemRetorno && !payload.fromLogin) {

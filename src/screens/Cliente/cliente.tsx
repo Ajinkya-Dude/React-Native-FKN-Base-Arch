@@ -5,9 +5,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Appbar } from "react-native-paper";
 import styles from "./styles";
 import theme from "../../theme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OrderByModal from "../../components/common/OrderByModal";
 import { clienteOrderByData } from "./ClienteData";
+//import { getDBConnection } from "../../sqliteDatabase/database";
+
 
 const Cliente = (props: any) => {
     const { navigation } = props && props;
@@ -15,6 +17,13 @@ const Cliente = (props: any) => {
     const [searchTextValue, setSearchTextValue] = useState<string>('');
     const [orderByModal, setOrderByModal] = useState<boolean>(false);
     const [selectedOrderValue,setSelectedOrderValue] = useState('codingo');
+
+    const onSuccess = () =>{
+        console.log("Success");
+        
+    }
+    //const db = SQLite.openDatabase({ name: 'fkn_vendas_react-native.db', location: 'default' });
+    //SQLite.enablePromise(true);
 
     const drawerOpen = () => {
         navigation.openDrawer();
@@ -35,6 +44,21 @@ const Cliente = (props: any) => {
         setOrderByModal(false);
         setSelectedOrderValue(value);
     }
+    // const createTable = async() => {
+    //     const db = await getDBConnection();
+    //     console.log("calling create table",db);
+        
+    //     await db.transaction((txn:any) => {
+    //         console.log("is db running ",db);
+    //               const data = txn.execute(
+    //                 'CREATE TABLE IF NOT EXISTS table_user(user_id INTEGER PRIMARY KEY AUTOINCREMENT, user_name VARCHAR(20), user_contact INT(10), user_address VARCHAR(255))',[]);
+    //         console.log("Data",data);
+    //       });
+    //   };
+      
+    //   useEffect(() => {
+    //     createTable();
+    //   }, []);
 
     return (
         <View style={styles.mainContainer}>

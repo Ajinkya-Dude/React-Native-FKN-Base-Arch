@@ -4,7 +4,7 @@ import { Alert } from "react-native";
 import * as NavigationService from '../../../navigation/NavigationService';
 import urlParamsHelper from "../../../components/common/UrlParamsHelper";
 
-export const NotasRequest = createAsyncThunk('filialRequest', async (payload?: any) => {
+export const NotasRequest = createAsyncThunk('notasRequest', async (payload?: any) => {
     try {
         console.log("Response NotasRequest calling", payload, "urlParamsHelper", `${payload.url}notas/listar?${urlParamsHelper(payload.notas)}`);
         const response: any = await get(`${payload.url}notas/listar?${urlParamsHelper(payload.notas)}`);

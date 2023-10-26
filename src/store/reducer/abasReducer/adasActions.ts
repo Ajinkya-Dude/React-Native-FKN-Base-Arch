@@ -12,6 +12,5 @@ export const AbasRequest = createAsyncThunk('abasRequest', async (payload?: any)
 
     } catch (error) {
         console.log("Error abas", error);
-
     }
 })
