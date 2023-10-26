@@ -17,6 +17,18 @@ import notasReducer from "./notasReducer";
 import reasonReducer from "./reasonReducer";
 import contatoReducer from "./contatoReducer";
 import cnpjVendedorReducer from "./cnpjVendedorReducer";
+import parameterReducer from "./parameterReducer";
+import pedidosCFOPSReducer from "./pedidosCFOPSReducer";
+import portadoresReducer from "./portadoresReducer";
+import ramosReducer from "./ramosReducer";
+import recadosReducer from "./recadosReducer";
+import regioesReducer from "./regioesReducer";
+import resultadosReducer from "./resultadosReducer";
+import separacaoReducer from "./separacaoReducer";
+import situacoesReducer from "./situacoesReducer";
+import tabelaReducer from "./tabelaReducer";
+import transportadoraReducer from "./transportadoraReducer";
+
 const rootReducer: any = combineReducers({
    loginReducer: loginReducer,
    registerReducer: registerReducer,
@@ -36,6 +48,17 @@ const rootReducer: any = combineReducers({
    notasReducer:notasReducer,
    reasonReducer:reasonReducer,
    contatoReducer:contatoReducer,
+   parameterReducer:parameterReducer,
+   pedidosCFOPSReducer:pedidosCFOPSReducer,
+   portadoresReducer:portadoresReducer,
+   ramosReducer:ramosReducer,
+   recadosReducer:recadosReducer,
+   regioesReducer:regioesReducer,
+   resultadosReducer:resultadosReducer,
+   separacaoReducer:separacaoReducer,
+   situacoesReducer:situacoesReducer,
+   tabelaReducer:tabelaReducer,
+   transportadoraReducer:transportadoraReducer
 });
 
 export default rootReducer;

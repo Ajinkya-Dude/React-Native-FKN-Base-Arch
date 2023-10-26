@@ -95,7 +95,17 @@ export const FKNconstants = {
     fantasy:'Fantasia',
     reasonSocial:'Razão Social',
     uvGreen: 'UV Verde',
-    uvRed:'UV Vermelho'
+    uvRed:'UV Vermelho',
+
+     //Cliente Filter Values 
+    filtroRamo:'Filtro Ramo',
+    filtroRegiao:'Filtro Região',
+    filtroUFCidade:'Filtro UF/Cidade',
+    filtroUFCidadeBairro:'Filtro UF/Cidade/Bairro',
+    filtroClassification:'Filtro Classificação',
+    comodato:'Comodato',
+    aniversarios:'Aniversários',
+    limparFiltros:'Limpar Filtros'
 
 
 }

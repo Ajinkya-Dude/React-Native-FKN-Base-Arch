@@ -26,7 +26,7 @@ const Checkbox = ({
                 onCheckColor={checkedColor ? checkedColor : '#398F5A'}
                 tintColors={{ true: checkedColor ? checkedColor : '#398F5A', false: '' }}
             />
-            <Text style={style.lableStyle}>{lable}</Text>
+            {lable && <Text style={style.lableStyle}>{lable}</Text>}
         </View>
     );
 }

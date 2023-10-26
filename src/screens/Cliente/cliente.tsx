@@ -7,8 +7,10 @@ import styles from "./styles";
 import theme from "../../theme";
 import { useEffect, useState } from "react";
 import OrderByModal from "../../components/common/OrderByModal";
-import { clienteOrderByData } from "./ClienteData";
+import { clienteFilterData, clienteOrderByData } from "./ClienteData";
+import FilterModal from "../../components/common/FilterModal";
 //import { getDBConnection } from "../../sqliteDatabase/database";
+import * as NavigationServicec from '../../navigation/NavigationService';
 
 
 const Cliente = (props: any) => {
@@ -16,12 +18,10 @@ const Cliente = (props: any) => {
     const [onSearchIconClick, setOnSearchIconClick] = useState<boolean>(false);
     const [searchTextValue, setSearchTextValue] = useState<string>('');
     const [orderByModal, setOrderByModal] = useState<boolean>(false);
-    const [selectedOrderValue,setSelectedOrderValue] = useState('codingo');
+    const [selectedOrderValue, setSelectedOrderValue] = useState('codingo');
+    const [filterModal, setFilterModal] = useState<boolean>(false);
+    const [filterCheckboxChecked,setFilterCheckboxChecked] = useState<any>(false);
 
-    const onSuccess = () =>{
-        console.log("Success");
-        
-    }
     //const db = SQLite.openDatabase({ name: 'fkn_vendas_react-native.db', location: 'default' });
     //SQLite.enablePromise(true);
 
@@ -47,7 +47,7 @@ const Cliente = (props: any) => {
     // const createTable = async() => {
     //     const db = await getDBConnection();
     //     console.log("calling create table",db);
-        
+
     //     await db.transaction((txn:any) => {
     //         console.log("is db running ",db);
     //               const data = txn.execute(
@@ -55,10 +55,22 @@ const Cliente = (props: any) => {
     //         console.log("Data",data);
     //       });
     //   };
-      
+
     //   useEffect(() => {
     //     createTable();
     //   }, []);
+
+    const onFilterClick = () => {
+        setFilterModal(!filterModal);
+    }
+    const onCleanFilter = () => {
+        setFilterModal(!filterModal);
+    }
+
+    const onFilterCheckboxChecked = (value:boolean) =>{
+        setFilterCheckboxChecked(value);
+        onFilterClick();
+    }
 
     return (
         <View style={styles.mainContainer}>
@@ -100,10 +112,21 @@ const Cliente = (props: any) => {
                         size={theme.moderateScale(35)}
                     />
                 </TouchableOpacity>
-                <Appbar.Action color={theme.COLORS.BLACK_LIGHT} icon="dots-vertical" onPress={() => { }} />
+                <Appbar.Action color={theme.COLORS.BLACK_LIGHT} icon="dots-vertical" onPress={onFilterClick} />
             </Appbar.Header>
             <Text>Inicio</Text>
             {orderByModal && <OrderByModal data={clienteOrderByData} visible={orderByModal} onModalClose={onOrderByClick} onModalOk={onOrderApplyChanges} selected={selectedOrderValue} />}
+            {filterModal &&
+                <FilterModal
+                    data={clienteFilterData}
+                    onModalClose={onFilterClick}
+                    visible={filterModal}
+                    navigation={navigation} 
+                    onCleanFilter={onCleanFilter}
+                    onFilterCheckboxChecked={onFilterCheckboxChecked}
+                    checkboxChecked={filterCheckboxChecked}
+                />
+            }
         </View>
     );
 }
