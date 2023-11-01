@@ -11,6 +11,7 @@ import { persistor, store } from './src/store';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import FKNapp from './src/FKNapp';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { realmConfig, realmContext } from './src/database/database';
 
 
 const theme = {
@@ -23,12 +24,15 @@ const theme = {
   },
 };
 function App(): JSX.Element {
+  //const { RealmProvider } = realmContext();
 
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <PaperProvider theme={theme}>
-          <FKNapp />
+          <realmContext.RealmProvider>
+            <FKNapp />
+          </realmContext.RealmProvider>
         </PaperProvider>
       </PersistGate>
     </Provider>

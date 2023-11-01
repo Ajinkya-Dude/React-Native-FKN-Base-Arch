@@ -43,9 +43,20 @@ import { SeparacaoRequest } from "../../store/reducer/separacaoReducer/separacao
 import { SituacoesRequest } from "../../store/reducer/situacoesReducer/situacoesActions";
 import { TabelaRequest } from "../../store/reducer/tabelaReducer/tabelaActions";
 import { TransportadoraRequest } from "../../store/reducer/transportadoraReducer/transportadoraActions";
+import { realmContext } from "../../database/database";
+//import { useRealm } from "@realm/react";
+// import realmConfig from "../../database/database";
+import Realm from "realm";
+import Agenda from "../../database/AgendaSchema";
+import { insertCliente } from "../../database/ClienteDao";
+import RealmHelper from "../../database/commonRealmHelper";
+// const {useObject, useQuery,useRealm } = createRealmContext(realmConfig);
 
 const Sincronizar = (props: any) => {
     const { navigation } = props && props;
+    const realm = realmContext.useRealm();
+    // const realmObject = realmContext.useObject(Agenda, new Realm.BSON.ObjectId("653b83d28b20763ce160f2e4"));
+    // const realmQuery = realmContext.useQuery(Agenda);
     const [syncChangesOnlyBox, setSyncChangesOnlyCheckBox] = useState<boolean>(true);
     const [forceFullSyncBox, setForceFullSyncCheckBox] = useState<boolean>(false);
     const [generalHistoryBox, setGeneralHistoryCheckBox] = useState<boolean>(false);
@@ -63,8 +74,29 @@ const Sincronizar = (props: any) => {
     const loginData: any = useSelector((state: any) => state.loginReducer);
 
     const firstSync = loginData && loginData.firstSync;
-    console.log("registerData.data.FKN.url---", registerData, "Login Data", JSON.stringify(loginData.verifyData), "new Date()", new Date());
+    //console.log("registerData.data.FKN.url---", registerData, "Login Data", JSON.stringify(loginData.verifyData), "new Date()", new Date());
 
+    //console.log("realmObject data", realmObject, "realmQuery", JSON.stringify(realmQuery.sorted('name')), " new Realm.BSON.ObjectId(),", new Realm.BSON.ObjectId("653b83d28b20763ce160f2e4"));
+    const clienteRealm = realm.objects('cliente')
+    console.log("Cliente data from realm item--", realm.objects('cliente'),realm.schema.map((schema) => schema.name));
+    //const item = realm.objectForPrimaryKey(Agenda, new Realm.BSON.ObjectId("653b8de851e197c81985b838"));
+
+    function onRealmChange(clienteRealm:any, changes:any) {
+        console.log("Something changed!",changes,"clienteRealm",clienteRealm);
+    }
+    useEffect(() => {
+        try {
+            clienteRealm.addListener(onRealmChange);
+        } catch (error) {
+            console.error(
+                `An exception was thrown within the change listener: ${error}`
+            );
+        }
+        // Remember to remove the listener when you're done!
+        return () => {
+            clienteRealm.removeListener(onRealmChange);
+        };
+    }, [realmContext]);
 
     const drawerOpen = () => {
         navigation.openDrawer();
@@ -426,7 +458,7 @@ const Sincronizar = (props: any) => {
         const payloadSeparacao = {
             url: registerData && registerData.data.FKN.url,
             separacao: {
-                separacao:3,
+                separacao: 3,
                 idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
                 formato: 'JSON',
                 token: loginData.data.usuario_api.token
@@ -458,33 +490,33 @@ const Sincronizar = (props: any) => {
             }
         }
         const apiArray = [
-            dispatch(AgendaRequest(payloadAgenda)),
-            dispatch(AbasRequest(payloadAbas)),
+            //dispatch(AgendaRequest(payloadAgenda)),
+            // dispatch(AbasRequest(payloadAbas)),
             dispatch(ClientsRequest(payloadClient)),
-            dispatch(ClassificationRequest(payloadClassification)),
-            dispatch(ClienteMediaRequest(payloadClientMedia)),
-            dispatch(CnpjVendedorRequest(payloadCnpjVendedor)),
-            dispatch(ComodatoRequest(payloadComodato)),
-            dispatch(ContatoRequest(payloadContacts)),
-            dispatch(DepartmentRequest(payloadDepartment)),
-            dispatch(DuplicataRequest(payloadDuplicata)),
-            dispatch(CompanyRequest(payloadCompany)),
-            dispatch(AddressRequest(payloadCompany)),
-            dispatch(FilialRequest(payloadDepartment)),
-            dispatch(NotasRequest(payloadNotas)),
-            dispatch(ModificationRequest(payloadDepartment)),
-            dispatch(ReasonRequest(payloadDepartment)),
-            dispatch(ParameterRequest(payloadParameter)),
-            dispatch(PedidosCFOPRequest(payloadPedidoCFOP)),
-            dispatch(PortadoreRequest(payloadPortadore)),
-            dispatch(RamosRequest(payloadRamos)),
-            dispatch(RecadosRequest(payloadRecados)),
-            dispatch(RegioesRequest(payloadRegioes)),
-            dispatch(ResultRequest(payloadResult)),
-            dispatch(SeparacaoRequest(payloadSeparacao)),
-            dispatch(SituacoesRequest(payloadSituacoes)),
-            dispatch(TabelaRequest(payloadTabela)),
-            dispatch(TransportadoraRequest(payloadTransport))
+            // dispatch(ClassificationRequest(payloadClassification)),
+            // dispatch(ClienteMediaRequest(payloadClientMedia)),
+            // dispatch(CnpjVendedorRequest(payloadCnpjVendedor)),
+            // dispatch(ComodatoRequest(payloadComodato)),
+            // dispatch(ContatoRequest(payloadContacts)),
+            // dispatch(DepartmentRequest(payloadDepartment)),
+            // dispatch(DuplicataRequest(payloadDuplicata)),
+            // dispatch(CompanyRequest(payloadCompany)),
+            // dispatch(AddressRequest(payloadCompany)),
+            // dispatch(FilialRequest(payloadDepartment)),
+            // dispatch(NotasRequest(payloadNotas)),
+            // dispatch(ModificationRequest(payloadDepartment)),
+            // dispatch(ReasonRequest(payloadDepartment)),
+            // dispatch(ParameterRequest(payloadParameter)),
+            // dispatch(PedidosCFOPRequest(payloadPedidoCFOP)),
+            // dispatch(PortadoreRequest(payloadPortadore)),
+            // dispatch(RamosRequest(payloadRamos)),
+            // dispatch(RecadosRequest(payloadRecados)),
+            // dispatch(RegioesRequest(payloadRegioes)),
+            // dispatch(ResultRequest(payloadResult)),
+            // dispatch(SeparacaoRequest(payloadSeparacao)),
+            // dispatch(SituacoesRequest(payloadSituacoes)),
+            // dispatch(TabelaRequest(payloadTabela)),
+            // dispatch(TransportadoraRequest(payloadTransport))
         ];
         setApiProgress(0);
         try {
@@ -496,8 +528,10 @@ const Sincronizar = (props: any) => {
                         .then(() => {
                             // Calculate the percentage of completed API calls
                             const completedCalls: any = apiArray.filter((call) => {
-                                console.log("calling api in promise", call);
+                                console.log("calling api in promise", JSON.stringify(call));
                                 if (call._j !== null) {
+                                    const { type, payload } = call._j;
+                                    RealmHelper(type, payload, realm);
                                     return 1
                                 }
                             }).length;
@@ -518,6 +552,176 @@ const Sincronizar = (props: any) => {
             setOpenSynchronizeModal(false);
         }
     }
+
+
+    const data = [
+        {
+            "idAgendaWeb": 5,
+            "idAgenda": 6,
+            "assunto": "FINAL DO TREINAMENTO ",
+            "contato": "GI",
+            "dtProgramada": "2019-10-10 17:17:00",
+            "notifica": true,
+            "dtNotifica": "2019-10-10 17:14:00",
+            "downloadAndroid": true,
+            "idAgendaERP": 1000329201910101717,
+            "downloadERP": false,
+            "remessa": 0,
+            "codUsuario": 7,
+            "idClienteFK": 329,
+            "idResultado": 0,
+            "idVendedor": 11,
+            "idProspeccaoFK": 0,
+            "idEmpresaFK": 0,
+            "compositekey": '11-329-2019-10-10 17:17:00',
+            "enviar": 123,
+            "android": 145
+        },
+        {
+            "idAgendaWeb": 7,
+            "idAgenda": 8,
+            "assunto": "FINAL DO TREINAMETNO",
+            "contato": "MARCO",
+            "dtProgramada": "2020-11-09 12:00:00",
+            "notifica": true,
+            "dtNotifica": "2020-11-09 11:58:00",
+            "downloadAndroid": true,
+            "idAgendaERP": 1000329202011091200,
+            "downloadERP": false,
+            "remessa": 0,
+            "codUsuario": 7,
+            "idClienteFK": 329,
+            "idResultado": 0,
+            "idVendedor": 11,
+            "idProspeccaoFK": 0,
+            "idEmpresaFK": 0,
+            "compositekey": '11-329-2020-11-09 12:00:00',
+            "enviar": 124,
+            "android": 345
+        }
+    ]
+    const dataCliente = [
+        {
+            //"_id":0,
+            "idClienteWeb": 35,
+            "idCliente": 35,
+            "dtCadastro": "2010-01-01 00:00:00",
+            "celular": "",
+            "cnae": "0",// getting error for this field
+            "cpfCnpj": "07.175.725/0010-50",
+            "email": "nunes@weg.net",
+            "emailNfe": "nfe@weg.net",
+            "fantasia": "WEG - 2 - EXTENSAO",
+            "fax": 33726499,
+            "obsCadastral": "REAJUSTE CFME EMAIL PRISCILLA 17/02/2020",
+            "razaoSocial": "WEG EQUIPAMENTOS ELETRICOS S/A - MOTORES",
+            "rgIe": 255083939,
+            "telefone": "(47) 3276-4000",
+            "tipo": "JURIDICO",
+            "atualizado": false,
+            "novoCadastro": false,
+            "permiteAltPortador": false,
+            "permiteAltPrazoPgto": false,
+            "idClassificacaoFK": 0,
+            "dtUltCon": "2020-08-17 15:22:00",
+            "dtUltVen": "2023-09-25 00:00:00",
+            "idTransportadora": 0,
+            "idPortador": 2,
+            "idPrazoPagamento": 2,
+            "idRamo": 21,
+            "idEmpresa": 10002,
+            "idRegiao": 1,
+            "idSituacao": 1,
+            "idVendedor": 3,
+            "idSegmento": 0,
+            "idProspeccaoFK": 0
+        },
+        {
+            //"_id":1,
+            "idClienteWeb": 62,
+            "idCliente": 62,
+            "dtCadastro": "2023-05-25 00:00:00",
+            "celular": "",
+            "cnae": 1091102,
+            "cpfCnpj": "42.430.919/0001-65",
+            "email": "confeitariabbahaus@gmail.com;administrativo@abbahaus.com.br",
+            "emailNfe": "administrativo@abbahaus.com.br",
+            "fantasia": "PADARIA ABBAHAUS",
+            "fax": "",
+            "obsCadastral": "",
+            "razaoSocial": "PADARIA E CONFEITARIA ABBAHAUS LTDA",
+            "dtFundacao": "2021-06-22 00:00:00",
+            "rgIe": 261148877,
+            "telefone": "(47) 3425-4505",
+            "tipo": "JURIDICO",
+            "atualizado": false,
+            "novoCadastro": false,
+            "permiteAltPortador": false,
+            "permiteAltPrazoPgto": false,
+            "idClassificacaoFK": 0,
+            "idTransportadora": 0,
+            "idPortador": 1,
+            "idPrazoPagamento": 9,
+            "idRamo": 22,
+            "idEmpresa": 10002,
+            "idRegiao": 1,
+            "idSituacao": 1,
+            "idVendedor": 3,
+            "idSegmento": 0,
+            "idProspeccaoFK": 0
+        },
+        {
+            //"_id":2,
+            "idClienteWeb": 78,
+            "idCliente": 78,
+            "dtCadastro": "2010-01-01 00:00:00",
+            "celular": "",
+            "cnae": 0,
+            "cpfCnpj": "84.684.620/0001-87",
+            "email": "karin@labcat.com.br",
+            "emailNfe": "nf-e@catarinensepharma.com.br",
+            "fantasia": "LABORATORIO CATARINE",
+            "fax": "",
+            "obsCadastral": "REAJUSTE DIVERSEY CFME EMAIL LUIZ 25/01/22                                                         ENTREGAS ATE 14:30. REAJUSTE CFME EMAIL PRISCILLA - 02/03/2020",
+            "razaoSocial": "LABORATORIO CATARINENSE LTDA",
+            "rgIe": 250127873,
+            "telefone": "(47) 3451-9142",
+            "tipo": "JURIDICO",
+            "atualizado": false,
+            "novoCadastro": false,
+            "permiteAltPortador": false,
+            "permiteAltPrazoPgto": false,
+            "idClassificacaoFK": 0,
+            "dtUltCon": "2020-10-29 22:30:00",
+            "dtUltVen": "2023-09-22 00:00:00",
+            "idTransportadora": 0,
+            "idPortador": 1,
+            "idPrazoPagamento": 7,
+            "idRamo": 21,
+            "idEmpresa": 10002,
+            "idRegiao": 1,
+            "idSituacao": 1,
+            "idVendedor": 3,
+            "idSegmento": 0,
+            "idProspeccaoFK": 0
+        }
+    ]
+    const addAgenda = () => {
+        const clienteData = insertCliente(dataCliente, realm);
+        //createAgenda(data);
+        //realm.deleteAll() ̰
+        //         const compositeKey = newProfile.generateCompositeKey();
+        // console.log(compositeKey);
+        // });
+        //    realm.write(() => {
+        //     for (const item of clienteData) {
+        //         realm.create('cliente', item);
+        //       }
+        //realm.create('cliente', clienteData[0]);
+        //});
+        //createAgenda(data);
+    };
+
 
     return (
         <View style={styles.mainContainer}>

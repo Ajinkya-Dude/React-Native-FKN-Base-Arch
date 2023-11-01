@@ -11,23 +11,87 @@ import { clienteFilterData, clienteOrderByData } from "./ClienteData";
 import FilterModal from "../../components/common/FilterModal";
 //import { getDBConnection } from "../../sqliteDatabase/database";
 import * as NavigationServicec from '../../navigation/NavigationService';
+import { realmContext } from "../../database/database";
+import { createAgenda } from "../../database/AgendaTable";
 
 
 const Cliente = (props: any) => {
     const { navigation } = props && props;
+    const realm = realmContext.useRealm();
     const [onSearchIconClick, setOnSearchIconClick] = useState<boolean>(false);
     const [searchTextValue, setSearchTextValue] = useState<string>('');
     const [orderByModal, setOrderByModal] = useState<boolean>(false);
     const [selectedOrderValue, setSelectedOrderValue] = useState('codingo');
     const [filterModal, setFilterModal] = useState<boolean>(false);
-    const [filterCheckboxChecked,setFilterCheckboxChecked] = useState<any>(false);
+    const [filterCheckboxChecked, setFilterCheckboxChecked] = useState<any>(false);
 
     //const db = SQLite.openDatabase({ name: 'fkn_vendas_react-native.db', location: 'default' });
     //SQLite.enablePromise(true);
-
+    const data = [
+        {
+            "idAgendaWeb": 5,
+            "idAgenda": 6,
+            "assunto": "FINAL DO TREINAMENTO ",
+            "contato": "GI",
+            "dtProgramada": "2019-10-10 17:17:00",
+            "notifica": true,
+            "dtNotifica": "2019-10-10 17:14:00",
+            "downloadAndroid": true,
+            "idAgendaERP": 1000329201910101717,
+            "downloadERP": false,
+            "remessa": 0,
+            "codUsuario": 7,
+            "idClienteFK": 329,
+            "idResultado": 0,
+            "idVendedor": 11,
+            "idProspeccaoFK": 0,
+            "idEmpresaFK": 0,
+            "compositekey": '11-329-2019-10-10 17:17:00',
+            "enviar": 123,
+            "android": 145
+        },
+        {
+            "idAgendaWeb": 7,
+            "idAgenda": 8,
+            "assunto": "FINAL DO TREINAMETNO",
+            "contato": "MARCO",
+            "dtProgramada": "2020-11-09 12:00:00",
+            "notifica": true,
+            "dtNotifica": "2020-11-09 11:58:00",
+            "downloadAndroid": true,
+            "idAgendaERP": 1000329202011091200,
+            "downloadERP": false,
+            "remessa": 0,
+            "codUsuario": 7,
+            "idClienteFK": 329,
+            "idResultado": 0,
+            "idVendedor": 11,
+            "idProspeccaoFK": 0,
+            "idEmpresaFK": 0,
+            "compositekey": '11-329-2020-11-09 12:00:00',
+            "enviar": 124,
+            "android": 345
+        }
+    ]
     const drawerOpen = () => {
         navigation.openDrawer();
     };
+    function onRealmChange() {
+        console.log("Something changed!");
+    }
+    useEffect(() => {
+        try {
+            realm.addListener("change", onRealmChange);
+        } catch (error) {
+            console.error(
+                `An exception was thrown within the change listener: ${error}`
+            );
+        }
+        // Remember to remove the listener when you're done!
+        return () => {
+            realm.removeListener("change", onRealmChange);
+        };
+    }, [realmContext]);
     const onSearchIcon = () => {
         setOnSearchIconClick(!onSearchIconClick);
     }
@@ -60,6 +124,7 @@ const Cliente = (props: any) => {
     //     createTable();
     //   }, []);
 
+
     const onFilterClick = () => {
         setFilterModal(!filterModal);
     }
@@ -67,7 +132,7 @@ const Cliente = (props: any) => {
         setFilterModal(!filterModal);
     }
 
-    const onFilterCheckboxChecked = (value:boolean) =>{
+    const onFilterCheckboxChecked = (value: boolean) => {
         setFilterCheckboxChecked(value);
         onFilterClick();
     }
@@ -114,14 +179,19 @@ const Cliente = (props: any) => {
                 </TouchableOpacity>
                 <Appbar.Action color={theme.COLORS.BLACK_LIGHT} icon="dots-vertical" onPress={onFilterClick} />
             </Appbar.Header>
-            <Text>Inicio</Text>
+            <View style={{flex:1}}>
+                <View style={{alignSelf:'flex-end',borderRadius:15,borderColor:"black",width:'40%',borderWidth:1,height:25,margin:10}}>
+
+                </View>
+            </View>
+            <Text style={{color:'black'}}>Inicio</Text>
             {orderByModal && <OrderByModal data={clienteOrderByData} visible={orderByModal} onModalClose={onOrderByClick} onModalOk={onOrderApplyChanges} selected={selectedOrderValue} />}
             {filterModal &&
                 <FilterModal
                     data={clienteFilterData}
                     onModalClose={onFilterClick}
                     visible={filterModal}
-                    navigation={navigation} 
+                    navigation={navigation}
                     onCleanFilter={onCleanFilter}
                     onFilterCheckboxChecked={onFilterCheckboxChecked}
                     checkboxChecked={filterCheckboxChecked}

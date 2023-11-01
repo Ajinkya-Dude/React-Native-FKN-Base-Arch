@@ -30,7 +30,7 @@ const ClientsReducer = createSlice({
         })
             .addCase(ClientsRequest.fulfilled, (state, action: PayloadAction<any>) => {
                 state.loading = false,
-                state.clientsData = action.payload
+                //state.clientsData = action.payload
                 console.log("clientsRequest.fulfilled", action)
             })
             .addCase(ClientsRequest.rejected, (state, action: PayloadAction<any>) => {

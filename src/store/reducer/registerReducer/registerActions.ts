@@ -22,7 +22,7 @@ export const RegisterRequest = createAsyncThunk('registerRequest', async (payloa
             ]);
         }
     } catch (error:any) {
-        console.log("Error", error.message);
+        console.log("Error Registration",error);
         if (error)
             Alert.alert('Error', error.message, [
                 {
