@@ -73,3 +73,18 @@ export const clienteFilterData = [
         name:'filterLimpar'
     }
 ]
+
+export const clienteDropdownData = [
+    {
+        label: 'GERAL',
+        value: 'geral',
+    },
+    {
+        label: 'ATIVO',
+        value: 'ativo',
+    },
+    {
+        label: 'INATIVO',
+        value: 'inativo',
+    }
+]

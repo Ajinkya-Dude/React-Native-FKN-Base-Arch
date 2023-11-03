@@ -255,7 +255,7 @@ const Sincronizar = (props: any) => {
         Alert.alert(FKNconstants.message, FKNconstants.successMessage, [
             {
                 text: 'Ok',
-                onPress: () => console.log('Ok Pressed'),
+                onPress: () => {navigation.navigate('Início')},
                 style: 'cancel',
             },
         ]);

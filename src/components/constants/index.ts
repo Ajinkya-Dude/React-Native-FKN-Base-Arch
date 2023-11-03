@@ -105,7 +105,21 @@ export const FKNconstants = {
     filtroClassification:'Filtro Classificação',
     comodato:'Comodato',
     aniversarios:'Aniversários',
-    limparFiltros:'Limpar Filtros'
+    limparFiltros:'Limpar Filtros',
+
+    //Cliente Register
+    clienteRegister:'Cadastro Cliente',
+
+    // Cliente Register Tabs
+    clienteTab:'CLIENTE',
+    enderecosTab:'ENDEREÇOS',
+    contatoTab:'CONTATO',
+
+    //Enderecos Tabs
+    cadastroEndereco:'Casastro Endereço',
+
+    // Contato Tabs
+    cadastroContato:'Cadastro Contato'
 
 
 }
