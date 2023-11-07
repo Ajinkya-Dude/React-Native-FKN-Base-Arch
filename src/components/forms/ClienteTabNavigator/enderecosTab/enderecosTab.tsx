@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native';
 import styles from './styles';
 import { FAB } from 'react-native-paper';
-import theme from '../../../theme';
+import theme from '../../../../theme';
 
 const Enderecostab = ({navigation}:any) => {
     const onFabButtonClick = () =>{

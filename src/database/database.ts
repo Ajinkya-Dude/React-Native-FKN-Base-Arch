@@ -2,9 +2,10 @@ import { createRealmContext } from "@realm/react";
 import Realm from "realm";
 import Agenda from "./AgendaSchema";
 import Cliente from "./ClienteSchema";
+import Ramo from "./RamoSchema";
 
 export const realmConfig: Realm.Configuration = {
-    schema: [Agenda,Cliente],
+    schema: [Agenda,Cliente,Ramo],
     schemaVersion:1
 };
 export const realmContext = createRealmContext(realmConfig);

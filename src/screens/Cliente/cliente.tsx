@@ -299,6 +299,13 @@ const Cliente = (props: any) => {
                         shadowOpacity: 1,
                         // backgroundColor:'red'
                     }}
+                    containerStyle={{
+                        paddingVertical: theme.moderateScale(5),
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 1,
+                        right: theme.horizontalScale(10)
+                    }}
                 />
                 <View style={{ width: '100%' }}>
                     <FlatList

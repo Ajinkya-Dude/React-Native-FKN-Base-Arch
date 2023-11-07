@@ -9,6 +9,7 @@ interface CustomDropdownProps {
     onSelect: (value: string) => void;
     dropStyle?: any;
     dropdownStyle?: any;
+    containerStyle?:any;
 }
 
 const Dropdown: React.FC<CustomDropdownProps> = ({
@@ -16,7 +17,8 @@ const Dropdown: React.FC<CustomDropdownProps> = ({
     selectedValue,
     onSelect,
     dropStyle,
-    dropdownStyle
+    dropdownStyle,
+    containerStyle
 }) => {
     const [isModalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -25,7 +27,7 @@ const Dropdown: React.FC<CustomDropdownProps> = ({
     };
 
     return (
-        <View style={styles.container}>
+        <View style={[containerStyle ? containerStyle : styles.container]}>
             <DropDownPicker
                 maxHeight={200}
                 items={options}
@@ -46,7 +48,8 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems: 'center',
         zIndex:1,
-        right:theme.horizontalScale(10)
+        width:'100%',
+        alignSelf:'center'
     },
     dropDownText: {
         borderWidth: 0,
@@ -64,7 +67,7 @@ const styles = StyleSheet.create({
         elevation:6,
         shadowColor:theme.COLORS.GRAY,
         shadowOffset:{width:10,height:10},
-        shadowOpacity:0.3
+        shadowOpacity:0.3,
     }
 
 });

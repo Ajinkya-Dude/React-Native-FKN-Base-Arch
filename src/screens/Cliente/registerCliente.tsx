@@ -5,7 +5,7 @@ import styles from "./styles";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import theme from "../../theme";
 import { FKNconstants } from "../../components/constants";
-import ClienteNavigatorTabs from "../ClienteTabNavigator";
+import ClienteNavigatorTabs from "../../components/forms/ClienteTabNavigator";
 
 const RegisterCliente = (props: any) => {
     const { navigation, route } = props && props;

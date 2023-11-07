@@ -74,13 +74,11 @@ const Sincronizar = (props: any) => {
     const loginData: any = useSelector((state: any) => state.loginReducer);
 
     const firstSync = loginData && loginData.firstSync;
-    //console.log("registerData.data.FKN.url---", registerData, "Login Data", JSON.stringify(loginData.verifyData), "new Date()", new Date());
 
     //console.log("realmObject data", realmObject, "realmQuery", JSON.stringify(realmQuery.sorted('name')), " new Realm.BSON.ObjectId(),", new Realm.BSON.ObjectId("653b83d28b20763ce160f2e4"));
     const clienteRealm = realm.objects('cliente')
-    console.log("Cliente data from realm item--", realm.objects('cliente'),realm.schema.map((schema) => schema.name));
+    //console.log("Cliente data from realm item--", realm.objects('cliente'),realm.schema.map((schema) => schema.name));
     //const item = realm.objectForPrimaryKey(Agenda, new Realm.BSON.ObjectId("653b8de851e197c81985b838"));
-
     function onRealmChange(clienteRealm:any, changes:any) {
         console.log("Something changed!",changes,"clienteRealm",clienteRealm);
     }
@@ -492,7 +490,7 @@ const Sincronizar = (props: any) => {
         const apiArray = [
             //dispatch(AgendaRequest(payloadAgenda)),
             // dispatch(AbasRequest(payloadAbas)),
-            dispatch(ClientsRequest(payloadClient)),
+            //dispatch(ClientsRequest(payloadClient)),
             // dispatch(ClassificationRequest(payloadClassification)),
             // dispatch(ClienteMediaRequest(payloadClientMedia)),
             // dispatch(CnpjVendedorRequest(payloadCnpjVendedor)),
@@ -509,7 +507,7 @@ const Sincronizar = (props: any) => {
             // dispatch(ParameterRequest(payloadParameter)),
             // dispatch(PedidosCFOPRequest(payloadPedidoCFOP)),
             // dispatch(PortadoreRequest(payloadPortadore)),
-            // dispatch(RamosRequest(payloadRamos)),
+            dispatch(RamosRequest(payloadRamos)),
             // dispatch(RecadosRequest(payloadRecados)),
             // dispatch(RegioesRequest(payloadRegioes)),
             // dispatch(ResultRequest(payloadResult)),
@@ -531,7 +529,7 @@ const Sincronizar = (props: any) => {
                                 console.log("calling api in promise", JSON.stringify(call));
                                 if (call._j !== null) {
                                     const { type, payload } = call._j;
-                                    RealmHelper(type, payload, realm);
+                                    RealmHelper(type, payload, realm,loginData);
                                     return 1
                                 }
                             }).length;

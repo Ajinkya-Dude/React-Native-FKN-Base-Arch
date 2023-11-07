@@ -1,10 +1,10 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ClienteTabNavigator from './clienteTab';
-import theme from '../../theme';
-import { FKNconstants } from '../../components/constants';
+import theme from '../../../theme';
+import { FKNconstants } from '../../constants';
 import EnderecosTabNavigator from './enderecosTab';
 import ContatoTabNavigator from './contatoTab';
-import Routes from '../../routes';
+import Routes from '../../../routes';
 
 const Tab = createMaterialTopTabNavigator();
 

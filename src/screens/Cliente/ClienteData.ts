@@ -88,3 +88,14 @@ export const clienteDropdownData = [
         value: 'inativo',
     }
 ]
+
+export const clienteCadastroTipo = [
+    {
+        label: 'JURÍDICO',
+        value: 'JURIDICO',
+    },
+    {
+        label: 'FÍSICO',
+        value: 'FISICO',
+    }
+]

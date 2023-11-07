@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 import { FAB } from 'react-native-paper';
-import theme from '../../../theme';
+import theme from '../../../../theme';
 import styles from './styles';
 
 const Contatotab = ({ navigation }: any) => {

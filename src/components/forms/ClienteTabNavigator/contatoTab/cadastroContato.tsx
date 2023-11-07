@@ -2,9 +2,9 @@ import { TouchableOpacity, View } from "react-native";
 import { Appbar } from "react-native-paper";
 import styles from "./styles";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { FKNconstants } from "../../../components/constants";
-import style from "../../../styles";
-import theme from "../../../theme";
+import { FKNconstants } from "../../../constants";
+import style from "../../../../styles";
+import theme from "../../../../theme";
 
 
 const ContatoCadastro = ({navigation}:any) =>{

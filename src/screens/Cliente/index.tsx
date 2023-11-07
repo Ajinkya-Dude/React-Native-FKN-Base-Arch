@@ -8,8 +8,8 @@ import FilterUFCidade from '../../components/common/FilterComponents/filterUFCid
 import FilterUFCidadeBairro from '../../components/common/FilterComponents/filterUFCidadeBairro';
 import Cliente from './cliente';
 import RegisterCliente from './registerCliente';
-import EnderecosCadastro from '../ClienteTabNavigator/enderecosTab/cadastroEnderecos';
-import ContatoCadastro from '../ClienteTabNavigator/contatoTab/cadastroContato';
+import EnderecosCadastro from '../../components/forms/ClienteTabNavigator/enderecosTab/cadastroEnderecos';
+import ContatoCadastro from '../../components/forms/ClienteTabNavigator/contatoTab/cadastroContato';
 
 const Stack = createNativeStackNavigator();
 function ClienteNavigator(): JSX.Element {

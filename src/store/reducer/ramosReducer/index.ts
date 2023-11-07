@@ -31,7 +31,7 @@ const RamosReducer = createSlice({
         })
             .addCase(RamosRequest.fulfilled, (state, action: PayloadAction<any>) => {
                 state.loading = false,
-                state.ramosData = action.payload
+                //state.ramosData = action.payload
                 console.log("RamosRequest.fulfilled", action)
             })
             .addCase(RamosRequest.rejected, (state, action: PayloadAction<any>) => {
