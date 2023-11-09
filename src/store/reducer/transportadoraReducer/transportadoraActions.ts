@@ -9,7 +9,7 @@ export const TransportadoraRequest = createAsyncThunk('transportadoraRequest', a
         console.log("Response TransportadoraRequest calling", payload, "urlParamsHelper", `${payload.url}transportadora/listar?${urlParamsHelper(payload.transportadora)}`);
         const response: any = await get(`${payload.url}transportadora/listar?${urlParamsHelper(payload.transportadora)}`);
         console.log("Response TransportadoraRequest", JSON.stringify(response.data));
-        //return response.data;
+        return response.data.list[0];
     } catch (error) {
         console.log("Error TransportadoraRequest---", error);
     }

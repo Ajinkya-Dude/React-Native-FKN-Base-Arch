@@ -1,21 +1,21 @@
 import Realm, { ObjectSchema } from 'realm';
 
-class Ramo extends Realm.Object<Ramo> {
-  idRamo!: number;
+class Regio extends Realm.Object<Regio> {
+  idRegiao!: number;
   descricao!: string; // Not null
   idEmpresaFK!: number; // Not null
   
 
   static schema: ObjectSchema = {
-    name: 'ramo',
+    name: 'regiao',
     properties: {
     //   _id: 'objectId',
-      idRamo: { type: 'int', indexed:true },
+      idRegiao: { type: 'int', indexed:true },
       descricao: { type: 'string'},
       idEmpresaFK: { type: 'int', indexed:true },
     },
-    primaryKey: 'idRamo',
+    primaryKey: 'idRegiao',
   };
 }
 
-export default Ramo;
+export default Regio;

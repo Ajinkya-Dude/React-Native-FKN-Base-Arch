@@ -9,7 +9,7 @@ export const PortadoreRequest = createAsyncThunk('portadorRequest', async (paylo
         console.log("Response PortadoreRequest calling", payload, "urlParamsHelper", `${payload.url}portador/listar?${urlParamsHelper(payload.portador)}`);
         const response: any = await get(`${payload.url}portador/listar?${urlParamsHelper(payload.portador)}`);
         console.log("Response PortadoreRequest", JSON.stringify(response.data));
-        return response.data;
+        return response.data.list[0];
     } catch (error) {
         console.log("Error PortadoreRequest---", error);
     }

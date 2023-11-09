@@ -31,7 +31,7 @@ const RegioesReducer = createSlice({
         })
             .addCase(RegioesRequest.fulfilled, (state, action: PayloadAction<any>) => {
                 state.loading = false,
-                state.regioesData = action.payload
+                //state.regioesData = action.payload
                 console.log("RegioesRequest.fulfilled", action)
             })
             .addCase(RegioesRequest.rejected, (state, action: PayloadAction<any>) => {

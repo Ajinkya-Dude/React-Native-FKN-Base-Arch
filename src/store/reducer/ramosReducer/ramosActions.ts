@@ -9,7 +9,7 @@ export const RamosRequest = createAsyncThunk('ramosRequest', async (payload?: an
         console.log("Response RamosRequest calling", payload, "urlParamsHelper", `${payload.url}ramo/listar?${urlParamsHelper(payload.ramos)}`);
         const response: any = await get(`${payload.url}ramo/listar?${urlParamsHelper(payload.ramos)}`);
         console.log("Response RamosRequest", JSON.stringify(response.data));
-        return response.data;
+        return response.data.list[0];
     } catch (error) {
         console.log("Error RamosRequest---", error);
     }

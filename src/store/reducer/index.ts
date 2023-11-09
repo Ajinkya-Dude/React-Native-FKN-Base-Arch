@@ -28,6 +28,7 @@ import separacaoReducer from "./separacaoReducer";
 import situacoesReducer from "./situacoesReducer";
 import tabelaReducer from "./tabelaReducer";
 import transportadoraReducer from "./transportadoraReducer";
+import cpfCnpjReducer from "./cpfCnpjReducer";
 
 const rootReducer: any = combineReducers({
    loginReducer: loginReducer,
@@ -58,7 +59,8 @@ const rootReducer: any = combineReducers({
    separacaoReducer:separacaoReducer,
    situacoesReducer:situacoesReducer,
    tabelaReducer:tabelaReducer,
-   transportadoraReducer:transportadoraReducer
+   transportadoraReducer:transportadoraReducer,
+   cpfCnpjReducer:cpfCnpjReducer
 });
 
 export default rootReducer;

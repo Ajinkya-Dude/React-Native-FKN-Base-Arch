@@ -31,7 +31,7 @@ const TrannsportReducer = createSlice({
         })
             .addCase(TransportadoraRequest.fulfilled, (state, action: PayloadAction<any>) => {
                 state.loading = false,
-                state.transportData = action.payload
+                //state.transportData = action.payload
                 console.log("TransportadoraRequest.fulfilled", action)
             })
             .addCase(TransportadoraRequest.rejected, (state, action: PayloadAction<any>) => {

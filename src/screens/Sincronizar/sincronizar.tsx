@@ -50,6 +50,10 @@ import Realm from "realm";
 import Agenda from "../../database/AgendaSchema";
 import { insertCliente } from "../../database/ClienteDao";
 import RealmHelper from "../../database/commonRealmHelper";
+import moment from "moment";
+import md5 from "md5";
+import { SegmentoRequest } from "../../store/reducer/segmentoReducer/segmentoActions";
+import { PrazoRequest } from "../../store/reducer/prazoReducer/prazoActions";
 // const {useObject, useQuery,useRealm } = createRealmContext(realmConfig);
 
 const Sincronizar = (props: any) => {
@@ -74,9 +78,11 @@ const Sincronizar = (props: any) => {
     const loginData: any = useSelector((state: any) => state.loginReducer);
 
     const firstSync = loginData && loginData.firstSync;
+    //const todayDate = moment().format('YYYYMMDD')+registerData.data.FKN.contrato;
+    //console.log("Realm store --",realm.objects('segmento'),"\nRamo",realm.objects('ramo'),"\nRegiao",realm.objects('regiao'),"\nportadora",realm.objects('portador'),"\ntransportadora",realm.objects('transportadora'),"PrazoPagamento",realm.objects('prazoPagamento'));
 
     //console.log("realmObject data", realmObject, "realmQuery", JSON.stringify(realmQuery.sorted('name')), " new Realm.BSON.ObjectId(),", new Realm.BSON.ObjectId("653b83d28b20763ce160f2e4"));
-    const clienteRealm = realm.objects('cliente')
+    const clienteRealm = realm.objects('prazoPagamento')
     //console.log("Cliente data from realm item--", realm.objects('cliente'),realm.schema.map((schema) => schema.name));
     //const item = realm.objectForPrimaryKey(Agenda, new Realm.BSON.ObjectId("653b8de851e197c81985b838"));
     function onRealmChange(clienteRealm:any, changes:any) {
@@ -445,6 +451,14 @@ const Sincronizar = (props: any) => {
                 token: loginData.data.usuario_api.token
             }
         }
+        const payloadSegmento = {
+            url: registerData && registerData.data.FKN.url,
+            segmento: {
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
         const payloadResult = {
             url: registerData && registerData.data.FKN.url,
             resultado: {
@@ -487,10 +501,18 @@ const Sincronizar = (props: any) => {
                 token: loginData.data.usuario_api.token
             }
         }
+        const payloadPrazo = {
+            url: registerData && registerData.data.FKN.url,
+            prazo: {
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                formato: 'JSON',
+                token: loginData.data.usuario_api.token
+            }
+        }
         const apiArray = [
             //dispatch(AgendaRequest(payloadAgenda)),
             // dispatch(AbasRequest(payloadAbas)),
-            //dispatch(ClientsRequest(payloadClient)),
+            dispatch(ClientsRequest(payloadClient)),
             // dispatch(ClassificationRequest(payloadClassification)),
             // dispatch(ClienteMediaRequest(payloadClientMedia)),
             // dispatch(CnpjVendedorRequest(payloadCnpjVendedor)),
@@ -506,15 +528,17 @@ const Sincronizar = (props: any) => {
             // dispatch(ReasonRequest(payloadDepartment)),
             // dispatch(ParameterRequest(payloadParameter)),
             // dispatch(PedidosCFOPRequest(payloadPedidoCFOP)),
-            // dispatch(PortadoreRequest(payloadPortadore)),
+            dispatch(PortadoreRequest(payloadPortadore)),
             dispatch(RamosRequest(payloadRamos)),
-            // dispatch(RecadosRequest(payloadRecados)),
-            // dispatch(RegioesRequest(payloadRegioes)),
+            //dispatch(RecadosRequest(payloadRecados)),
+            dispatch(RegioesRequest(payloadRegioes)),
+            dispatch(SegmentoRequest(payloadSegmento)),
             // dispatch(ResultRequest(payloadResult)),
             // dispatch(SeparacaoRequest(payloadSeparacao)),
             // dispatch(SituacoesRequest(payloadSituacoes)),
             // dispatch(TabelaRequest(payloadTabela)),
-            // dispatch(TransportadoraRequest(payloadTransport))
+            dispatch(TransportadoraRequest(payloadTransport)),
+            dispatch(PrazoRequest(payloadPrazo)),
         ];
         setApiProgress(0);
         try {

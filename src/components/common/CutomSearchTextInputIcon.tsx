@@ -29,10 +29,12 @@ const TextFieldIcon: React.FC<TextFieldIconProps> = ({
                     color={'black'}
                     size={25}
                 />
+                <View style={styles.textInputOuterStyle}>
                 <Text
                     style={[styles.textInputStyle,{color:value ? theme.COLORS.BLACK  :theme.COLORS.GREY}]}
                     id={fieldName}
                 >{value || placeholder}</Text>
+                </View>
             </View>
             {onEraserClick &&
                 <TouchableOpacity onPress={()=>onEraserClick(fieldName)} style={{ width: '10%', justifyContent: 'center', alignItems: 'center' }}>
@@ -48,15 +50,20 @@ const TextFieldIcon: React.FC<TextFieldIconProps> = ({
 }
 
 const styles = StyleSheet.create({
-    container:{ width: '100%', justifyContent: 'space-between', flexDirection: 'row',backgroundColor:theme.COLORS.WHITE,borderRadius: theme.moderateScale(10),paddingHorizontal: theme.horizontalScale(10),padding:theme.moderateScale(3)},
-    textInputStyle: {
+    container:{ width: '100%', justifyContent: 'space-between', flexDirection: 'row',padding:theme.moderateScale(3)},
+    textInputOuterStyle: {
         width: '90%',
         padding: theme.moderateScale(5),
-        paddingHorizontal: theme.horizontalScale(10),
         color: theme.COLORS.BLACK,
         fontSize: theme.SIZES.MEDIUM,
-        // borderBottomWidth: 1,
-        // borderBottomColor:theme.COLORS.BLACK,
+        backgroundColor:theme.COLORS.WHITE,
+        borderRadius: theme.moderateScale(10),
+        paddingHorizontal: theme.horizontalScale(10)
+    },
+    textInputStyle: {
+        width: '100%',
+        color: theme.COLORS.BLACK,
+        fontSize: theme.SIZES.MEDIUM,
     },
     iconContainer: {
         paddingLeft: 5,

@@ -119,7 +119,10 @@ export const FKNconstants = {
     cadastroEndereco:'Casastro Endereço',
 
     // Contato Tabs
-    cadastroContato:'Cadastro Contato'
+    cadastroContato:'Cadastro Contato',
+
+    // Cliente Bottom Sheet
+    searchPlaceholderSheet:'Selecione um'
 
 
 }

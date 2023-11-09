@@ -3,9 +3,14 @@ import Realm from "realm";
 import Agenda from "./AgendaSchema";
 import Cliente from "./ClienteSchema";
 import Ramo from "./RamoSchema";
+import Regio from "./RegioSchema";
+import Portador from "./PortadorSchema";
+import Transportadora from "./TransportadoraSchema";
+import Segmento from "./SegmentoSchema";
+import PrazoPagamento from "./PrazoPagamentoSchema";
 
 export const realmConfig: Realm.Configuration = {
-    schema: [Agenda,Cliente,Ramo],
+    schema: [Agenda,Cliente,Ramo,Regio,Portador,Transportadora,Segmento,PrazoPagamento],
     schemaVersion:1
 };
 export const realmContext = createRealmContext(realmConfig);

@@ -1,21 +1,22 @@
 import Realm, { ObjectSchema } from 'realm';
 
-class Ramo extends Realm.Object<Ramo> {
-  idRamo!: number;
+class Portador extends Realm.Object<Portador> {
+  idPortador!: number;
   descricao!: string; // Not null
   idEmpresaFK!: number; // Not null
+  situacao!:number;
   
 
   static schema: ObjectSchema = {
-    name: 'ramo',
+    name: 'portador',
     properties: {
-    //   _id: 'objectId',
-      idRamo: { type: 'int', indexed:true },
+      idPortador: { type: 'int', indexed:true },
       descricao: { type: 'string'},
+      situacao:{ type: 'int'},
       idEmpresaFK: { type: 'int', indexed:true },
     },
-    primaryKey: 'idRamo',
+    primaryKey: 'idPortador',
   };
 }
 
-export default Ramo;
+export default Portador;

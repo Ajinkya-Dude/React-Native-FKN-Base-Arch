@@ -10,9 +10,10 @@ interface TextInputFieldIconProps {
     value: string,
     onChangeFieldValue: (item1:any,item2:string) => void;
     style?: any,
-    onIconClick?: (item:string) => void;
+    onIconClick: (item:string) => void;
     type?:string,
-    placeholderText?:string
+    placeholderText?:string,
+    maxLength?:number
 }
 const TextInputFieldIcon: React.FC<TextInputFieldIconProps> = ({
     fieldName='',
@@ -20,10 +21,11 @@ const TextInputFieldIcon: React.FC<TextInputFieldIconProps> = ({
     onChangeFieldValue,
     onIconClick,
     type,
-    placeholderText
+    placeholderText,
+    maxLength=undefined
 }) => {
     return (
-        <View style={{width:'100%',justifyContent:'space-between',flexDirection:'row',backgroundColor: theme.COLORS.WHITE,borderRadius: theme.moderateScale(10),paddingHorizontal: theme.horizontalScale(10),marginBottom:5}}>
+        <View style={{width:'100%',justifyContent:'space-between',flexDirection:'row',marginBottom:5}}>
             <TextInput
                 style={styles.textInputStyle}
                 id={fieldName}
@@ -32,6 +34,7 @@ const TextInputFieldIcon: React.FC<TextInputFieldIconProps> = ({
                 keyboardType={type || 'default'}
                 placeholder={placeholderText?placeholderText: ''}
                 placeholderTextColor={theme.COLORS.GREY}
+                maxLength={maxLength || undefined}
             />
             <TouchableOpacity onPress={()=>onIconClick(fieldName)} style={styles.iconContainer}>
                 <Icon
@@ -48,7 +51,10 @@ const styles=StyleSheet.create({
     textInputStyle:{
         width: '90%',
         padding: theme.moderateScale(5),
-        color: theme.COLORS.BLACK
+        color: theme.COLORS.BLACK,
+        backgroundColor: theme.COLORS.WHITE,
+        borderRadius: theme.moderateScale(10),
+        paddingHorizontal: theme.horizontalScale(10)
     },
     iconContainer:{ 
         paddingLeft: 5, 
