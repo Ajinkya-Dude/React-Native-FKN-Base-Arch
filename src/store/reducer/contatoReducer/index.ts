@@ -30,7 +30,7 @@ const ContatoReducer = createSlice({
         })
             .addCase(ContatoRequest.fulfilled, (state, action: PayloadAction<any>) => {
                 state.loading = false,
-                state.contatoData = action.payload
+                //state.contatoData = action.payload
                 console.log("ContatoRequest.fulfilled", action)
             })
             .addCase(ContatoRequest.rejected, (state, action: PayloadAction<any>) => {

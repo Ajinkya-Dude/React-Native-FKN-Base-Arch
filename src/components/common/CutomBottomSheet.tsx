@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import theme from '../../theme';
@@ -8,7 +8,7 @@ import Icons from 'react-native-vector-icons/MaterialIcons';
 import { FlatList } from 'react-native-gesture-handler';
 import { FKNconstants } from '../constants';
 
-const BottomSheetCustom = ({ bottomSheetRef, closeBottomSheet, data, onSelect, dataType }: any) => {
+const BottomSheetCustom = ({ bottomSheetRef, closeBottomSheet, data, onSelect }: any) => {
     // ref
     //const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -17,6 +17,12 @@ const BottomSheetCustom = ({ bottomSheetRef, closeBottomSheet, data, onSelect, d
     const [searchValue, setSearchValue] = useState<string>('');
     const [renderArr, setRenderArr] = useState(data);
 
+
+    useEffect(()=>{
+        if(searchValue ===''){
+            setRenderArr(data);
+        }
+    },[searchValue]);
     // callbacks
     const handleSheetChanges = useCallback((index: number) => {
         console.log('handleSheetChanges', index);

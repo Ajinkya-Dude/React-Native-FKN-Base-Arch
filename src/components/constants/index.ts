@@ -1,4 +1,6 @@
 export const FKNconstants = {
+    message:'Mensagem:',
+
     appName:'FKN',
     appTitle:'Vendas Externas',
     appFullTitle:'FKN Vendas Externas',

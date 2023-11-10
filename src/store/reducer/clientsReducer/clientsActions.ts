@@ -8,7 +8,7 @@ export const ClientsRequest = createAsyncThunk('clientsRequest', async (payload?
     try {
         console.log("Response clients calling", payload,"urlParamsHelper", urlParamsHelper(payload.clients));
         const response: any = await get(`${payload.url}cliente/listar?${urlParamsHelper(payload.clients)}`);
-        console.log("Response clients", JSON.stringify(response));
+        console.log("Response clients", response);
         return response.data
     } catch (error:any) {
         console.log("Error clients", error);

@@ -9,7 +9,7 @@ export const SegmentoRequest = createAsyncThunk('segmentoRequest', async (payloa
         console.log("Response SegmentoRequest calling", payload, "urlParamsHelper", `${payload.url}segmento/listar?${urlParamsHelper(payload.segmento)}`);
         const response: any = await get(`${payload.url}segmento/listar?${urlParamsHelper(payload.segmento)}`);
         console.log("Response SegmentoRequest", JSON.stringify(response.data));
-        return response.data.list[0];
+        return response.data;
     } catch (error) {
         console.log("Error SegmentoRequest---", error);
     }

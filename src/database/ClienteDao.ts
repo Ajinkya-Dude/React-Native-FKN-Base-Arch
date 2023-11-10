@@ -12,7 +12,7 @@ const generateClientePayload = (data: any) => {
             cpfCnpj: item.cpfCnpj,
             rgIe: item.rgIe.toString(),
             atualizado: item.atualizado ? 1 : 0,
-            telefone: item.telefone,
+            telefone: item.telefone ? item.telefone.toString():null,
             celular: item.celular,
             fax: item.fax ? item.fax.toString() : null,
             email: item.email,
@@ -35,10 +35,10 @@ const generateClientePayload = (data: any) => {
             idTransportadoraFK: item.idTransportadora ? item.idTransportadora : 0,
             idSegmentoFK: item.idSegmento ? item.idSegmento : 0,
             idClassificacaoFK: item.idClassificacaoFK ? item.idClassificacaoFK : 0,
-            dtFundacao: item.dtFundacao ? item.dtFundacao : null,
-            dtUltOrc: item.dtUltOrc ? item.dtUltOrc : null,
-            dtUltVen: item.dtUltVen ? item.dtUltVen : null,
-            dtUltCon: item.dtUltCon ? item.dtUltCon : null,
+            dtFundacao: item.dtFundacao,
+            dtUltOrc: item.dtUltOrc,
+            dtUltVen: item.dtUltVen,
+            dtUltCon: item.dtUltCon,
             idProspeccaoFK: item.idProspeccaoFK ? item.idProspeccaoFK : 0,
         })
     }

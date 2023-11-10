@@ -8,9 +8,10 @@ import Portador from "./PortadorSchema";
 import Transportadora from "./TransportadoraSchema";
 import Segmento from "./SegmentoSchema";
 import PrazoPagamento from "./PrazoPagamentoSchema";
+import Contato from "./ContatoSchema";
 
 export const realmConfig: Realm.Configuration = {
-    schema: [Agenda,Cliente,Ramo,Regio,Portador,Transportadora,Segmento,PrazoPagamento],
+    schema: [Agenda,Cliente,Ramo,Regio,Portador,Transportadora,Segmento,PrazoPagamento,Contato],
     schemaVersion:1
 };
 export const realmContext = createRealmContext(realmConfig);

@@ -79,8 +79,17 @@ const Clientetab = ({ navigation, route }: any) => {
     //console.log("Realm store --", realm.objects('segmento'), "\nRamo", realm.objects('ramo'), "\nRegiao", realm.objects('regiao'), "\nportadora", realm.objects('portador'), "\ntransportadora", realm.objects('transportadora'));
 
     useEffect(()=>{
-        if(cnpjData && cnpjData.data){
+        if(cnpjData && cnpjData.data && cnpjData.data[0] && cnpjData.data[0].cnpj){
             console.log("cnpjData--",JSON.stringify(cnpjData.data));
+            const {razao_social,telefone_1,telefone_2,num_fax,email,cnae_fiscal,nome_fantasia} = cnpjData.data[0];
+            setEmail(email);
+            setRazaoSocial(razao_social);
+            setTelefone(telefone_1);
+            setCelular(telefone_2);
+            setFax(num_fax);
+            setCnae(cnae_fiscal);
+            setFantasia(nome_fantasia);
+
 
             dispatch(clearCpfCnpjData());
         }

@@ -12,6 +12,7 @@ import { PersistGate } from 'redux-persist/es/integration/react';
 import FKNapp from './src/FKNapp';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { realmConfig, realmContext } from './src/database/database';
+import Realm from "realm";
 
 
 const theme = {

@@ -10,7 +10,7 @@ class Cliente extends Realm.Object<Cliente> {
   cpfCnpj!: string; // Not null
   rgIe!: string; // Not null
   atualizado?: number;
-  telefone!: string; // Not null
+  telefone?: string; // Not null
   celular?: string;
   fax?: string;
   email?: string;
@@ -51,7 +51,7 @@ class Cliente extends Realm.Object<Cliente> {
       cpfCnpj: 'string',
       rgIe: 'string',
       atualizado: { type: 'int', optional: true },
-      telefone: 'string',
+      telefone: { type: 'string', optional: true },
       celular: { type: 'string', optional: true },
       fax: { type: 'string', optional: true },
       email: { type: 'string', optional: true },
@@ -73,7 +73,7 @@ class Cliente extends Realm.Object<Cliente> {
       enviado: 'int',
       idTransportadoraFK: { type: 'int', optional: true },
       idClassificacaoFK: { type: 'int', optional: true },
-      dtFundacao: { type: 'string', optional: true },
+      dtFundacao: { type: 'date', optional: true },
       idSegmentoFK: { type: 'int', optional: true },
       dtUltOrc: { type: 'string', optional: true },
       dtUltVen: { type: 'string', optional: true },

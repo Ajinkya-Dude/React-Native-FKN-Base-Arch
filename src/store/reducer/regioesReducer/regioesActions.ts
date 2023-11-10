@@ -9,7 +9,7 @@ export const RegioesRequest = createAsyncThunk('regioesRequest', async (payload?
         console.log("Response RegioesRequest calling", payload, "urlParamsHelper", `${payload.url}regiao/listar?${urlParamsHelper(payload.regiao)}`);
         const response: any = await get(`${payload.url}regiao/listar?${urlParamsHelper(payload.regiao)}`);
         console.log("Response RegioesRequest", JSON.stringify(response.data));
-        return response.data.list[0];
+        return response.data;
     } catch (error) {
         console.log("Error RegioesRequest---", error);
     }

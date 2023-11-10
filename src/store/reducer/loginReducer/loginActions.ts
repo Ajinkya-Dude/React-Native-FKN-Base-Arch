@@ -40,10 +40,10 @@ export const VerifyRequest = createAsyncThunk('verifyRequest', async (payload: a
     try {
         console.log("Calling Verify api", payload);
         const response: any = await get(`${payload.url}`);
-        console.log("Response Verify", JSON.stringify(response.data));
-        if (response && response.data && response.data.list && response.data.list.length && response.data.list[0].FKN && response.data.list[0].FKN.vendedores && response.data.list[0].FKN.vendedores[0].vendedor && response.data.list[0].FKN.vendedores[0].vendedor.dispositivos && response.data.list[0].FKN.vendedores[0].vendedor.dispositivos.length > 0) {
+        console.log("Response Verify", JSON.stringify(response.data),"-----------",response && response.data && response.data.list && response.data && response.data.FKN && response.data.FKN.vendedores && response.data.FKN.vendedores[0].vendedor && response.data.FKN.vendedores[0].vendedor.dispositivos && response.data.FKN.vendedores[0].vendedor.dispositivos.length > 0);
+        if (response && response.data && response.data && response.data.FKN && response.data.FKN.vendedores && response.data.FKN.vendedores[0].vendedor && response.data.FKN.vendedores[0].vendedor.dispositivos && response.data.FKN.vendedores[0].vendedor.dispositivos.length > 0) {
             dispatch(setUserIsLoggedIn(true));
-            return response.data.list[0]
+            return response.data
         }
         else if (response && response.data && response.data.FKN && response.data.FKN.Processamento && response.data.FKN.Processamento.mensagemRetorno && !payload.fromLogin) {
             Alert.alert('Mensagem', response.data.FKN.Processamento.mensagemRetorno, [

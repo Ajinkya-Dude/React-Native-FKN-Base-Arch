@@ -9,7 +9,7 @@ export const ContatoRequest = createAsyncThunk('contatoRequest', async (payload?
         console.log("Response contato calling", payload,"urlParamsHelper", urlParamsHelper(payload.contato));
         const response: any = await get(`${payload.url}contato/listar?${urlParamsHelper(payload.contato)}`);
         console.log("Response contato", JSON.stringify(response.data));
-
+        return response.data;
     } catch (error) {
         console.log("Error contato", error);
 

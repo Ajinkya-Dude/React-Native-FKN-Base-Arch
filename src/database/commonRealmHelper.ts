@@ -1,4 +1,5 @@
 import ClienteModalHelper from "./ClienteMO";
+import ContatoModalHelper from "./ContatoMo";
 import PortadorModalHelper from "./PortadorMo";
 import PrazoPagamentoModalHelper from "./PrazoPagamentoMo";
 import RamoModalHelper from "./RamoMo";
@@ -7,8 +8,7 @@ import SegmentoModalHelper from "./SegmentoMo";
 import TransportadorModalHelper from "./TransportadorMo";
 
 const RealmHelper = (type: string, data: any, realm: any, loginData: any) => {
-    console.log("Login data from Coomon Helper", loginData);
-
+    
     switch (type) {
         case 'clientsRequest/fulfilled':
             ClienteModalHelper(data, realm);
@@ -30,6 +30,9 @@ const RealmHelper = (type: string, data: any, realm: any, loginData: any) => {
             break;
         case 'prazoRequest/fulfilled':
             PrazoPagamentoModalHelper(data, realm, loginData);
+            break;
+        case 'contatoRequest/fulfilled':
+            ContatoModalHelper(data, realm, loginData);
             break;
         default:
             console.log("Type of api call", type);
