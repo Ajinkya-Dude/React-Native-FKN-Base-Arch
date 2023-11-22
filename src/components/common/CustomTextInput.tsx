@@ -11,14 +11,18 @@ interface TextInputFieldProps {
     onChangeFieldValue: (item1:any,item2:string) => void;
     style?: any,
     type?:string,
-    maxLength?:number
+    maxLength?:number,
+    placeholder?:string,
+    editable?:boolean
 }
 const TextInputField: React.FC<TextInputFieldProps> = ({
     fieldName='',
     value,
     onChangeFieldValue,
     type,
-    maxLength
+    maxLength,
+    placeholder,
+    editable
 }) => {
     return (
         <View style={{width:'100%'}}>
@@ -29,6 +33,9 @@ const TextInputField: React.FC<TextInputFieldProps> = ({
                 onChangeText={(value)=>onChangeFieldValue(value,fieldName)}
                 keyboardType={type}
                 maxLength={maxLength || undefined}
+                placeholder={placeholder}
+                placeholderTextColor={theme.COLORS.GREY}
+                editable={editable}
             />
         </View>
     );

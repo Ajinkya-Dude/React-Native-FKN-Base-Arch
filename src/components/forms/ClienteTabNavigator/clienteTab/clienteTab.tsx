@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, ScrollView, Text, View, TextInput, Platform, Linking } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, Text, View, TextInput, Platform, Linking, Alert } from 'react-native';
 import { FAB } from 'react-native-paper';
 import theme from '../../../../theme';
 import styles from './styles';
@@ -17,17 +17,29 @@ import moment from 'moment';
 import md5 from 'md5';
 import { useDispatch, useSelector } from 'react-redux';
 import { CpfCnpjSearchRequest } from '../../../../store/reducer/cpfCnpjReducer/cpfCnpjActions';
-import { formatCnpj, formatCpf, formatNumericDate, isValidDate } from '../../../../utils/globalFunctions';
+import { checkInternetConnection, formatCnpj, formatCpf, formatNumericDate, isValidDate } from '../../../../utils/globalFunctions';
 import { realmContext } from '../../../../database/database';
 import Loader from '../../../common/Loader';
 import { clearCpfCnpjData } from '../../../../store/reducer/cpfCnpjReducer';
+import { deleteCliente, insertSingleCliente } from '../../../../database/ClienteDao';
+import DeviceInfo from 'react-native-device-info';
+import { FKNconstants } from '../../../constants';
+import { SetPayload } from './payload';
+import { ClienteCadastroRequest } from '../../../../store/reducer/clientsReducer/clienteCadastroActions';
+import clientsReducer, { clearClienteCadastro, setLodingOff, setLodingOn } from '../../../../store/reducer/clientsReducer';
 
 const Clientetab = ({ navigation, route }: any) => {
     const isEdit = route && route.params && route.params.clienteEdit;
     const registerData: any = useSelector((state: any) => state.registerReducer);
     const loginData: any = useSelector((state: any) => state.loginReducer);
 
-    const cnpjData:any = useSelector((state:any)=>state.cpfCnpjReducer);
+    const cnpjData: any = useSelector((state: any) => state.cpfCnpjReducer);
+
+    const cadastroClienteData: any = useSelector((state: any) => state.clientsReducer);
+
+    console.log("cadastroClienteData",cadastroClienteData);
+    
+
 
     const dispatch = useDispatch<any>();
     const realm = realmContext.useRealm();
@@ -42,9 +54,9 @@ const Clientetab = ({ navigation, route }: any) => {
     const [idFundacao, setIdFundacao] = useState('');
     const [cnae, setCnae] = useState('');
     const [classificacao, setClassificao] = useState('');
-    const [idPortador, setIdPortador] = useState('harish');
-    const [idPrazo, setIdPrazo] = useState('harish');
-    const [idTransportadora, setIdTransportadora] = useState('harish');
+    const [idPortador, setIdPortador] = useState('');
+    const [idPrazo, setIdPrazo] = useState('');
+    const [idTransportadora, setIdTransportadora] = useState('');
     const [idRegiao, setIdRegiao] = useState('');
     const [idRamo, setIdRamo] = useState('');
     const [idSegmento, setIdSegmento] = useState('');
@@ -62,26 +74,48 @@ const Clientetab = ({ navigation, route }: any) => {
     const [idRegiaoError, setIdRegiaoError] = useState(false);
     const [idRamoError, setIdRamoError] = useState(false);
     const [contatoError, SetContatoError] = useState(false);
+    const [idFundacaoError, setIdFundacaoError] = useState(false);
 
     const [openSheet, setOpenSheet] = useState(false);
     const [searchType, setSearchType] = useState('');
     const [searchedData, setSearchedData] = useState([]);
+
+    const [uniqueId, setUniqueId] = useState<string>('');
+    const [deviceModel, setDeviceModel] = useState<string>('');
 
     const ramoData: any = realm.objects('ramo');
     const segmentoData: any = realm.objects('segmento');
     const regiaoData: any = realm.objects('regiao');
     const portadorData: any = realm.objects('portador');
     const transportadoraData: any = realm.objects('transportadora');
-    const prazoPagamentoData:any = realm.objects('prazoPagamento');
+    const prazoPagamentoData: any = realm.objects('prazoPagamento');
 
-    const isLoading = cnpjData.loading;
+    const isLoading = cnpjData.loading || cadastroClienteData.loading;
 
     //console.log("Realm store --", realm.objects('segmento'), "\nRamo", realm.objects('ramo'), "\nRegiao", realm.objects('regiao'), "\nportadora", realm.objects('portador'), "\ntransportadora", realm.objects('transportadora'));
 
     useEffect(()=>{
-        if(cnpjData && cnpjData.data && cnpjData.data[0] && cnpjData.data[0].cnpj){
-            console.log("cnpjData--",JSON.stringify(cnpjData.data));
-            const {razao_social,telefone_1,telefone_2,num_fax,email,cnae_fiscal,nome_fantasia} = cnpjData.data[0];
+        if(cadastroClienteData && cadastroClienteData.clienteCadastro && cadastroClienteData.clienteCadastro.FKN){
+            const {FKN} = cadastroClienteData.clienteCadastro;
+            if(FKN.Processamento && FKN.Processamento.codigoRetorno === 2){
+                insertClienteToDb({enviar:false})
+            }
+        }
+    },[cadastroClienteData])
+    useEffect(() => {
+        GetDeviceUniqueID();
+    }, []);
+    const GetDeviceUniqueID = () => {
+        const model = DeviceInfo.getModel();
+        setDeviceModel(model);
+        DeviceInfo.getUniqueId().then((uniqueId) => {
+            setUniqueId(uniqueId);
+        });
+    }
+    useEffect(() => {
+        if (cnpjData && cnpjData.data && cnpjData.data[0] && cnpjData.data[0].cnpj) {
+            console.log("cnpjData--", JSON.stringify(cnpjData.data));
+            const { razao_social, telefone_1, telefone_2, num_fax, email, cnae_fiscal, nome_fantasia } = cnpjData.data[0];
             setEmail(email);
             setRazaoSocial(razao_social);
             setTelefone(telefone_1);
@@ -93,12 +127,12 @@ const Clientetab = ({ navigation, route }: any) => {
 
             dispatch(clearCpfCnpjData());
         }
-    },[cnpjData]);
+    }, [cnpjData]);
 
     const bottomSheetRef = useRef<BottomSheet>(null);
 
     const openBottomSheet = (item: any) => {
-        console.log("openBottomSheet", item);
+        console.log("openBottomSheet--", item);
 
         if (bottomSheetRef.current) {
             bottomSheetRef.current.expand();
@@ -115,9 +149,9 @@ const Clientetab = ({ navigation, route }: any) => {
             setSearchedData(segmentoData)
         } else if (item === 'idPortador') {
             setSearchedData(portadorData)
-        }else if(item === 'idPrazo'){
+        } else if (item === 'idPrazo') {
             setSearchedData(prazoPagamentoData);
-        }else{
+        } else {
             setSearchedData([]);
         }
 
@@ -144,54 +178,142 @@ const Clientetab = ({ navigation, route }: any) => {
         setOpenSheet(false);
     };
 
+    const insertClienteToDb = async({enviar}:any) =>{
 
-    const onFabButtonClick = () => {
-        console.log("IdFundacao", idFundacao, "format", isValidDate(idFundacao));
+        let payload = SetPayload({
+            razaoSocial,
+            fantasia,
+            tipo,
+            cpfCnpj,
+            rgIe,
+            telefone,
+            celular,
+            fax,
+            email,
+            emailNfe,
+            idFundacao,
+            cnae,
+            idRamo: (idRamo.idRamo),
+            idRegiao: (idRegiao.idRegiao),
+            idPortador,
+            idPrazo,
+            idTransportadora,
+            idSegmento,
+            idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+        });
+        const payloadCliente = { ...payload, enviar: enviar,novoCadastro:true}
+        console.log("Calling insertClienteToDb----------------------->");
+        
+       const value = await insertSingleCliente(payloadCliente, realm);
+       if(value){
+        dispatch(setLodingOff());
+        dispatch(clearClienteCadastro())
+       }else{
+        dispatch(setLodingOff());
+       }
+    }
+
+    const onFabButtonClick = async() => {
+        deleteCliente(realm);
+        console.log("IdFundacao", idFundacao, "format", isValidDate(idFundacao), "------");
+
+        const internetCheck = await checkInternetConnection();
 
         if (!cpfCnpj.length) {
             setCpfCnpjError(true)
+        } else {
+            setCpfCnpjError(false);
         }
         if (!razaoSocial.length) {
             setRazaoSocialError(true);
+        } else {
+            setRazaoSocialError(false);
         }
         if (!fantasia.length) {
             setFantasiaError(true);
+        } else {
+            setFantasiaError(false);
         }
         if (!rgIe.length) {
             setRgIeError(true);
+        } else {
+            setRgIeError(false);
         }
         if (!telefone.length && !celular.length && !fax.length) {
             SetContatoError(true);
+        } else {
+            SetContatoError(false);
         }
         if (!email.length) {
             setEmailError(true);
+        } else {
+            setEmailError(false);
         }
         if (!emailNfe.length) {
             setEmailNfeError(true);
+        } else {
+            setEmailNfeError(false);
         }
-        if (!idRegiao.length) {
+        if (!idRegiao) {
             setIdRegiaoError(true);
+        } else {
+            setIdRegiaoError(false);
         }
-        if (!idRamo.length) {
+        if (!idRamo) {
             setIdRamoError(true)
+        } else {
+            setIdRamoError(false)
         }
-        if (!cpfCnpj.length || !razaoSocial.length || !fantasia.length || !rgIe.length || (!telefone.length && !celular.length && !fax.length) || !email.length || !emailNfe.length || !idRegiao.length || !idRamo.length) {
+        if(idFundacao && !isValidDate(idFundacao)){
+            setIdFundacaoError(true);
+        }else{
+            setIdFundacaoError(false);
+        }
+
+
+        if (!cpfCnpj.length || !razaoSocial.length || !fantasia.length || !rgIe.length || (!telefone.length && !celular.length && !fax.length) || !email.length || !emailNfe.length || !idRegiao || !idRamo || (idFundacao && !isValidDate(idFundacao))) {
+            console.log("Clikc", !idRegiao.length);
             return;
         }
-        console.log("onFabButtonClick--");
-        const dateFormat = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-  
-        // Use RegExp to match the date format
-        // if (!dateFormat.test(date)) {
-        //   return false;
+
+        let payload = SetPayload({
+            razaoSocial,
+            fantasia,
+            tipo,
+            cpfCnpj,
+            rgIe,
+            telefone,
+            celular,
+            fax,
+            email,
+            emailNfe,
+            idFundacao,
+            cnae,
+            idRamo: (idRamo.idRamo),
+            idRegiao: (idRegiao.idRegiao),
+            idPortador,
+            idPrazo,
+            idTransportadora,
+            idSegmento,
+            idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+        });
+        // if(tabelaPadrao){
+        //     Object.assign(payload,{tabelaPadrao:tabelaPadrao})
         // }
-      
-        // Extract day, month, and year
-        const [_, day, month, year] = idFundacao.match(dateFormat);
-      
-        // Create a Date object and check for a valid date
-        const parsedDate = new Date(year, month - 1, day);
-        console.log("DT Fundacacao","parsedDate",parsedDate,"------",idFundacao,new Date(idFundacao), moment(new Date(year, month - 1, day)).format('yyyy-MM-DD HH:mm:ss'));
+        const newPayload = {
+            cliente: { ...payload, 
+                //android: uniqueId, 
+                token: loginData.data.usuario_api.token },
+            url: registerData && registerData.data.FKN.url
+        }
+        console.log("Payload----------->", payload);
+        if(internetCheck){
+            dispatch(setLodingOn());
+            dispatch(ClienteCadastroRequest(newPayload));
+        }else{
+            dispatch(setLodingOn());
+            insertClienteToDb({enviar:true});
+        }
 
     }
 
@@ -214,10 +336,10 @@ const Clientetab = ({ navigation, route }: any) => {
         if (fieldName === 'cpfcnpj') {
             if (tipo !== 'JURIDICO') {
                 // if (value.length < 12)
-                    setCpfCnpj(formatCpf(value))
+                setCpfCnpj(formatCpf(value))
             } else {
                 // if (value.length < 15)
-                    setCpfCnpj(formatCnpj(value))
+                setCpfCnpj(formatCnpj(value))
             }
             setCpfCnpjError(false);
         }
@@ -255,13 +377,13 @@ const Clientetab = ({ navigation, route }: any) => {
         }
     }
 
-    
+
     const onCpfCnpjSearch = () => {
-        if (tipo !== 'JURIDICO' || cpfCnpj.length<18) {
+        if (tipo !== 'JURIDICO' || cpfCnpj.length < 18) {
             return;
         }
         const todayDate = moment().format('YYYYMMDD') + registerData.data.FKN.contrato;
-        const cnpjNumber = cpfCnpj.replaceAll('.', '').replace('/', '').replace('-', '').slice(0,14)
+        const cnpjNumber = cpfCnpj.replaceAll('.', '').replace('/', '').replace('-', '').slice(0, 14)
         const payload = {
             view: 'get',
             formato: 'json',
@@ -311,6 +433,8 @@ const Clientetab = ({ navigation, route }: any) => {
             setIdSegmento(item)
         } else if (searchType === 'idPortador') {
             setIdPortador(item)
+        } else if (searchType === 'idPrazo') {
+            setIdPrazo(item)
         }
         closeBottomSheet()
     }
@@ -329,7 +453,7 @@ const Clientetab = ({ navigation, route }: any) => {
                 >
 
                     <View style={styles.fieldContainer}>
-                        <Text style={[styles.fieldLabel, { color: tipoError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>Tipo*</Text>
+                        <Text style={[styles.fieldLabel, { color: tipoError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.tipo}*</Text>
                         <DropdownField
                             items={clienteCadastroTipo}
                             selectedItem={tipo}
@@ -337,7 +461,7 @@ const Clientetab = ({ navigation, route }: any) => {
                         />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Text style={[styles.fieldLabel, { color: cpfCnpjError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>CPF/CNPJ*</Text>
+                        <Text style={[styles.fieldLabel, { color: cpfCnpjError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.cpfcnpj}*</Text>
                         <CustomTextInputIcon
                             fieldName='cpfcnpj'
                             value={cpfCnpj}
@@ -348,7 +472,7 @@ const Clientetab = ({ navigation, route }: any) => {
                         />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Text style={[styles.fieldLabel, { color: razaoSocialError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>Razão Social*</Text>
+                        <Text style={[styles.fieldLabel, { color: razaoSocialError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.razaoSocial}*</Text>
                         <CustomTextInput
                             fieldName='razaoSocial'
                             value={razaoSocial}
@@ -356,7 +480,7 @@ const Clientetab = ({ navigation, route }: any) => {
                         />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Text style={[styles.fieldLabel, { color: fantasiaError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>Fantasia*</Text>
+                        <Text style={[styles.fieldLabel, { color: fantasiaError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.fantasia}*</Text>
                         <CustomTextInput
                             fieldName='fantasia'
                             value={fantasia}
@@ -364,7 +488,7 @@ const Clientetab = ({ navigation, route }: any) => {
                         />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Text style={[styles.fieldLabel, { color: rgIeError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>RG/IE*</Text>
+                        <Text style={[styles.fieldLabel, { color: rgIeError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.rgIe}*</Text>
                         <CustomTextInput
                             fieldName='rgIe'
                             value={rgIe}
@@ -372,14 +496,14 @@ const Clientetab = ({ navigation, route }: any) => {
                         />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Text style={[styles.fieldLabel, { color: contatoError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>Contatos*</Text>
+                        <Text style={[styles.fieldLabel, { color: contatoError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.contatos}*</Text>
                         <CustomTextInputIcon
                             fieldName='telefone'
                             value={telefone}
                             onChangeFieldValue={onChangeFieldValue}
                             onIconClick={onIconClick}
                             type='phone-pad'
-                            placeholderText='Telefone'
+                            placeholderText={FKNconstants.telephone}
                         />
                         <CustomTextInputIcon
                             fieldName='celular'
@@ -387,7 +511,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             onChangeFieldValue={onChangeFieldValue}
                             onIconClick={onIconClick}
                             type='phone-pad'
-                            placeholderText='Celular'
+                            placeholderText={FKNconstants.celular}
                         />
                         <CustomTextInputIcon
                             fieldName='fax'
@@ -395,11 +519,11 @@ const Clientetab = ({ navigation, route }: any) => {
                             onChangeFieldValue={onChangeFieldValue}
                             onIconClick={onIconClick}
                             type='phone-pad'
-                            placeholderText='Fax'
+                            placeholderText={FKNconstants.fax}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Text style={[styles.fieldLabel, { color: emailError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>E-mail*</Text>
+                        <Text style={[styles.fieldLabel, { color: emailError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.email}*</Text>
                         <CustomTextInput
                             fieldName='email'
                             value={email}
@@ -407,7 +531,7 @@ const Clientetab = ({ navigation, route }: any) => {
                         />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Text style={[styles.fieldLabel, { color: emailNfeError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>E-mail NFE*</Text>
+                        <Text style={[styles.fieldLabel, { color: emailNfeError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.emailNfe}*</Text>
                         <CustomTextInput
                             fieldName='emailNfe'
                             value={emailNfe}
@@ -415,17 +539,19 @@ const Clientetab = ({ navigation, route }: any) => {
                         />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Text style={styles.fieldLabel}>Data Fundação</Text>
+                        <Text style={styles.fieldLabel}>{FKNconstants.dataFundacao}</Text>
                         <CustomTextInput
                             fieldName='idFundacao'
                             value={idFundacao}
                             onChangeFieldValue={onChangeFieldValue}
                             type='phone-pad'
                             maxLength={10}
+                            placeholder={FKNconstants.dataFundacaoPlaceholder}
                         />
+                        {idFundacaoError && <Text style={[styles.fieldLabel, { color: theme.COLORS.ERROR}]}>{FKNconstants.dataFundacaoValid}</Text>}
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Text style={styles.fieldLabel}>CNAE</Text>
+                        <Text style={styles.fieldLabel}>{FKNconstants.cnae}</Text>
                         <CustomTextInput
                             fieldName='cnae'
                             value={cnae}
@@ -435,7 +561,7 @@ const Clientetab = ({ navigation, route }: any) => {
                         />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Text style={styles.fieldLabel}>Classificação</Text>
+                        <Text style={styles.fieldLabel}>{FKNconstants.classificacao}</Text>
                         <CustomTextInput
                             fieldName='classificacao'
                             value={classificacao}
@@ -443,62 +569,109 @@ const Clientetab = ({ navigation, route }: any) => {
                         />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Text style={styles.fieldLabel}>Portador</Text>
+                        <Text style={styles.fieldLabel}>{FKNconstants.portador}</Text>
                         <CutomSearchTextInputIcon
                             fieldName='idPortador'
                             value={idPortador && idPortador.descricao}
                             onChangeFieldValue={onSeachOpenBottomSheet}
                             onEraserClick={onEraserClick}
-                            placeholder={'Selecione uma Portador'}
+                            placeholder={FKNconstants.portadorPlaceholder}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Text style={styles.fieldLabel}>Prazo</Text>
+                        <Text style={styles.fieldLabel}>{FKNconstants.prazo}</Text>
                         <CutomSearchTextInputIcon
                             fieldName='idPrazo'
-                            value={idPrazo}
+                            value={idPrazo && idPrazo.descricao}
                             onChangeFieldValue={onSeachOpenBottomSheet}
                             onEraserClick={onEraserClick}
-                            placeholder={'Selecione uma Prazo'}
+                            placeholder={FKNconstants.prazoPlaceholder}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Text style={styles.fieldLabel}>Transportadora</Text>
+                        <Text style={styles.fieldLabel}>{FKNconstants.transportadora}</Text>
                         <CutomSearchTextInputIcon
                             fieldName='idTransportadora'
                             value={idTransportadora && idTransportadora.descricao}
                             onChangeFieldValue={onSeachOpenBottomSheet}
                             onEraserClick={onEraserClick}
-                            placeholder={'Selecione uma Transportadora'}
+                            placeholder={FKNconstants.transportadoraplaceholder}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Text style={[styles.fieldLabel, { color: idRegiaoError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>Região*</Text>
+                        <Text style={[styles.fieldLabel, { color: idRegiaoError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.regiao}*</Text>
                         <CutomSearchTextInputIcon
                             fieldName='idRegiao'
                             value={idRegiao && idRegiao.descricao}
                             onChangeFieldValue={onSeachOpenBottomSheet}
-                            placeholder={'Selecione uma Região'}
+                            placeholder={FKNconstants.regiaoPlaceholder}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Text style={[styles.fieldLabel, { color: idRamoError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>Ramo*</Text>
+                        <Text style={[styles.fieldLabel, { color: idRamoError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.ramo}*</Text>
                         <CutomSearchTextInputIcon
                             fieldName='idRamo'
                             value={idRamo && idRamo.descricao}
                             onChangeFieldValue={onSeachOpenBottomSheet}
-                            placeholder={'Selecione um Ramo'}
+                            placeholder={FKNconstants.ramoPlaceholder}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Text style={styles.fieldLabel}>Segmento</Text>
+                        <Text style={styles.fieldLabel}>{FKNconstants.segmento}</Text>
                         <CutomSearchTextInputIcon
                             fieldName='idSegmento'
                             value={idSegmento && idSegmento.descricao}
                             onChangeFieldValue={onSeachOpenBottomSheet}
-                            placeholder={'Selecione um Segmento'}
+                            placeholder={FKNconstants.segmentoPlaceholder}
                         />
                     </View>
+                    {isEdit &&
+                        <>
+                            <View style={styles.infoStyle}>
+                                <Text style={styles.fieldLabel}>{FKNconstants.information}</Text>
+                            </View>
+                            <View style={styles.fieldContainer}>
+                                <Text style={styles.fieldLabel}>{FKNconstants.tabelaPadrao}</Text>
+                                <CustomTextInput
+                                    fieldName='classificacao'
+                                    value={classificacao}
+                                    onChangeFieldValue={onChangeFieldValue}
+                                    placeholder={FKNconstants.tabelaPadrao}
+                                    editable={false}
+                                />
+                            </View>
+                            <View style={styles.fieldContainer}>
+                                <Text style={styles.fieldLabel}>{FKNconstants.ultimoContato}</Text>
+                                <CustomTextInput
+                                    fieldName='classificacao'
+                                    value={classificacao}
+                                    placeholder={FKNconstants.ultimoContato}
+                                    onChangeFieldValue={onChangeFieldValue}
+                                    editable={false}
+                                />
+                            </View>
+                            <View style={styles.fieldContainer}>
+                                <Text style={styles.fieldLabel}>{FKNconstants.ultimoOrcamento}</Text>
+                                <CustomTextInput
+                                    fieldName='classificacao'
+                                    value={classificacao}
+                                    placeholder={FKNconstants.ultimoOrcamento}
+                                    onChangeFieldValue={onChangeFieldValue}
+                                    editable={false}
+                                />
+                            </View>
+                            <View style={styles.fieldContainer}>
+                                <Text style={styles.fieldLabel}>{FKNconstants.ultimoVenda}</Text>
+                                <CustomTextInput
+                                    fieldName='classificacao'
+                                    value={classificacao}
+                                    placeholder={FKNconstants.ultimoVenda}
+                                    onChangeFieldValue={onChangeFieldValue}
+                                    editable={false}
+                                />
+                            </View>
+                        </>
+                    }
                 </ScrollView>
             </KeyboardAvoidingView>
             {openSheet &&

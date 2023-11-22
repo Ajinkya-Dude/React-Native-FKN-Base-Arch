@@ -29,6 +29,10 @@ const styles = StyleSheet.create({
         color:theme.COLORS.BLACK,
         marginBottom:theme.moderateScale(5)
     },
+    infoStyle:{
+        alignItems:'center',
+        marginTop:theme.verticalScale(10)
+    }
 });
 
 export default styles;

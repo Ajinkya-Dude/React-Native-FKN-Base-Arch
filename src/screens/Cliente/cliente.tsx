@@ -29,8 +29,7 @@ const Cliente = (props: any) => {
     const [selectedDropdownFilter, setDropdownFilter] = useState('ativo');
 
 
-    //const db = SQLite.openDatabase({ name: 'fkn_vendas_react-native.db', location: 'default' });
-    //SQLite.enablePromise(true);
+
     const data = [
         {
             "idAgendaWeb": 5,
@@ -169,7 +168,7 @@ const Cliente = (props: any) => {
         navigation.openDrawer();
     };
     function onRealmChange() {
-        console.log("Something changed!");
+        console.log("Something changed!",realm.objects('cliente'));
     }
     useEffect(() => {
         try {
