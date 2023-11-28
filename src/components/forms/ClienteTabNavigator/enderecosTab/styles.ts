@@ -14,7 +14,21 @@ const styles = StyleSheet.create({
         bottom: 0,
         backgroundColor:theme.COLORS.GREEN_DARK,
         borderRadius:50
-    }
+    },
+    subContainer:{
+        width:'100%',
+        paddingHorizontal:theme.horizontalScale(15),
+        // paddingBottom:100
+    },
+    fieldContainer:{
+        marginVertical:theme.verticalScale(5)
+    },
+    fieldLabel:{
+        fontFamily:theme.FONTFAMILY.BLACK,
+        fontSize:theme.SIZES.MEDIUM,
+        color:theme.COLORS.BLACK,
+        marginBottom:theme.moderateScale(5)
+    },
 });
 
 export default styles;

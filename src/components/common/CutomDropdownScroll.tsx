@@ -51,11 +51,15 @@ const DropdownField: React.FC<DropdownProps> = ({ items, selectedItem, setSelect
                     //left: position.x,
                     width: '92%',
                     alignSelf: 'center',
-                    backgroundColor: 'white',
-                    padding:theme.moderateScale(10)
+                    backgroundColor: theme.COLORS.WHITE,
+                    padding:theme.moderateScale(10),
+                    maxHeight:150,
+
                 }}>
                     <View>
-                        <ScrollView>
+                        <ScrollView 
+                        showsVerticalScrollIndicator={false}
+                        nestedScrollEnabled={true}>
                             {items && items.map((item: any, index) => (
                                 <TouchableOpacity style={{paddingVertical:theme.verticalScale(5)}} key={index} onPress={() => handleItemPress(item)}>
                                     <Text style={{ color: theme.COLORS.BLACK }}>{item.label}</Text>
@@ -81,7 +85,7 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
         flexDirection:'row',
         borderRadius:theme.moderateScale(10),
-        backgroundColor:theme.COLORS.WHITE
+        backgroundColor:theme.COLORS.WHITE,
     }
 })
 

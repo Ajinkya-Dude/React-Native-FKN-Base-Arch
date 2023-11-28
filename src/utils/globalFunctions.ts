@@ -105,7 +105,6 @@ export const isValidDate = (date: any) => {
 export const checkInternetConnection = async () => {
     try {
         const state = await NetInfo.fetch();
-        console.log("State after check",state);
         return state.isConnected;
     } catch (error) {
         console.error('Error checking internet connection:', error);

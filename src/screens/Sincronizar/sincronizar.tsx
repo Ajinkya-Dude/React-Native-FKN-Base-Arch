@@ -31,7 +31,7 @@ import { ComodatoRequest } from "../../store/reducer/comodatoReducer/comodatoAct
 import { ContatoRequest } from "../../store/reducer/contatoReducer/contatoActions";
 import ProcessModal from "./sincronizarModal";
 import NetInfo from "@react-native-community/netinfo";
-import { setUserFirstSync } from "../../store/reducer/loginReducer";
+import { setUserFirstSync, setUserIsLoggedOut } from "../../store/reducer/loginReducer";
 import { ParameterRequest } from "../../store/reducer/parameterReducer/parameterActions";
 import { PedidosCFOPRequest } from "../../store/reducer/pedidosCFOPSReducer/pedidosCFOPActions";
 import { PortadoreRequest } from "../../store/reducer/portadoresReducer/portadoreActions";
@@ -54,6 +54,7 @@ import moment from "moment";
 import md5 from "md5";
 import { SegmentoRequest } from "../../store/reducer/segmentoReducer/segmentoActions";
 import { PrazoRequest } from "../../store/reducer/prazoReducer/prazoActions";
+import { ProdutoRequest } from "../../store/reducer/produtoReducer/produtoActions";
 // const {useObject, useQuery,useRealm } = createRealmContext(realmConfig);
 
 const Sincronizar = (props: any) => {
@@ -82,7 +83,7 @@ const Sincronizar = (props: any) => {
     //console.log("Realm store --",realm.objects('segmento'),"\nRamo",realm.objects('ramo'),"\nRegiao",realm.objects('regiao'),"\nportadora",realm.objects('portador'),"\ntransportadora",realm.objects('transportadora'),"PrazoPagamento",realm.objects('prazoPagamento'));
 
     //console.log("realmObject data", realmObject, "realmQuery", JSON.stringify(realmQuery.sorted('name')), " new Realm.BSON.ObjectId(),", new Realm.BSON.ObjectId("653b83d28b20763ce160f2e4"));
-    const clienteRealm = realm.objects('cliente')
+    const clienteRealm = realm.objects('tabelaFaixa')
     //console.log("clienteRealm-=--------", clienteRealm);
 
     //console.log("Cliente data from realm item--", realm.objects('cliente'),realm.schema.map((schema) => schema.name));
@@ -262,6 +263,15 @@ const Sincronizar = (props: any) => {
             {
                 text: 'Ok',
                 onPress: () => { navigation.navigate('Início') },
+                style: 'cancel',
+            },
+        ]);
+    }
+    const AlertOnTokenInvalid = (message:string) => {
+        Alert.alert(FKNconstants.message, message, [
+            {
+                text: 'Ok',
+                onPress: () => { dispatch(setUserIsLoggedOut(false)) },
                 style: 'cancel',
             },
         ]);
@@ -511,10 +521,19 @@ const Sincronizar = (props: any) => {
                 token: loginData.data.usuario_api.token
             }
         }
+        const payloadProduto = {
+            url: registerData && registerData.data.FKN.url,
+            produto: {
+                formato: 'JSON',
+                idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+                idVendedor: loginData.verifyData.FKN.vendedores[0].vendedor.idVendedorWeb,
+                token: loginData.data.usuario_api.token
+            }
+        }
         const apiArray = [
-            //dispatch(AgendaRequest(payloadAgenda)),
+            // dispatch(AgendaRequest(payloadAgenda)),
             // dispatch(AbasRequest(payloadAbas)),
-            dispatch(ClientsRequest(payloadClient)),
+            // dispatch(ClientsRequest(payloadClient)),
             // dispatch(ClassificationRequest(payloadClassification)),
             // dispatch(ClienteMediaRequest(payloadClientMedia)),
             // dispatch(CnpjVendedorRequest(payloadCnpjVendedor)),
@@ -529,20 +548,23 @@ const Sincronizar = (props: any) => {
             // dispatch(ModificationRequest(payloadDepartment)),
             // dispatch(ReasonRequest(payloadDepartment)),
             // dispatch(ParameterRequest(payloadParameter)),
-            // dispatch(PedidosCFOPRequest(payloadPedidoCFOP)),
-            dispatch(PortadoreRequest(payloadPortadore)),
-            dispatch(RamosRequest(payloadRamos)),
+            //dispatch(PedidosCFOPRequest(payloadPedidoCFOP)),
+            // dispatch(PortadoreRequest(payloadPortadore)),
+            // dispatch(RamosRequest(payloadRamos)),
             //dispatch(RecadosRequest(payloadRecados)),
-            dispatch(RegioesRequest(payloadRegioes)),
-            dispatch(SegmentoRequest(payloadSegmento)),
+            // dispatch(RegioesRequest(payloadRegioes)),
+            // dispatch(SegmentoRequest(payloadSegmento)),
             //dispatch(ResultRequest(payloadResult)),
             // dispatch(SeparacaoRequest(payloadSeparacao)),
             // dispatch(SituacoesRequest(payloadSituacoes)),
-            // dispatch(TabelaRequest(payloadTabela)),
-            dispatch(TransportadoraRequest(payloadTransport)),
-            dispatch(PrazoRequest(payloadPrazo)),
+            dispatch(TabelaRequest(payloadTabela)),
+            // dispatch(TransportadoraRequest(payloadTransport)),
+            // dispatch(PrazoRequest(payloadPrazo)),
+            //dispatch(ProdutoRequest(payloadProduto)),
         ];
         setApiProgress(0);
+        let tokenInvalid = false;
+        let tokenInvalidMessage = '';
         try {
             setOpenSynchronizeModal(true);
             await Promise.all(
@@ -555,6 +577,11 @@ const Sincronizar = (props: any) => {
                                 console.log("calling api in promise", JSON.stringify(call));
                                 if (call._j !== null) {
                                     const { type, payload } = call._j;
+                                    if(payload && payload.FKN && payload.FKN.Processamento && payload.FKN.Processamento.codigoRetorno == 1){
+                                        tokenInvalid = true;
+                                        tokenInvalidMessage = payload.FKN.Processamento.mensagemRetorno;
+                                        throw new Error('Token invalid. Stopping further API calls.');
+                                    }
                                     RealmHelper(type, payload, realm, loginData);
                                     return 1
                                 }
@@ -566,12 +593,16 @@ const Sincronizar = (props: any) => {
                         .catch((error: any) => {
                             // Handle errors as needed
                             console.error('API Error:', error);
+                            throw new Error('Token invalid. Stopping further API calls.');
                         });
                 })
             )
             SuccessAlertOnSynchronization();
         } catch (error) {
-            console.log("Api call error", error)
+            if(tokenInvalid){
+                AlertOnTokenInvalid(tokenInvalidMessage);
+            }
+            console.log("Api call error", error,"Type",typeof error)
         } finally {
             setOpenSynchronizeModal(false);
         }

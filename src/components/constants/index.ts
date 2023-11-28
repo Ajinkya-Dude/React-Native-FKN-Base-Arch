@@ -145,6 +145,9 @@ export const FKNconstants = {
     ultimoOrcamento:'Último Orçamento',
     ultimoVenda:'Último Venda',
 
+    insertClienteSuccessfully:'Criado com sucesso!',
+
+
     // Cliente Register Tabs
     clienteTab:'CLIENTE',
     enderecosTab:'ENDEREÇOS',
@@ -155,6 +158,16 @@ export const FKNconstants = {
 
     // Contato Tabs
     cadastroContato:'Cadastro Contato',
+    codigo:'Código',
+    billingAddress:'Endereço  de Faturamento',
+    cep:'CEP',
+    nome:'Nome',
+    rua:'Rua',
+    numero:'Número',
+    complemento:'Complemento',
+    bairro:'Bairro',
+    cidade:'Cidade',
+    uf:'UF',
 
     // Cliente Bottom Sheet
     searchPlaceholderSheet:'Selecione um'

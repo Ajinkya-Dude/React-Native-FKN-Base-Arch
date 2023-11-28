@@ -27,6 +27,8 @@ import { FKNconstants } from '../../../constants';
 import { SetPayload } from './payload';
 import { ClienteCadastroRequest } from '../../../../store/reducer/clientsReducer/clienteCadastroActions';
 import clientsReducer, { clearClienteCadastro, setLodingOff, setLodingOn } from '../../../../store/reducer/clientsReducer';
+import Toast from 'react-native-toast-message';
+import { ShowToastMessage } from '../../../../utils/ShowToastMessage';
 
 const Clientetab = ({ navigation, route }: any) => {
     const isEdit = route && route.params && route.params.clienteEdit;
@@ -207,14 +209,15 @@ const Clientetab = ({ navigation, route }: any) => {
        const value = await insertSingleCliente(payloadCliente, realm);
        if(value){
         dispatch(setLodingOff());
-        dispatch(clearClienteCadastro())
+        dispatch(clearClienteCadastro());
+        ShowToastMessage({type:'success', message1:FKNconstants.insertClienteSuccessfully})
        }else{
         dispatch(setLodingOff());
        }
     }
 
     const onFabButtonClick = async() => {
-        deleteCliente(realm);
+       deleteCliente(realm);
         console.log("IdFundacao", idFundacao, "format", isValidDate(idFundacao), "------");
 
         const internetCheck = await checkInternetConnection();
@@ -770,6 +773,7 @@ const Clientetab = ({ navigation, route }: any) => {
             }
             {FabButton()}
             {isLoading && <Loader />}
+            <Toast />
         </View>
     );
 }

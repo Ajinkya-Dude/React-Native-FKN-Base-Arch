@@ -2,13 +2,15 @@ import ClienteModalHelper from "./ClienteMO";
 import ContatoModalHelper from "./ContatoMo";
 import PortadorModalHelper from "./PortadorMo";
 import PrazoPagamentoModalHelper from "./PrazoPagamentoMo";
+import ProdutoModalHelper from "./ProdutoMO";
 import RamoModalHelper from "./RamoMo";
 import RegioModalHelper from "./RegioMo";
 import SegmentoModalHelper from "./SegmentoMo";
+import TabelaModalHelper from "./TabelaMO";
 import TransportadorModalHelper from "./TransportadorMo";
 
 const RealmHelper = (type: string, data: any, realm: any, loginData: any) => {
-    
+
     switch (type) {
         case 'clientsRequest/fulfilled':
             ClienteModalHelper(data, realm);
@@ -33,6 +35,12 @@ const RealmHelper = (type: string, data: any, realm: any, loginData: any) => {
             break;
         case 'contatoRequest/fulfilled':
             ContatoModalHelper(data, realm, loginData);
+            break;
+        case 'produtoRequest/fulfilled':
+            ProdutoModalHelper(data, realm, loginData);
+            break;
+        case 'tabelaRequest/fulfilled':
+            TabelaModalHelper(data, realm, loginData);
             break;
         default:
             console.log("Type of api call", type);

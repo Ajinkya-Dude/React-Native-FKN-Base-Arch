@@ -8,9 +8,10 @@ export const TabelaRequest = createAsyncThunk('tabelaRequest', async (payload?: 
     try {
         console.log("Response TabelaRequest calling", payload, "urlParamsHelper", `${payload.url}tabela/listar?${urlParamsHelper(payload.tabela)}`);
         const response: any = await get(`${payload.url}tabela/listar?${urlParamsHelper(payload.tabela)}`);
-        console.log("Response TabelaRequest", JSON.stringify(response.data));
-        //return response.data;
+        console.log("Response TabelaRequest", JSON.stringify(response.data.length));
+        return response.data;
     } catch (error) {
         console.log("Error TabelaRequest---", error);
+        throw new Error(error);
     }
 })

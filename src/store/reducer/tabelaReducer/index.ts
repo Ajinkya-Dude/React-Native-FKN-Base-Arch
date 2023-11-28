@@ -31,7 +31,7 @@ const TabelaReducer = createSlice({
         })
             .addCase(TabelaRequest.fulfilled, (state, action: PayloadAction<any>) => {
                 state.loading = false,
-                state.tabelaData = action.payload
+                //state.tabelaData = action.payload
                 console.log("TabelaRequest.fulfilled", action)
             })
             .addCase(TabelaRequest.rejected, (state, action: PayloadAction<any>) => {

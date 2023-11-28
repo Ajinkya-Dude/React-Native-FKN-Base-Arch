@@ -1,3 +1,4 @@
+import moment from 'moment';
 import Realm from 'realm';
 const generateClientePayload = (data: any) => {
     const clienteData = [];
@@ -12,7 +13,7 @@ const generateClientePayload = (data: any) => {
             cpfCnpj: item.cpfCnpj,
             rgIe: item.rgIe.toString(),
             atualizado: item.atualizado ? 1 : 0,
-            telefone: item.telefone ? item.telefone.toString():null,
+            telefone: item.telefone ? item.telefone.toString() : null,
             celular: item.celular,
             fax: item.fax ? item.fax.toString() : null,
             email: item.email,
@@ -61,8 +62,8 @@ const insertCliente = (data: any, realm: any) => {
     }
 }
 const insertSingleCliente = (item: any, realm: any) => {
-    console.log("insertSingleCliente payload",item);
-    
+    console.log("insertSingleCliente payload", item);
+
     const data = {
         _id: new Realm.BSON.ObjectId(),
         idClienteWeb: item.idClienteWeb,
@@ -73,7 +74,7 @@ const insertSingleCliente = (item: any, realm: any) => {
         cpfCnpj: item.cpfCnpj,
         rgIe: item.rgIe.toString(),
         atualizado: item.atualizado ? 1 : 0,
-        telefone: item.telefone ? item.telefone.toString():null,
+        telefone: item.telefone ? item.telefone.toString() : null,
         celular: item.celular,
         fax: item.fax ? item.fax.toString() : null,
         email: item.email,
@@ -96,17 +97,17 @@ const insertSingleCliente = (item: any, realm: any) => {
         idTransportadoraFK: item.idTransportadora ? item.idTransportadora : 0,
         idSegmentoFK: item.idSegmento ? item.idSegmento : 0,
         idClassificacaoFK: item.idClassificacaoFK ? item.idClassificacaoFK : 0,
-        dtFundacao: item.dtFundacao ?item.dtFundacao : null,
-        dtUltOrc: item.dtUltOrc ?item.dtUltOrc : null,
-        dtUltVen: item.dtUltVen ? item.dtUltVen : null,
-        dtUltCon: item.dtUltCon ? item.dtUltCon : null,
+        dtFundacao: item.dtFundacao ? item.dtFundacao : null,
+        dtUltOrc: item.dtUltOrc ? moment(item.dtUltOrc).format('yyyy-MM-DD HH:mm:ss') : null,
+        dtUltVen: item.dtUltVen ? moment(item.dtUltVen).format('yyyy-MM-DD HH:mm:ss') : null,
+        dtUltCon: item.dtUltCon ? moment(item.dtUltCon).format('yyyy-MM-DD HH:mm:ss') : null,
         idProspeccaoFK: item.idProspeccaoFK ? item.idProspeccaoFK : 0,
     }
-    console.log("AFter processing payload for cliente",data);
-    
+    console.log("AFter processing payload for cliente", data);
+
     try {
         realm.write(() => {
-                realm.create('cliente', data);
+            realm.create('cliente', data);
         })
         return 1
     } catch (error) {
