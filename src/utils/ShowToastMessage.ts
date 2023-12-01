@@ -6,7 +6,7 @@ interface toastMessage {
     message2?:string
 }
 export const ShowToastMessage = ({type,message1,message2}:toastMessage) => {
-    console.log("calling toast");
+    console.log("calling toast",{type,message1,message2});
     
     Toast.show({
       type: type,

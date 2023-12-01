@@ -13,7 +13,9 @@ interface TextInputFieldProps {
     type?:string,
     maxLength?:number,
     placeholder?:string,
-    editable?:boolean
+    editable?:boolean,
+    onFocusTextInput?:()=>void,
+    onSubmitTextInput?:()=>void
 }
 const TextInputField: React.FC<TextInputFieldProps> = ({
     fieldName='',
@@ -22,7 +24,9 @@ const TextInputField: React.FC<TextInputFieldProps> = ({
     type,
     maxLength,
     placeholder,
-    editable
+    editable,
+    onFocusTextInput,
+    onSubmitTextInput
 }) => {
     return (
         <View style={{width:'100%'}}>
@@ -36,6 +40,8 @@ const TextInputField: React.FC<TextInputFieldProps> = ({
                 placeholder={placeholder}
                 placeholderTextColor={theme.COLORS.GREY}
                 editable={editable}
+                onFocus={onFocusTextInput}
+                onSubmitEditing={onSubmitTextInput}
             />
         </View>
     );

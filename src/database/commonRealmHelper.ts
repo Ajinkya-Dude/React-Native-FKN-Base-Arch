@@ -1,5 +1,6 @@
 import ClienteModalHelper from "./ClienteMO";
 import ContatoModalHelper from "./ContatoMo";
+import EnderecoModalHelper from "./EnderecoMO";
 import PortadorModalHelper from "./PortadorMo";
 import PrazoPagamentoModalHelper from "./PrazoPagamentoMo";
 import ProdutoModalHelper from "./ProdutoMO";
@@ -41,6 +42,9 @@ const RealmHelper = (type: string, data: any, realm: any, loginData: any) => {
             break;
         case 'tabelaRequest/fulfilled':
             TabelaModalHelper(data, realm, loginData);
+            break;
+        case 'enderecoRequest/fulfilled':
+            EnderecoModalHelper(data, realm, loginData);
             break;
         default:
             console.log("Type of api call", type);

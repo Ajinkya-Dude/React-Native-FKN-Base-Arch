@@ -5,7 +5,8 @@ import theme from "../../theme";
 interface CheckBoxInterface extends CheckBoxProps {
     type?: string;
     checkedColor?: string;
-    lable?:string
+    lable?:string,
+    checboxStyle?:any
 }
 
 const Checkbox = ({
@@ -13,7 +14,8 @@ const Checkbox = ({
     value,
     onValueChange,
     checkedColor,
-    lable
+    lable,
+    checboxStyle
 }: CheckBoxInterface) => {
     return (
         <View style={style.conatiner}>
@@ -21,7 +23,7 @@ const Checkbox = ({
                 value={value}
                 onValueChange={onValueChange}
                 boxType={type ? type : 'square'}
-                style={style.checboxStyle}
+                style={checboxStyle ? checboxStyle : style.checboxStyle}
                 onTintColor={checkedColor ? checkedColor : '#398F5A'}
                 onCheckColor={checkedColor ? checkedColor : '#398F5A'}
                 tintColors={{ true: checkedColor ? checkedColor : '#398F5A', false: '' }}

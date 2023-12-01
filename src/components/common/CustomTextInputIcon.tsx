@@ -13,7 +13,10 @@ interface TextInputFieldIconProps {
     onIconClick: (item:string) => void;
     type?:string,
     placeholderText?:string,
-    maxLength?:number
+    maxLength?:number,
+    iconName?:string,
+    onSubmitTextInput?:()=>void,
+    onFocusTextInput?:()=>void,
 }
 const TextInputFieldIcon: React.FC<TextInputFieldIconProps> = ({
     fieldName='',
@@ -22,7 +25,10 @@ const TextInputFieldIcon: React.FC<TextInputFieldIconProps> = ({
     onIconClick,
     type,
     placeholderText,
-    maxLength=undefined
+    maxLength=undefined,
+    iconName,
+    onSubmitTextInput,
+    onFocusTextInput
 }) => {
     return (
         <View style={{width:'100%',justifyContent:'space-between',flexDirection:'row',marginBottom:5}}>
@@ -35,10 +41,12 @@ const TextInputFieldIcon: React.FC<TextInputFieldIconProps> = ({
                 placeholder={placeholderText?placeholderText: ''}
                 placeholderTextColor={theme.COLORS.GREY}
                 maxLength={maxLength || undefined}
+                onSubmitEditing={onSubmitTextInput}
+                onFocus={onFocusTextInput}
             />
             <TouchableOpacity onPress={()=>onIconClick(fieldName)} style={styles.iconContainer}>
                 <Icon
-                    name={fieldName=== 'cpfcnpj' ?'magnify': 'phone'}
+                    name={iconName ? iconName:'magnify'}
                     color={'black'}
                     size={25}
                 />

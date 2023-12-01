@@ -2,18 +2,25 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ClientsRequest } from './clientsActions';
 import { ClienteCadastroRequest } from './clienteCadastroActions';
 import { accessibilityProps } from 'react-native-paper/lib/typescript/components/MaterialCommunityIcon';
+import { SearchCEPRequest } from './SearchCEPActions';
 
 interface ClientsState {
     loading: boolean;
     clientsData: any;
     error: boolean;
     clienteCadastro:any;
+    cepData:any,
+    enderecoCodigo:any,
+    fknVendasidCliente:any
 }
 const initialState: ClientsState = {
     loading: false,
     clientsData: false,
     clienteCadastro:false,
+    cepData:false,
     error: false,
+    enderecoCodigo:100000000000,
+    fknVendasidCliente:90000000
 };
 
 const ClientsReducer = createSlice({
@@ -31,6 +38,17 @@ const ClientsReducer = createSlice({
         },
         clearClienteCadastro: (state) => {
             state.clienteCadastro = false;
+        },
+        clearCEPsearchData: (state) => {
+            state.cepData = false;
+        },
+        enderecoCodigoNumber:(state)=>{
+            console.log("enderecoCodigoNumber",state.enderecoCodigo);
+            state.enderecoCodigo = state.enderecoCodigo + 1
+        },
+        fknVendasidClienteNumber:(state)=>{
+            console.log("fknVendasidClienteNumber",state.fknVendasidCliente);
+            state.fknVendasidCliente = state.fknVendasidCliente + 1
         }
     },
     extraReducers: (builder) => {
@@ -59,9 +77,20 @@ const ClientsReducer = createSlice({
                 state.loading = false
                 console.log("clienteCadastro.rejected", action)
             })
+            .addCase(SearchCEPRequest.pending,(state,action:PayloadAction<any>)=>{
+                state.loading = true;
+            })
+            .addCase(SearchCEPRequest.fulfilled,(state, action: PayloadAction<any>)=>{
+                state.loading = false;
+                state.cepData = action.payload;
+            })
+            .addCase(SearchCEPRequest.rejected,(state, action: PayloadAction<any>)=>{
+                state.loading = false
+                console.log("SearchCEPRequest.rejected", action)
+            })
     },
 });
 
-export const { setChaveCredentials, clearClienteCadastro,setLodingOn,setLodingOff } = ClientsReducer.actions;
+export const { setChaveCredentials, clearClienteCadastro,setLodingOn,setLodingOff,clearCEPsearchData,enderecoCodigoNumber,fknVendasidClienteNumber} = ClientsReducer.actions;
 export const selectUser = (state: any) => state.clients;
 export default ClientsReducer.reducer;

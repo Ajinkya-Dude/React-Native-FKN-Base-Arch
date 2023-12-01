@@ -1,5 +1,7 @@
 export const FKNconstants = {
     message:'Mensagem:',
+    yes:'Sim',
+    no:'Não',
 
     appName:'FKN',
     appTitle:'Vendas Externas',
@@ -70,7 +72,7 @@ export const FKNconstants = {
     processing:'Processando...',
     wait:'Aguarde',
     // Success Alert
-    message:'Mensagem',
+    //message:'Mensagem',
     successMessage:'Sincronizado com sucesso!',
 
     // Alerts
@@ -153,11 +155,11 @@ export const FKNconstants = {
     enderecosTab:'ENDEREÇOS',
     contatoTab:'CONTATO',
 
+    invalidCnpj : 'CNPJ inválido, favor preencher corretamente!',
+    invalidCpf:'CPF inválido, favor preencher corretamente!',
+
     //Enderecos Tabs
     cadastroEndereco:'Casastro Endereço',
-
-    // Contato Tabs
-    cadastroContato:'Cadastro Contato',
     codigo:'Código',
     billingAddress:'Endereço  de Faturamento',
     cep:'CEP',
@@ -168,6 +170,22 @@ export const FKNconstants = {
     bairro:'Bairro',
     cidade:'Cidade',
     uf:'UF',
+
+    endereco:'Endereço',
+
+    askGenerateBillingAddress:'Deseja gerar endereço de faturamento com base neste endereço?',
+    askGenerateShippingAddress:'Deseja gerar endereço de entrega com base neste endereço?',
+    createdSuccessfully:'Criado com Sucesso!',
+    // Invalid Error
+    cepInvalid:'Por Favor Insira Um CEP Válido',
+    cepInvalid2:'Favor, campo CEP com no mínimo 8 dígitos!',
+    internetCheck:'Favor, verificar conexão com a Internet!',
+    duplicateEndereco:'Não é permitida a inclusão de um novo endereço com um nome que já existente',
+    billingAddressExist:'Já existe um endereço de faturamento cadastrado, se necessário alterar o mesmo!',
+
+    // Contato Tabs
+    cadastroContato:'Cadastro Contato',
+    
 
     // Cliente Bottom Sheet
     searchPlaceholderSheet:'Selecione um'

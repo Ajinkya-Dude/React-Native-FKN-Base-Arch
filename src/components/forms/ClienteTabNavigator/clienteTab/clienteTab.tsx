@@ -17,7 +17,7 @@ import moment from 'moment';
 import md5 from 'md5';
 import { useDispatch, useSelector } from 'react-redux';
 import { CpfCnpjSearchRequest } from '../../../../store/reducer/cpfCnpjReducer/cpfCnpjActions';
-import { checkInternetConnection, formatCnpj, formatCpf, formatNumericDate, isValidDate } from '../../../../utils/globalFunctions';
+import { checkInternetConnection, formatCnpj, formatCpf, formatNumericDate, isCNPJ, isCPF, isValidDate } from '../../../../utils/globalFunctions';
 import { realmContext } from '../../../../database/database';
 import Loader from '../../../common/Loader';
 import { clearCpfCnpjData } from '../../../../store/reducer/cpfCnpjReducer';
@@ -26,7 +26,7 @@ import DeviceInfo from 'react-native-device-info';
 import { FKNconstants } from '../../../constants';
 import { SetPayload } from './payload';
 import { ClienteCadastroRequest } from '../../../../store/reducer/clientsReducer/clienteCadastroActions';
-import clientsReducer, { clearClienteCadastro, setLodingOff, setLodingOn } from '../../../../store/reducer/clientsReducer';
+import clientsReducer, { clearClienteCadastro, enderecoCodigoNumber, fknVendasidClienteNumber, setLodingOff, setLodingOn } from '../../../../store/reducer/clientsReducer';
 import Toast from 'react-native-toast-message';
 import { ShowToastMessage } from '../../../../utils/ShowToastMessage';
 
@@ -85,6 +85,8 @@ const Clientetab = ({ navigation, route }: any) => {
     const [uniqueId, setUniqueId] = useState<string>('');
     const [deviceModel, setDeviceModel] = useState<string>('');
 
+    const [cnpjSearchCalled, setCnpjSearchCalled] = useState(false);
+
     const ramoData: any = realm.objects('ramo');
     const segmentoData: any = realm.objects('segmento');
     const regiaoData: any = realm.objects('regiao');
@@ -104,8 +106,11 @@ const Clientetab = ({ navigation, route }: any) => {
             }
         }
     },[cadastroClienteData])
+
     useEffect(() => {
         GetDeviceUniqueID();
+        dispatch(fknVendasidClienteNumber())
+        dispatch(enderecoCodigoNumber())
     }, []);
     const GetDeviceUniqueID = () => {
         const model = DeviceInfo.getModel();
@@ -216,9 +221,34 @@ const Clientetab = ({ navigation, route }: any) => {
        }
     }
 
+    const AlertOnInvalidField = (message:string) =>{
+        Alert.alert(FKNconstants.message,message,[
+            {
+                text: 'Ok',
+                onPress: () => console.log('Ok Pressed'),
+                style: 'cancel',
+            },
+        ])
+    }
+
+    const checkCpfCnpjValid = () =>{
+        if(tipo === 'JURIDICO' && !isCNPJ(cpfCnpj.replaceAll('.', '').replace('/', '').replace('-', '').slice(0, 14))){
+            AlertOnInvalidField(FKNconstants.invalidCnpj);
+            return true;
+        }else if(tipo !== 'JURIDICO' && !isCPF(cpfCnpj.replaceAll('.', '').replace('-', '').slice(0, 11))){
+            AlertOnInvalidField(FKNconstants.invalidCpf);
+            return true;
+        }
+        return false;
+    }
+
     const onFabButtonClick = async() => {
-       deleteCliente(realm);
-        console.log("IdFundacao", idFundacao, "format", isValidDate(idFundacao), "------");
+
+       //deleteCliente(realm);
+        console.log("IdFundacao", idFundacao,cpfCnpj, "format","------");
+        if(checkCpfCnpjValid()){
+            return
+        }
 
         const internetCheck = await checkInternetConnection();
 
@@ -278,6 +308,7 @@ const Clientetab = ({ navigation, route }: any) => {
             console.log("Clikc", !idRegiao.length);
             return;
         }
+        
 
         let payload = SetPayload({
             razaoSocial,
@@ -343,6 +374,7 @@ const Clientetab = ({ navigation, route }: any) => {
             } else {
                 // if (value.length < 15)
                 setCpfCnpj(formatCnpj(value))
+                setCnpjSearchCalled(false);
             }
             setCpfCnpjError(false);
         }
@@ -385,6 +417,9 @@ const Clientetab = ({ navigation, route }: any) => {
         if (tipo !== 'JURIDICO' || cpfCnpj.length < 18) {
             return;
         }
+        if(checkCpfCnpjValid()){
+            return
+        }
         const todayDate = moment().format('YYYYMMDD') + registerData.data.FKN.contrato;
         const cnpjNumber = cpfCnpj.replaceAll('.', '').replace('/', '').replace('-', '').slice(0, 14)
         const payload = {
@@ -395,6 +430,7 @@ const Clientetab = ({ navigation, route }: any) => {
             contrato: registerData.data.FKN.contrato,
             token: md5(todayDate)
         }
+        setCnpjSearchCalled(true);
         dispatch(CpfCnpjSearchRequest(payload));
 
     }
@@ -442,6 +478,15 @@ const Clientetab = ({ navigation, route }: any) => {
         closeBottomSheet()
     }
 
+    const onFocusCNPJSearch = async () => {
+        const internetCheck = await checkInternetConnection();
+        console.log("onFocusCnpjSearch","internet", internetCheck);
+
+        if (!cnpjSearchCalled && internetCheck) {
+            onCpfCnpjSearch()
+        }
+    }
+
 
     return (
         <View style={styles.mainContainer}>
@@ -480,6 +525,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             fieldName='razaoSocial'
                             value={razaoSocial}
                             onChangeFieldValue={onChangeFieldValue}
+                            onFocusTextInput={()=>onFocusCNPJSearch()}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
@@ -488,6 +534,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             fieldName='fantasia'
                             value={fantasia}
                             onChangeFieldValue={onChangeFieldValue}
+                            onFocusTextInput={()=>onFocusCNPJSearch()}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
@@ -496,6 +543,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             fieldName='rgIe'
                             value={rgIe}
                             onChangeFieldValue={onChangeFieldValue}
+                            onFocusTextInput={()=>onFocusCNPJSearch()}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
@@ -507,6 +555,8 @@ const Clientetab = ({ navigation, route }: any) => {
                             onIconClick={onIconClick}
                             type='phone-pad'
                             placeholderText={FKNconstants.telephone}
+                            iconName='phone'
+                            onFocusTextInput={()=>onFocusCNPJSearch()}
                         />
                         <CustomTextInputIcon
                             fieldName='celular'
@@ -515,6 +565,8 @@ const Clientetab = ({ navigation, route }: any) => {
                             onIconClick={onIconClick}
                             type='phone-pad'
                             placeholderText={FKNconstants.celular}
+                            iconName='phone'
+                            onFocusTextInput={()=>onFocusCNPJSearch()}
                         />
                         <CustomTextInputIcon
                             fieldName='fax'
@@ -523,6 +575,8 @@ const Clientetab = ({ navigation, route }: any) => {
                             onIconClick={onIconClick}
                             type='phone-pad'
                             placeholderText={FKNconstants.fax}
+                            iconName='phone'
+                            onFocusTextInput={()=>onFocusCNPJSearch()}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
@@ -531,6 +585,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             fieldName='email'
                             value={email}
                             onChangeFieldValue={onChangeFieldValue}
+                            onFocusTextInput={()=>onFocusCNPJSearch()}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
@@ -539,6 +594,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             fieldName='emailNfe'
                             value={emailNfe}
                             onChangeFieldValue={onChangeFieldValue}
+                            onFocusTextInput={()=>onFocusCNPJSearch()}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
@@ -550,6 +606,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             type='phone-pad'
                             maxLength={10}
                             placeholder={FKNconstants.dataFundacaoPlaceholder}
+                            onFocusTextInput={()=>onFocusCNPJSearch()}
                         />
                         {idFundacaoError && <Text style={[styles.fieldLabel, { color: theme.COLORS.ERROR}]}>{FKNconstants.dataFundacaoValid}</Text>}
                     </View>
@@ -561,6 +618,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             onChangeFieldValue={onChangeFieldValue}
                             type='number-pad'
                             maxLength={10}
+                            onFocusTextInput={()=>onFocusCNPJSearch()}
                         />
                     </View>
                     <View style={styles.fieldContainer}>

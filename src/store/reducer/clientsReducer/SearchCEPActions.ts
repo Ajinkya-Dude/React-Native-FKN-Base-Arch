@@ -5,14 +5,14 @@ import * as NavigationService from '../../../navigation/NavigationService';
 import urlParamsHelper from "../../../components/common/UrlParamsHelper";
 import { FKNconstants } from "../../../components/constants";
 
-export const AddressRequest = createAsyncThunk('enderecoRequest', async (payload?: any) => {
+export const SearchCEPRequest = createAsyncThunk('searchCEPRequest', async (payload?: any) => {
     try {
-        console.log("Response AddressRequest calling", payload,"urlParamsHelper", urlParamsHelper(payload.company));
-        const response: any = await get(`${payload.url}endereco/listar?${urlParamsHelper(payload.company)}`);
-        console.log("Response AddressRequest", JSON.stringify(response.data));
-        return response.data;
+        console.log("Response Search CEP calling", payload,"urlParamsHelper", urlParamsHelper(payload),"\nURL",`http://fknvendas.fknmobile.com.br:8991/ws-cep/ws/cep/listar?${urlParamsHelper(payload)}&formato=JSON`);
+        const response: any = await get(`http://fknvendas.fknmobile.com.br:8991/ws-cep/ws/cep/listar?${urlParamsHelper(payload)}&formato=JSON`);
+        console.log("Response Search CEP", response.data);
+        return response.data
     } catch (error:any) {
-        console.log("Error AddressRequest---", error);
+        console.log("Error Search CEP", error);
         if (error.response) {
             // The request was made and the server responded with a status code
             // that falls out of the range of 2xx

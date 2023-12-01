@@ -29,6 +29,25 @@ const styles = StyleSheet.create({
         color:theme.COLORS.BLACK,
         marginBottom:theme.moderateScale(5)
     },
+    cardMainContainer:{
+        width: '90%',
+        paddingHorizontal: theme.moderateScale(10),
+        paddingBottom:theme.verticalScale(10),
+        margin: theme.moderateScale(5),
+        alignSelf: 'center',
+        backgroundColor: theme.COLORS.WHITE,
+        borderRadius: theme.moderateScale(10),
+        elevation: 6,
+        shadowColor: theme.COLORS.BLACK,
+        shadowOffset: { width: 1, height: 0 },
+        shadowOpacity: 0.2
+    },
+    textTile: {
+        fontFamily: theme.FONTFAMILY.MEDIUM,
+        fontSize: theme.SIZES.MEDIUM,
+        color: theme.COLORS.BLACK,
+        margin: theme.moderateScale(3)
+    },
 });
 
 export default styles;

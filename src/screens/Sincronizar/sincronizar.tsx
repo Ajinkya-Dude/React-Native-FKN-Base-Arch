@@ -83,8 +83,9 @@ const Sincronizar = (props: any) => {
     //console.log("Realm store --",realm.objects('segmento'),"\nRamo",realm.objects('ramo'),"\nRegiao",realm.objects('regiao'),"\nportadora",realm.objects('portador'),"\ntransportadora",realm.objects('transportadora'),"PrazoPagamento",realm.objects('prazoPagamento'));
 
     //console.log("realmObject data", realmObject, "realmQuery", JSON.stringify(realmQuery.sorted('name')), " new Realm.BSON.ObjectId(),", new Realm.BSON.ObjectId("653b83d28b20763ce160f2e4"));
-    const clienteRealm = realm.objects('tabelaFaixa')
-    //console.log("clienteRealm-=--------", clienteRealm);
+    const clienteRealm = realm.objects('endereco')
+    //const results = realm.
+    //console.log("clienteRealm-=--------", clienteRealm[0]._id);
 
     //console.log("Cliente data from realm item--", realm.objects('cliente'),realm.schema.map((schema) => schema.name));
     //const item = realm.objectForPrimaryKey(Agenda, new Realm.BSON.ObjectId("653b8de851e197c81985b838"));
@@ -542,7 +543,7 @@ const Sincronizar = (props: any) => {
             // dispatch(DepartmentRequest(payloadDepartment)),
             // dispatch(DuplicataRequest(payloadDuplicata)),
             // dispatch(CompanyRequest(payloadCompany)),
-            // dispatch(AddressRequest(payloadCompany)),
+            dispatch(AddressRequest(payloadCompany)),
             // dispatch(FilialRequest(payloadDepartment)),
             // dispatch(NotasRequest(payloadNotas)),
             // dispatch(ModificationRequest(payloadDepartment)),
@@ -557,7 +558,7 @@ const Sincronizar = (props: any) => {
             //dispatch(ResultRequest(payloadResult)),
             // dispatch(SeparacaoRequest(payloadSeparacao)),
             // dispatch(SituacoesRequest(payloadSituacoes)),
-            dispatch(TabelaRequest(payloadTabela)),
+            //dispatch(TabelaRequest(payloadTabela)),
             // dispatch(TransportadoraRequest(payloadTransport)),
             // dispatch(PrazoRequest(payloadPrazo)),
             //dispatch(ProdutoRequest(payloadProduto)),
