@@ -22,12 +22,12 @@ import { SearchCEPRequest } from "../../../../store/reducer/clientsReducer/Searc
 import Loader from "../../../common/Loader";
 import { clearCEPsearchData, enderecoCodigoNumber } from "../../../../store/reducer/clientsReducer";
 import { realmContext } from "../../../../database/database";
-import { insertEndereco } from "../../../../database/EnderecoDao";
+import { insertEndereco, updateEndereco } from "../../../../database/EnderecoDao";
 import { goBack } from "../../../../navigation/NavigationService";
 
 
-
-const EnderecosCadastro = ({ navigation }: any) => {
+let timeout:any;
+const EnderecosCadastro = ({ navigation, route }: any) => {
 
     const dispatch = useDispatch<any>();
 
@@ -35,7 +35,7 @@ const EnderecosCadastro = ({ navigation }: any) => {
     const loginData: any = useSelector((state: any) => state.loginReducer);
     const cadastroClienteData: any = useSelector((state: any) => state.clientsReducer);
 
-    
+
 
     const isLoading = cadastroClienteData.loading;
 
@@ -63,61 +63,101 @@ const EnderecosCadastro = ({ navigation }: any) => {
     const [bairroError, setBairroError] = useState(false);
     const [cidadeError, setCidadeError] = useState(false);
 
+    const [enderecoNovo, setEnderecoNovo] = useState(false);
+
     const [isEdit, SetIsEdit] = useState(false);
 
+    //const fknIdEmpresa = loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa;
+
+    //const fknIdCliente = cadastroClienteData.fknVendasidCliente || 90000023;
     const fknIdEmpresa = loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa;
 
-    console.log("cadastroClienteData", fknIdEmpresa,"fknIdCliente", fknIdCliente);
-
     const onGoback = () => {
-        navigation.pop()
+        clearTimeout(timeout);
+        navigation.pop();
     }
+
+    useEffect(() => {
+        if (route && route.params && route.params.enderecoEdit && route.params.enderecoItem) {
+            const {
+                _id,
+                atualizado,
+                bairro,
+                cep,
+                cidade,
+                complemento,
+                endFaturamento,
+                endereco,
+                enviado,
+                estado,
+                idClienteFK,
+                idEmpresaFK,
+                idEndereco,
+                idEnderecoWeb,
+                nome,
+                novoEndereco,
+                numero } = route.params.enderecoItem;
+            setCodigoIdEndereco(idEndereco);
+            setBillingAddressChecked(endFaturamento ? true : false);
+            setCep(cep);
+            setNome(nome.toUpperCase());
+            setRua(endereco.toUpperCase());
+            setNumero(numero.toUpperCase());
+            if (complemento) {
+                setComplemento(complemento.toUpperCase());
+            }
+            setBairro(bairro.toUpperCase());
+            setCidade(cidade.toUpperCase());
+            setUFDropdownFilter(estado);
+            SetIsEdit(route.params.enderecoEdit);
+            setEnderecoNovo(novoEndereco ? true : false);
+            setFknIdCliente(idClienteFK);
+        }
+
+    }, [route && route.params]);
 
 
     useEffect(() => {
-        if (cadastroClienteData.enderecoCodigo) {
+        if (cadastroClienteData.enderecoCodigo && route.params === undefined) {
             setCodigoIdEndereco(cadastroClienteData.enderecoCodigo);
-            setFknIdCliente(cadastroClienteData.fknVendasidCliente)
+            setFknIdCliente(cadastroClienteData.fknVendasidCliente);
+
         }
     }, [cadastroClienteData.enderecoCodigo]);
-
-    //console.log("fknIdCliente----", fknIdCliente);
-
 
     useEffect(() => {
         if (cadastroClienteData && cadastroClienteData.cepData && cadastroClienteData.cepData.FKN && cadastroClienteData.cepData.FKN.cep.length > 0) {
             const { endereco, cep, bairro, cidade, uf, complemento } = cadastroClienteData.cepData.FKN.cep && cadastroClienteData.cepData.FKN.cep[0] && cadastroClienteData.cepData.FKN.cep[0].cep && cadastroClienteData.cepData.FKN.cep[0].cep[0];
-            setRua(endereco);
-            setComplemento(complemento);
-            setBairro(bairro);
-            setCidade(cidade);
+            setRua(endereco.toUpperCase());
+            setComplemento(complemento.toUpperCase());
+            setBairro(bairro.toUpperCase());
+            setCidade(cidade.toUpperCase());
             setUFDropdownFilter(uf);
             dispatch(clearCEPsearchData());
         }
     }, [cadastroClienteData.cepData]);
 
     const onChangeFieldValue = (value: string, fieldName: string) => {
-        console.log("onChangeFieldValue--", value, fieldName);
         if (fieldName === 'cep') {
             setCep(value.replace(/[^0-9]/g, ""));
         }
         if (fieldName === 'nome') {
-            setNome(value)
+            setNome(value.toUpperCase())
         }
         if (fieldName === 'rua') {
-            setRua(value);
+            setRua(value.toUpperCase());
         }
         if (fieldName === 'numero') {
-            setNumero(value)
+            setNumero(value.toUpperCase())
         }
         if (fieldName === 'complemento') {
-            setComplemento(value)
+            setComplemento(value.toUpperCase())
         }
         if (fieldName === 'bairro') {
-            setBairro(value)
+            setBairro(value.toUpperCase())
         }
         if (fieldName === 'cidade') {
-            setCidade(value)
+            setCidade(value.toUpperCase())
         }
     }
     const InternetCheckAlert = () => {
@@ -131,14 +171,10 @@ const EnderecosCadastro = ({ navigation }: any) => {
     }
 
     const onSubmit = (value?: any) => {
-
-        // if (isEdit) {
-
-        // } else {
-
-        const payload = {
-            idEnderecoWeb: codigoIdEndereco,
-            idEndereco: codigoIdEndereco,
+        const codigoIdEnderecoNumber = value ? codigoIdEndereco + 1 : codigoIdEndereco;
+        const payload: any = {
+            idEnderecoWeb: codigoIdEnderecoNumber,
+            idEndereco: codigoIdEnderecoNumber,
             endFaturamento: value ? (value === 'shipping' ? 0 : 1) : billingAddressChecked,
             nome: nome,
             endereco: rua,
@@ -151,15 +187,33 @@ const EnderecosCadastro = ({ navigation }: any) => {
             // atualizado: item.atualizado ? 1 : 0, // at update time set it to true
             idCliente: fknIdCliente,
             idEmpresa: fknIdEmpresa,
-            novoEndereco: true, // at register set it to true
-            enviar: true,
+            // novoEndereco: true, // at register set it to true
+            // enviar: true,
         }
-        //}
 
-        if (insertEndereco(payload, realm, loginData)) {
-            return 1;
+        if (isEdit) {
+            payload["enviar"] = true;
+            payload["atualizado"] = true;
+            payload['novoEndereco'] = enderecoNovo;
+
+            const results: any = realm.objects('endereco')
+                .filtered('idEmpresaFK = $0 AND idClienteFK = $1 AND idEnderecoWeb= $2', fknIdEmpresa, fknIdCliente, codigoIdEndereco);
+
+            if (updateEndereco(payload, realm, loginData)) {
+                return 1;
+            } else {
+                return 0
+            }
+
         } else {
-            return 0
+            payload["enviar"] = true;
+            payload["novoEndereco"] = true;
+            
+            if (insertEndereco(payload, realm, loginData)) {
+                return 1;
+            } else {
+                return 0
+            }
         }
     }
 
@@ -173,14 +227,12 @@ const EnderecosCadastro = ({ navigation }: any) => {
         />
     );
 
-    const onTipoSelect = (value: any) => {
-        console.log("onTipoSelect", value);
+    const onUFSelect = (value: any) => {
         setUFDropdownFilter(value);
     }
 
     const onCEPsearch = async () => {
         const internetCheck = await checkInternetConnection();
-        console.log("onCEPsearch", internetCheck);
         if (!internetCheck) {
             InternetCheckAlert()
             return;
@@ -197,8 +249,6 @@ const EnderecosCadastro = ({ navigation }: any) => {
 
     const onFocusCepSearch = async () => {
         const internetCheck = await checkInternetConnection();
-        console.log("onFocusCepSearch", cepSearchCalled, "internet", internetCheck);
-
         if (!cepSearchCalled && internetCheck) {
             onCEPsearch()
         }
@@ -208,8 +258,7 @@ const EnderecosCadastro = ({ navigation }: any) => {
         let isDuplicate = false;
         const results: any = realm.objects('endereco')
             .filtered('idEmpresaFK = $0 AND idClienteFK = $1', fknIdEmpresa, fknIdCliente);
-        console.log("checkDuplicateAddress", results, "fknIdEmpresa", fknIdEmpresa, "codigoIdEndereco", codigoIdEndereco);
-
+        
         if (results.length > 0) {
             for (let i = 0; i < results.length; i++) {
                 if (results[i].nome.toLowerCase() === nome.toLowerCase()) {
@@ -223,15 +272,18 @@ const EnderecosCadastro = ({ navigation }: any) => {
     const checkBillingAddress = () => {
         const results = realm.objects('endereco')
             .filtered('endFaturamento = 1 AND idEmpresaFK = $0 AND idClienteFK = $1', fknIdEmpresa, fknIdCliente);
-        console.log("Results from Endereco", results);
         if (results.length) {
             return true;
         } else {
             return false;
         }
     }
-    // console.log("Endereco data after submit",realm.objects('endereco')
-    // .filtered('idEmpresaFK = $0 AND idClienteFK = $1', fknIdEmpresa, fknIdCliente));
+    const onTimeoutGoBack = () =>{
+        clearTimeout(timeout);
+        timeout =setTimeout(()=>{
+            onGoback()
+        },1000);
+    }
 
     const onFabButtonClick = async () => {
 
@@ -276,7 +328,7 @@ const EnderecosCadastro = ({ navigation }: any) => {
                 Alert.alert(FKNconstants.message, FKNconstants.billingAddressExist, [
                     {
                         text: 'Ok',
-                        onPress: () => onGoback(),
+                        onPress: () => console.log('Ok Pressed'),//() => onGoback(),
                         style: 'cancel',
                     },
                 ]);
@@ -290,20 +342,52 @@ const EnderecosCadastro = ({ navigation }: any) => {
                         style: 'cancel',
                     },
                 ]);
+                return;
             } else {
-                const success = onSubmit();
+                const success = await onSubmit();
                 if (success) {
                     ShowToastMessage({ type: 'success', message1: FKNconstants.createdSuccessfully });
                 }
             }
         } else {
+            const results = realm.objects('endereco')
+                .filtered('endFaturamento = 1 AND idEmpresaFK = $0 AND idClienteFK = $1', fknIdEmpresa, fknIdCliente);
+            
+            if (results.length && billingAddressChecked && codigoIdEndereco != results[0].idEnderecoWeb) {
+                Alert.alert(FKNconstants.message, FKNconstants.billingAddressExist, [
+                    {
+                        text: 'Ok',
+                        onPress: () => console.log('Ok Pressed'),//() => onGoback(),
+                        style: 'cancel',
+                    },
+                ]);
+                return;
+                //ShowToastMessage({ type: 'error', message1: FKNconstants.billingAddressExist });
+            } else if (checkDuplicateAddress()) {
+                Alert.alert(FKNconstants.message, FKNconstants.duplicateEndereco, [
+                    {
+                        text: 'Ok',
+                        onPress: () => console.log('Ok Pressed'),
+                        style: 'cancel',
+                    },
+                ]);
+                return;
+            } else if (!enderecoNovo) {
+                console.log("enderecoNovo", enderecoNovo);
 
+            } else {
+                const success = await onSubmit();
+                if (success) {
+                    ShowToastMessage({ type: 'success', message1: FKNconstants.updatedSuccessfully });
+                }
+            }
         }
 
         const results: any = realm.objects('endereco')
-            .filtered('idEmpresaFK = $0 AND idClienteFK = $1', fknIdEmpresa, fknIdCliente);
+            .filtered('idEmpresaFK = $0 AND idClienteFK = $1', fknIdEmpresa, fknIdCliente) || null;
         if (results != null) {
             if (results.length === 1) {
+                await dispatch(enderecoCodigoNumber());
                 if (results[0].endFaturamento) {
                     Alert.alert(FKNconstants.message, FKNconstants.askGenerateShippingAddress, [
                         {
@@ -332,11 +416,10 @@ const EnderecosCadastro = ({ navigation }: any) => {
                     ]);
                 }
             } else {
-                console.log("results.length", results.length);
-                //goBack();
+                onTimeoutGoBack();
             }
         } else {
-            console.log("results != null", results != null);
+            onTimeoutGoBack();
             //goBack();
         }
     }
@@ -376,7 +459,7 @@ const EnderecosCadastro = ({ navigation }: any) => {
                                     editable={false}
                                 />
                             </View>
-                            <View style={{ width: '50%' }}>
+                            <View style={{ width: '50%',alignSelf:'flex-end',marginLeft:theme.horizontalScale(20)}}>
                                 <Checkbox value={billingAddressChecked} lable={FKNconstants.billingAddress} onValueChange={(value) => setBillingAddressChecked(value)} />
                             </View>
                         </View>
@@ -451,7 +534,7 @@ const EnderecosCadastro = ({ navigation }: any) => {
                             <DropdownField
                                 items={StateList}
                                 selectedItem={selectedUFDropdownFilter}
-                                setSelectedItem={onTipoSelect}
+                                setSelectedItem={onUFSelect}
                             />
                         </View>
 

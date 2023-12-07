@@ -83,9 +83,9 @@ const Sincronizar = (props: any) => {
     //console.log("Realm store --",realm.objects('segmento'),"\nRamo",realm.objects('ramo'),"\nRegiao",realm.objects('regiao'),"\nportadora",realm.objects('portador'),"\ntransportadora",realm.objects('transportadora'),"PrazoPagamento",realm.objects('prazoPagamento'));
 
     //console.log("realmObject data", realmObject, "realmQuery", JSON.stringify(realmQuery.sorted('name')), " new Realm.BSON.ObjectId(),", new Realm.BSON.ObjectId("653b83d28b20763ce160f2e4"));
-    const clienteRealm = realm.objects('endereco')
+    const clienteRealm = realm.objects('cliente');
     //const results = realm.
-    //console.log("clienteRealm-=--------", clienteRealm[0]._id);
+    //console.log("clienteRealm-=--------", clienteRealm);
 
     //console.log("Cliente data from realm item--", realm.objects('cliente'),realm.schema.map((schema) => schema.name));
     //const item = realm.objectForPrimaryKey(Agenda, new Realm.BSON.ObjectId("653b8de851e197c81985b838"));
@@ -534,33 +534,33 @@ const Sincronizar = (props: any) => {
         const apiArray = [
             // dispatch(AgendaRequest(payloadAgenda)),
             // dispatch(AbasRequest(payloadAbas)),
-            // dispatch(ClientsRequest(payloadClient)),
+             dispatch(ClientsRequest(payloadClient)),
             // dispatch(ClassificationRequest(payloadClassification)),
             // dispatch(ClienteMediaRequest(payloadClientMedia)),
             // dispatch(CnpjVendedorRequest(payloadCnpjVendedor)),
             // dispatch(ComodatoRequest(payloadComodato)),
             // dispatch(ContatoRequest(payloadContacts)),
-            // dispatch(DepartmentRequest(payloadDepartment)),
+              dispatch(DepartmentRequest(payloadDepartment)),
             // dispatch(DuplicataRequest(payloadDuplicata)),
             // dispatch(CompanyRequest(payloadCompany)),
-            dispatch(AddressRequest(payloadCompany)),
+            //dispatch(AddressRequest(payloadCompany)),
             // dispatch(FilialRequest(payloadDepartment)),
             // dispatch(NotasRequest(payloadNotas)),
             // dispatch(ModificationRequest(payloadDepartment)),
             // dispatch(ReasonRequest(payloadDepartment)),
             // dispatch(ParameterRequest(payloadParameter)),
             //dispatch(PedidosCFOPRequest(payloadPedidoCFOP)),
-            // dispatch(PortadoreRequest(payloadPortadore)),
-            // dispatch(RamosRequest(payloadRamos)),
+              //dispatch(PortadoreRequest(payloadPortadore)),
+              //dispatch(RamosRequest(payloadRamos)),
             //dispatch(RecadosRequest(payloadRecados)),
-            // dispatch(RegioesRequest(payloadRegioes)),
-            // dispatch(SegmentoRequest(payloadSegmento)),
+              //dispatch(RegioesRequest(payloadRegioes)),
+              //dispatch(SegmentoRequest(payloadSegmento)),
             //dispatch(ResultRequest(payloadResult)),
             // dispatch(SeparacaoRequest(payloadSeparacao)),
-            // dispatch(SituacoesRequest(payloadSituacoes)),
+            //dispatch(SituacoesRequest(payloadSituacoes)),
             //dispatch(TabelaRequest(payloadTabela)),
-            // dispatch(TransportadoraRequest(payloadTransport)),
-            // dispatch(PrazoRequest(payloadPrazo)),
+              //dispatch(TransportadoraRequest(payloadTransport)),
+              //dispatch(PrazoRequest(payloadPrazo)),
             //dispatch(ProdutoRequest(payloadProduto)),
         ];
         setApiProgress(0);

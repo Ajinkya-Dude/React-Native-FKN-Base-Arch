@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from "react-native";
+import { Alert, TouchableOpacity, View } from "react-native";
 import { Appbar } from "react-native-paper";
 import style from "../../styles";
 import styles from "./styles";
@@ -15,10 +15,25 @@ const RegisterCliente = (props: any) => {
         navigation.pop()
     }
 
+    const AlertOnInvalidField = () =>{
+        Alert.alert(FKNconstants.message,isEdit ? FKNconstants.clienteRegisterUpdateOnBack : FKNconstants.clienteRegisterOnBack,[
+            {
+                text: FKNconstants.no,
+                onPress: () => console.log('Ok Pressed'),
+                style: 'cancel',
+            },
+            {
+                text: FKNconstants.yes,
+                onPress: () => onGoback(),
+                style: 'default',
+            } 
+        ])
+    }
+
     return (
         <View style={styles.mainContainer}>
             <Appbar.Header statusBarHeight={0} style={[style.appBarStyles, { justifyContent: 'space-between' }]}>
-                <TouchableOpacity onPress={onGoback} style={{ paddingLeft: 5, width: '10%' }}>
+                <TouchableOpacity onPress={AlertOnInvalidField} style={{ paddingLeft: 5, width: '10%' }}>
                     <Icon
                         name={'arrow-back'}
                         color={'black'}

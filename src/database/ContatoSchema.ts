@@ -6,14 +6,14 @@ class Contato extends Realm.Object<Contato> {
     idContato!: number;
     nome!: string; // Not null
     telefone?: string;
-    //aniversario?: string;
+    aniversario?: string;
     email!: string;
     observacoes?: string;
     novoContato?: number;
     idDepartamentoFK?: number;
     atualizado?: number;
     idClienteFK!: number;
-    //enviado?: number;
+    enviado!: number;
     idEmpresaFK!: number; // Not null
 
 
@@ -24,15 +24,15 @@ class Contato extends Realm.Object<Contato> {
             idContatoWeb: { type: 'int', optional: true },
             idContato: { type: 'int', indexed: true },
             nome: { type: 'string' },
-            telefone: { type: 'string' },
-            //aniversario: { type: 'string', optional: true },
+            telefone: { type: 'string',optional: true },
+            aniversario: { type: 'string', optional: true },
             email: { type: 'string', optional: true },
             observacoes: { type: 'string', optional: true },
             novoContato: { type: 'int', optional: true },
-            idDepartamentoFK: { type: 'int', optional: true },
+            idDepartamentoFK: { type: 'int', optional: true,indexed: true },
             atualizado: { type: 'int', optional: true },
             idClienteFK: { type: 'int', optional: false,indexed: true },
-            //enviado: { type: 'int', optional: true },// optional:false
+            enviado: { type: 'int' },// optional:false
             idEmpresaFK: { type: 'int', indexed: true },
         },
         primaryKey: '_id',

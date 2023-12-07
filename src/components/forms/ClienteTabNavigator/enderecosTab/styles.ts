@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import theme from "../../../../theme";
 
 const styles = StyleSheet.create({
@@ -42,11 +42,21 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 1, height: 0 },
         shadowOpacity: 0.2
     },
+    cardCheckBoxContainer:{ width: '100%', justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', alignContent: 'center' },
+    cardCheckBoxStyle:{ margin: 0,marginTop:Platform.OS === 'ios' ? theme.verticalScale(5) : 0,transform: [{ scale: (Platform.OS === 'ios' ? theme.moderateScale(15) :theme.moderateScale(20))/ theme.moderateScale(20) }]},
+    cardSubContainer:{ width: '100%', flexDirection: 'row' },
+    cardMapIconStyle:{ width: '20%', alignItems: 'flex-end', justifyContent: 'center' },
     textTile: {
         fontFamily: theme.FONTFAMILY.MEDIUM,
         fontSize: theme.SIZES.MEDIUM,
         color: theme.COLORS.BLACK,
         margin: theme.moderateScale(3)
+    },
+    emptyTextTile: {
+        fontFamily: theme.FONTFAMILY.MEDIUM,
+        fontSize: theme.SIZES.LARGE,
+        color: theme.COLORS.BLACK,
+        fontWeight:'bold'
     },
 });
 

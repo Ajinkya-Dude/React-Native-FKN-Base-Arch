@@ -1,12 +1,13 @@
 import CheckBox, { CheckBoxProps } from "@react-native-community/checkbox";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Platform } from "react-native";
 import theme from "../../theme";
 
 interface CheckBoxInterface extends CheckBoxProps {
     type?: string;
     checkedColor?: string;
     lable?:string,
-    checboxStyle?:any
+    checboxStyle?:any,
+    disabled?:boolean
 }
 
 const Checkbox = ({
@@ -15,7 +16,8 @@ const Checkbox = ({
     onValueChange,
     checkedColor,
     lable,
-    checboxStyle
+    checboxStyle,
+    disabled
 }: CheckBoxInterface) => {
     return (
         <View style={style.conatiner}>
@@ -27,6 +29,7 @@ const Checkbox = ({
                 onTintColor={checkedColor ? checkedColor : '#398F5A'}
                 onCheckColor={checkedColor ? checkedColor : '#398F5A'}
                 tintColors={{ true: checkedColor ? checkedColor : '#398F5A', false: '' }}
+                disabled={disabled}
             />
             {lable && <Text style={style.lableStyle}>{lable}</Text>}
         </View>
@@ -37,11 +40,12 @@ const style = StyleSheet.create({
   conatiner:{
     alignItems:'center',flexDirection:'row'
   },
-  checboxStyle:{ marginRight: 10, margin: 5 },
+  checboxStyle:{ marginRight: 10, margin: 5,transform: [{ scale: theme.moderateScale((Platform.OS === 'ios' ? 15 :20))/ theme.moderateScale(20) }] },
   lableStyle:{
     fontSize:theme.SIZES.MEDIUM,
     fontFamily:theme.FONTFAMILY.MEDIUM,
-    color:theme.COLORS.BLACK
+    color:theme.COLORS.BLACK,
+    width:'100%'
   }
 
 })

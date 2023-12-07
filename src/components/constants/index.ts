@@ -94,6 +94,7 @@ export const FKNconstants = {
     orderModalTitle:'Ordenar',
     orderOk:'OK',
     orderCancel:'CANCELAR',
+    clientecardCuritiba:'CURITIBA',
     //Cliente Order Values
     code:'Código',
     fantasy:'Fantasia',
@@ -112,9 +113,14 @@ export const FKNconstants = {
     limparFiltros:'Limpar Filtros',
 
     //Cliente Register
+    clienteRegisterOnBack:'Cadastro não concluído, deseja realmente sair ?',
+    clienteRegisterUpdateOnBack:'Deseja realmente sair ?',
     clienteRegister:'Cadastro Cliente',
     tipo:'Tipo',
     cpfcnpj:'CPF/CNPJ',
+    clienteSituacao:'Situação',
+    clienteIdCodigo:'Código',
+    clienteDataCadastro:'Data Cadastro',
     razaoSocial:'Razão Social',
     fantasia:'Fantasia',
     rgIe:'RG/IE',
@@ -161,7 +167,7 @@ export const FKNconstants = {
     //Enderecos Tabs
     cadastroEndereco:'Casastro Endereço',
     codigo:'Código',
-    billingAddress:'Endereço  de Faturamento',
+    billingAddress:'Endereço de\nFaturamento',
     cep:'CEP',
     nome:'Nome',
     rua:'Rua',
@@ -173,9 +179,12 @@ export const FKNconstants = {
 
     endereco:'Endereço',
 
+    enderecoEmpty:`Nenhum endereço cadastrado, favor\ncadastrar pelo menos dois endereços,\n'Faturamento' e 'Entrega'.`,
+
     askGenerateBillingAddress:'Deseja gerar endereço de faturamento com base neste endereço?',
     askGenerateShippingAddress:'Deseja gerar endereço de entrega com base neste endereço?',
     createdSuccessfully:'Criado com Sucesso!',
+    updatedSuccessfully:'Atualizado com Sucesso!',
     // Invalid Error
     cepInvalid:'Por Favor Insira Um CEP Válido',
     cepInvalid2:'Favor, campo CEP com no mínimo 8 dígitos!',
@@ -185,6 +194,17 @@ export const FKNconstants = {
 
     // Contato Tabs
     cadastroContato:'Cadastro Contato',
+    contatoNome:'Nome',
+    contatoTelefone:'Telefone',
+    contatoAniversario:'Aniversário',
+    contatoEmail:'E-mail',
+    contatoObservacoes:'Observações',
+    contatoDepartmento:'Departamento',
+    contatoDepartmentPlaceholder:'Selecione um Departamento',
+    contatoAniversarioInvalid:'Favor, informar uma data de aniversário válida!',
+
+    contatoListEmpty:'Não há nenhum contato cadastrado, favor cadastrar ao menos um contato!',
+
     
 
     // Cliente Bottom Sheet

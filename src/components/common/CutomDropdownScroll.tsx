@@ -8,9 +8,10 @@ interface DropdownProps {
     items: any[];
     selectedItem: string;
     setSelectedItem: (item: string) => void;
+    disabled?:boolean;
 }
 
-const DropdownField: React.FC<DropdownProps> = ({ items, selectedItem, setSelectedItem }) => {
+const DropdownField: React.FC<DropdownProps> = ({ items, selectedItem, setSelectedItem,disabled }) => {
     const [isModalVisible, setModalVisible] = useState<boolean>(false);
 
     const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -32,7 +33,7 @@ const DropdownField: React.FC<DropdownProps> = ({ items, selectedItem, setSelect
 
     return (
         <View>
-            <TouchableOpacity style={styles.constainer} onPress={toggleModal} ref={touchableOpacityRef}>
+            <TouchableOpacity disabled={disabled || false} style={styles.constainer} onPress={toggleModal} ref={touchableOpacityRef}>
                 <Text style={{ color: theme.COLORS.BLACK }}>{selectedItem || 'Select an item'}</Text>
                 <Icon
                         name={!isModalVisible ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}

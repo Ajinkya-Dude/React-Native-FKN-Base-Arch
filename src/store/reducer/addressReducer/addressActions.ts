@@ -7,11 +7,11 @@ import { FKNconstants } from "../../../components/constants";
 
 export const AddressRequest = createAsyncThunk('enderecoRequest', async (payload?: any) => {
     try {
-        console.log("Response AddressRequest calling", payload,"urlParamsHelper", urlParamsHelper(payload.company));
+        console.log("Response AddressRequest calling", payload, "urlParamsHelper", urlParamsHelper(payload.company));
         const response: any = await get(`${payload.url}endereco/listar?${urlParamsHelper(payload.company)}`);
         console.log("Response AddressRequest", JSON.stringify(response.data));
         return response.data;
-    } catch (error:any) {
+    } catch (error: any) {
         console.log("Error AddressRequest---", error);
         if (error.response) {
             // The request was made and the server responded with a status code
@@ -19,8 +19,8 @@ export const AddressRequest = createAsyncThunk('enderecoRequest', async (payload
             console.log('Response data:', error.response.data);
             console.log('Response status:', error.response.status);
             console.log('Response headers:', error.response.headers);
-            if(error.response.status === 404){
-                Alert.alert(FKNconstants.message,error.response.data.error,
+            if (error.response.status === 404) {
+                Alert.alert(FKNconstants.message, error.response.data.error,
                     [
                         {
                             text: 'Ok',
@@ -29,12 +29,12 @@ export const AddressRequest = createAsyncThunk('enderecoRequest', async (payload
                         },
                     ])
             }
-          } else if (error.request) {
+        } else if (error.request) {
             // The request was made but no response was received
             console.log('Request made but no response received:', error.request);
-          } else {
+        } else {
             // Something happened in setting up the request that triggered an Error
             console.log('Error:', error.message);
-          }
+        }
     }
 })

@@ -26,7 +26,7 @@ import DeviceInfo from 'react-native-device-info';
 import { FKNconstants } from '../../../constants';
 import { SetPayload } from './payload';
 import { ClienteCadastroRequest } from '../../../../store/reducer/clientsReducer/clienteCadastroActions';
-import clientsReducer, { clearClienteCadastro, enderecoCodigoNumber, fknVendasidClienteNumber, setLodingOff, setLodingOn } from '../../../../store/reducer/clientsReducer';
+import clientsReducer, { clearClienteCadastro, setLodingOff, setLodingOn } from '../../../../store/reducer/clientsReducer';
 import Toast from 'react-native-toast-message';
 import { ShowToastMessage } from '../../../../utils/ShowToastMessage';
 
@@ -39,13 +39,16 @@ const Clientetab = ({ navigation, route }: any) => {
 
     const cadastroClienteData: any = useSelector((state: any) => state.clientsReducer);
 
-    console.log("cadastroClienteData",cadastroClienteData);
-    
+    // console.log("cadastroClienteData", cadastroClienteData);
+
 
 
     const dispatch = useDispatch<any>();
     const realm = realmContext.useRealm();
 
+    const [clienteCodigo, setClienteCodigo] = useState('');
+    const [dataCadastro, setDataCadastro] = useState('');
+    const [situacao, setSituacao] = useState('');
     const [tipo, setTipo] = useState('JURIDICO');
     const [cpfCnpj, setCpfCnpj] = useState('');
     const [razaoSocial, setRazaoSocial] = useState('');
@@ -56,12 +59,12 @@ const Clientetab = ({ navigation, route }: any) => {
     const [idFundacao, setIdFundacao] = useState('');
     const [cnae, setCnae] = useState('');
     const [classificacao, setClassificao] = useState('');
-    const [idPortador, setIdPortador] = useState('');
-    const [idPrazo, setIdPrazo] = useState('');
-    const [idTransportadora, setIdTransportadora] = useState('');
-    const [idRegiao, setIdRegiao] = useState('');
-    const [idRamo, setIdRamo] = useState('');
-    const [idSegmento, setIdSegmento] = useState('');
+    const [idPortador, setIdPortador] = useState<any>('');
+    const [idPrazo, setIdPrazo] = useState<any>('');
+    const [idTransportadora, setIdTransportadora] = useState<any>('');
+    const [idRegiao, setIdRegiao] = useState<any>('');
+    const [idRamo, setIdRamo] = useState<any>('');
+    const [idSegmento, setIdSegmento] = useState<any>('');
     const [telefone, setTelefone] = useState('');
     const [celular, setCelular] = useState('');
     const [fax, setFax] = useState('');
@@ -98,19 +101,17 @@ const Clientetab = ({ navigation, route }: any) => {
 
     //console.log("Realm store --", realm.objects('segmento'), "\nRamo", realm.objects('ramo'), "\nRegiao", realm.objects('regiao'), "\nportadora", realm.objects('portador'), "\ntransportadora", realm.objects('transportadora'));
 
-    useEffect(()=>{
-        if(cadastroClienteData && cadastroClienteData.clienteCadastro && cadastroClienteData.clienteCadastro.FKN){
-            const {FKN} = cadastroClienteData.clienteCadastro;
-            if(FKN.Processamento && FKN.Processamento.codigoRetorno === 2){
-                insertClienteToDb({enviar:false})
+    useEffect(() => {
+        if (cadastroClienteData && cadastroClienteData.clienteCadastro && cadastroClienteData.clienteCadastro.FKN) {
+            const { FKN } = cadastroClienteData.clienteCadastro;
+            if (FKN.Processamento && FKN.Processamento.codigoRetorno === 2) {
+                insertClienteToDb({ enviar: false })
             }
         }
-    },[cadastroClienteData])
+    }, [cadastroClienteData])
 
     useEffect(() => {
         GetDeviceUniqueID();
-        dispatch(fknVendasidClienteNumber())
-        dispatch(enderecoCodigoNumber())
     }, []);
     const GetDeviceUniqueID = () => {
         const model = DeviceInfo.getModel();
@@ -185,7 +186,7 @@ const Clientetab = ({ navigation, route }: any) => {
         setOpenSheet(false);
     };
 
-    const insertClienteToDb = async({enviar}:any) =>{
+    const insertClienteToDb = async ({ enviar }: any) => {
 
         let payload = SetPayload({
             razaoSocial,
@@ -208,21 +209,21 @@ const Clientetab = ({ navigation, route }: any) => {
             idSegmento,
             idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
         });
-        const payloadCliente = { ...payload, enviar: enviar,novoCadastro:true}
+        const payloadCliente = { ...payload, enviar: enviar, novoCadastro: true }
         console.log("Calling insertClienteToDb----------------------->");
-        
-       const value = await insertSingleCliente(payloadCliente, realm);
-       if(value){
-        dispatch(setLodingOff());
-        dispatch(clearClienteCadastro());
-        ShowToastMessage({type:'success', message1:FKNconstants.insertClienteSuccessfully})
-       }else{
-        dispatch(setLodingOff());
-       }
+
+        const value = await insertSingleCliente(payloadCliente, realm);
+        if (value) {
+            dispatch(setLodingOff());
+            dispatch(clearClienteCadastro());
+            ShowToastMessage({ type: 'success', message1: FKNconstants.insertClienteSuccessfully })
+        } else {
+            dispatch(setLodingOff());
+        }
     }
 
-    const AlertOnInvalidField = (message:string) =>{
-        Alert.alert(FKNconstants.message,message,[
+    const AlertOnInvalidField = (message: string) => {
+        Alert.alert(FKNconstants.message, message, [
             {
                 text: 'Ok',
                 onPress: () => console.log('Ok Pressed'),
@@ -231,24 +232,23 @@ const Clientetab = ({ navigation, route }: any) => {
         ])
     }
 
-    const checkCpfCnpjValid = () =>{
-        if(tipo === 'JURIDICO' && !isCNPJ(cpfCnpj.replaceAll('.', '').replace('/', '').replace('-', '').slice(0, 14))){
-            AlertOnInvalidField(FKNconstants.invalidCnpj);
+    const checkCpfCnpjValid = () => {
+        if (tipo === 'JURIDICO' && !isCNPJ(cpfCnpj.replaceAll('.', '').replace('/', '').replace('-', '').slice(0, 14))) {
+            ShowToastMessage({ type: 'error', message1: FKNconstants.invalidCnpj });
+            //AlertOnInvalidField(FKNconstants.invalidCnpj);
             return true;
-        }else if(tipo !== 'JURIDICO' && !isCPF(cpfCnpj.replaceAll('.', '').replace('-', '').slice(0, 11))){
-            AlertOnInvalidField(FKNconstants.invalidCpf);
+        } else if (tipo !== 'JURIDICO' && !isCPF(cpfCnpj.replaceAll('.', '').replace('-', '').slice(0, 11))) {
+            ShowToastMessage({ type: 'error', message1: FKNconstants.invalidCpf })
+            //AlertOnInvalidField(FKNconstants.invalidCpf);
             return true;
         }
         return false;
     }
 
-    const onFabButtonClick = async() => {
+    const onFabButtonClick = async () => {
 
-       //deleteCliente(realm);
-        console.log("IdFundacao", idFundacao,cpfCnpj, "format","------");
-        if(checkCpfCnpjValid()){
-            return
-        }
+        //deleteCliente(realm);
+        console.log("IdFundacao", idFundacao, cpfCnpj, "format", "------");
 
         const internetCheck = await checkInternetConnection();
 
@@ -297,18 +297,19 @@ const Clientetab = ({ navigation, route }: any) => {
         } else {
             setIdRamoError(false)
         }
-        if(idFundacao && !isValidDate(idFundacao)){
+        if (idFundacao && !isValidDate(idFundacao)) {
             setIdFundacaoError(true);
-        }else{
+        } else {
             setIdFundacaoError(false);
         }
-
-
         if (!cpfCnpj.length || !razaoSocial.length || !fantasia.length || !rgIe.length || (!telefone.length && !celular.length && !fax.length) || !email.length || !emailNfe.length || !idRegiao || !idRamo || (idFundacao && !isValidDate(idFundacao))) {
             console.log("Clikc", !idRegiao.length);
             return;
         }
-        
+        if (checkCpfCnpjValid()) {
+            return
+        }
+
 
         let payload = SetPayload({
             razaoSocial,
@@ -335,18 +336,24 @@ const Clientetab = ({ navigation, route }: any) => {
         //     Object.assign(payload,{tabelaPadrao:tabelaPadrao})
         // }
         const newPayload = {
-            cliente: { ...payload, 
+            cliente: {
+                ...payload,
                 //android: uniqueId, 
-                token: loginData.data.usuario_api.token },
+                token: loginData.data.usuario_api.token
+            },
             url: registerData && registerData.data.FKN.url
         }
         console.log("Payload----------->", payload);
-        if(internetCheck){
-            dispatch(setLodingOn());
-            dispatch(ClienteCadastroRequest(newPayload));
-        }else{
-            dispatch(setLodingOn());
-            insertClienteToDb({enviar:true});
+        if (isEdit) {
+
+        } else {
+            if (internetCheck) {
+                dispatch(setLodingOn());
+                dispatch(ClienteCadastroRequest(newPayload));
+            } else {
+                dispatch(setLodingOn());
+                insertClienteToDb({ enviar: true });
+            }
         }
 
     }
@@ -417,7 +424,7 @@ const Clientetab = ({ navigation, route }: any) => {
         if (tipo !== 'JURIDICO' || cpfCnpj.length < 18) {
             return;
         }
-        if(checkCpfCnpjValid()){
+        if (checkCpfCnpjValid()) {
             return
         }
         const todayDate = moment().format('YYYYMMDD') + registerData.data.FKN.contrato;
@@ -480,7 +487,7 @@ const Clientetab = ({ navigation, route }: any) => {
 
     const onFocusCNPJSearch = async () => {
         const internetCheck = await checkInternetConnection();
-        console.log("onFocusCnpjSearch","internet", internetCheck);
+        console.log("onFocusCnpjSearch", "internet", internetCheck);
 
         if (!cnpjSearchCalled && internetCheck) {
             onCpfCnpjSearch()
@@ -499,15 +506,57 @@ const Clientetab = ({ navigation, route }: any) => {
                     nestedScrollEnabled={true}
                     contentContainerStyle={{ paddingBottom: 150 }}
                 >
-
-                    <View style={styles.fieldContainer}>
-                        <Text style={[styles.fieldLabel, { color: tipoError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.tipo}*</Text>
-                        <DropdownField
-                            items={clienteCadastroTipo}
-                            selectedItem={tipo}
-                            setSelectedItem={onTipoSelect}
-                        />
-                    </View>
+                    {isEdit ?
+                        <>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+                                <View style={[styles.fieldContainer, { width: '45%' }]}>
+                                    <Text style={[styles.fieldLabel, { color: razaoSocialError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.clienteIdCodigo}</Text>
+                                    <CustomTextInput
+                                        fieldName='clienteCodigo'
+                                        value={clienteCodigo}
+                                        onChangeFieldValue={onChangeFieldValue}
+                                        editable={false}
+                                    />
+                                </View>
+                                <View style={[styles.fieldContainer, { width: '45%' }]}>
+                                    <Text style={[styles.fieldLabel, { color: razaoSocialError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.clienteDataCadastro}</Text>
+                                    <CustomTextInput
+                                        fieldName='dataCadastro'
+                                        value={dataCadastro}
+                                        onChangeFieldValue={onChangeFieldValue}
+                                        editable={false}
+                                    />
+                                </View>
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <View style={[styles.fieldContainer, { width: '45%' }]}>
+                                    <Text style={[styles.fieldLabel, { color: tipoError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.tipo}*</Text>
+                                    <DropdownField
+                                        items={clienteCadastroTipo}
+                                        selectedItem={tipo}
+                                        setSelectedItem={onTipoSelect}
+                                        disabled={true}
+                                    />
+                                </View>
+                                <View style={[styles.fieldContainer, { width: '45%' }]}>
+                                    <Text style={[styles.fieldLabel, { color: razaoSocialError ? theme.COLORS.ERROR : theme.COLORS.BLACK, marginBottom: theme.moderateScale(10) }]}>{FKNconstants.clienteSituacao}</Text>
+                                    <CustomTextInput
+                                        fieldName='situacao'
+                                        value={situacao}
+                                        onChangeFieldValue={onChangeFieldValue}
+                                        editable={false}
+                                    />
+                                </View>
+                            </View>
+                        </> :
+                        <View style={styles.fieldContainer}>
+                            <Text style={[styles.fieldLabel, { color: tipoError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.tipo}*</Text>
+                            <DropdownField
+                                items={clienteCadastroTipo}
+                                selectedItem={tipo}
+                                setSelectedItem={onTipoSelect}
+                            />
+                        </View>}
                     <View style={styles.fieldContainer}>
                         <Text style={[styles.fieldLabel, { color: cpfCnpjError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.cpfcnpj}*</Text>
                         <CustomTextInputIcon
@@ -525,7 +574,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             fieldName='razaoSocial'
                             value={razaoSocial}
                             onChangeFieldValue={onChangeFieldValue}
-                            onFocusTextInput={()=>onFocusCNPJSearch()}
+                            onFocusTextInput={() => onFocusCNPJSearch()}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
@@ -534,7 +583,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             fieldName='fantasia'
                             value={fantasia}
                             onChangeFieldValue={onChangeFieldValue}
-                            onFocusTextInput={()=>onFocusCNPJSearch()}
+                            onFocusTextInput={() => onFocusCNPJSearch()}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
@@ -543,7 +592,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             fieldName='rgIe'
                             value={rgIe}
                             onChangeFieldValue={onChangeFieldValue}
-                            onFocusTextInput={()=>onFocusCNPJSearch()}
+                            onFocusTextInput={() => onFocusCNPJSearch()}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
@@ -556,7 +605,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             type='phone-pad'
                             placeholderText={FKNconstants.telephone}
                             iconName='phone'
-                            onFocusTextInput={()=>onFocusCNPJSearch()}
+                            onFocusTextInput={() => onFocusCNPJSearch()}
                         />
                         <CustomTextInputIcon
                             fieldName='celular'
@@ -566,7 +615,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             type='phone-pad'
                             placeholderText={FKNconstants.celular}
                             iconName='phone'
-                            onFocusTextInput={()=>onFocusCNPJSearch()}
+                            onFocusTextInput={() => onFocusCNPJSearch()}
                         />
                         <CustomTextInputIcon
                             fieldName='fax'
@@ -576,7 +625,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             type='phone-pad'
                             placeholderText={FKNconstants.fax}
                             iconName='phone'
-                            onFocusTextInput={()=>onFocusCNPJSearch()}
+                            onFocusTextInput={() => onFocusCNPJSearch()}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
@@ -585,7 +634,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             fieldName='email'
                             value={email}
                             onChangeFieldValue={onChangeFieldValue}
-                            onFocusTextInput={()=>onFocusCNPJSearch()}
+                            onFocusTextInput={() => onFocusCNPJSearch()}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
@@ -594,7 +643,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             fieldName='emailNfe'
                             value={emailNfe}
                             onChangeFieldValue={onChangeFieldValue}
-                            onFocusTextInput={()=>onFocusCNPJSearch()}
+                            onFocusTextInput={() => onFocusCNPJSearch()}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
@@ -606,9 +655,9 @@ const Clientetab = ({ navigation, route }: any) => {
                             type='phone-pad'
                             maxLength={10}
                             placeholder={FKNconstants.dataFundacaoPlaceholder}
-                            onFocusTextInput={()=>onFocusCNPJSearch()}
+                            onFocusTextInput={() => onFocusCNPJSearch()}
                         />
-                        {idFundacaoError && <Text style={[styles.fieldLabel, { color: theme.COLORS.ERROR}]}>{FKNconstants.dataFundacaoValid}</Text>}
+                        {idFundacaoError && <Text style={[styles.fieldLabel, { color: theme.COLORS.ERROR }]}>{FKNconstants.dataFundacaoValid}</Text>}
                     </View>
                     <View style={styles.fieldContainer}>
                         <Text style={styles.fieldLabel}>{FKNconstants.cnae}</Text>
@@ -618,7 +667,7 @@ const Clientetab = ({ navigation, route }: any) => {
                             onChangeFieldValue={onChangeFieldValue}
                             type='number-pad'
                             maxLength={10}
-                            onFocusTextInput={()=>onFocusCNPJSearch()}
+                            onFocusTextInput={() => onFocusCNPJSearch()}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
@@ -740,91 +789,6 @@ const Clientetab = ({ navigation, route }: any) => {
                     bottomSheetRef={bottomSheetRef}
                     closeBottomSheet={closeBottomSheet}
                     data={searchedData}
-                    //     [
-                    //     {
-                    //         id:1,
-                    //         "descricao":"Segmento para teste de listagem",
-                    //         "idEmpresaFK":10002,
-                    //         "idRamoFK":5,
-                    //         "idSegmento":7
-                    //     },
-                    //     {
-                    //         id:2,
-                    //         "descricao":"Segemento teste 2",
-                    //         "idEmpresaFK":10002,
-                    //         "idRamoFK":5,
-                    //         "idSegmento":8
-                    //     },
-                    //     {
-                    //         id:3,
-                    //         "descricao":"Segmento para teste de listagem",
-                    //         "idEmpresaFK":10002,
-                    //         "idRamoFK":5,
-                    //         "idSegmento":7
-                    //     },
-                    //     {
-                    //         id:4,
-                    //         "descricao":"Segemento teste 2",
-                    //         "idEmpresaFK":10002,
-                    //         "idRamoFK":5,
-                    //         "idSegmento":8
-                    //     },{
-                    //         id:5,
-                    //         "descricao":"Segmento para teste de listagem",
-                    //         "idEmpresaFK":10002,
-                    //         "idRamoFK":5,
-                    //         "idSegmento":7
-                    //     },
-                    //     {
-                    //         id:6,
-                    //         "descricao":"Segemento teste 2",
-                    //         "idEmpresaFK":10002,
-                    //         "idRamoFK":5,
-                    //         "idSegmento":8
-                    //     },
-                    //     {
-                    //         id:7,
-                    //         "descricao":"Segmento para teste de listagem",
-                    //         "idEmpresaFK":10002,
-                    //         "idRamoFK":5,
-                    //         "idSegmento":7
-                    //     },
-                    //     {
-                    //         id:8,
-                    //         "descricao":"Segemento teste 2",
-                    //         "idEmpresaFK":10002,
-                    //         "idRamoFK":5,
-                    //         "idSegmento":8
-                    //     },
-                    //     {
-                    //         id:9,
-                    //         "descricao":"Segmento para teste de listagem",
-                    //         "idEmpresaFK":10002,
-                    //         "idRamoFK":5,
-                    //         "idSegmento":7
-                    //     },
-                    //     {
-                    //         id:10,
-                    //         "descricao":"Segemento teste 2",
-                    //         "idEmpresaFK":10002,
-                    //         "idRamoFK":5,
-                    //         "idSegmento":8
-                    //     },
-                    //     {
-                    //         id:11,
-                    //         "descricao":"Segmento para teste de listagem",
-                    //         "idEmpresaFK":10002,
-                    //         "idRamoFK":5,
-                    //         "idSegmento":7
-                    //     },
-                    //     {
-                    //         id:12,
-                    //         "descricao":"Segemento teste 2",
-                    //         "idEmpresaFK":10002,
-                    //         "idRamoFK":5,
-                    //         "idSegmento":8
-                    //     }
-                    // ]}
                     onSelect={onSelectFromBottomSheet}
                     dataType={searchType}
                 />

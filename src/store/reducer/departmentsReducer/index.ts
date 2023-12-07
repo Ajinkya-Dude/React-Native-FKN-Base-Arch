@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { DepartmentRequest } from './departmentActions';
 
-interface AbasState {
+interface DepartmentState {
     loading: boolean;
     departmentData: any;
     error: boolean;
 }
-const initialState: AbasState = {
+const initialState: DepartmentState = {
     loading: false,
     departmentData: false,
     error: false,

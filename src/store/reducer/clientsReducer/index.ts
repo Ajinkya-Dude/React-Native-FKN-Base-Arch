@@ -11,7 +11,8 @@ interface ClientsState {
     clienteCadastro:any;
     cepData:any,
     enderecoCodigo:any,
-    fknVendasidCliente:any
+    fknVendasidCliente:any,
+    fknVendasIdContato:any
 }
 const initialState: ClientsState = {
     loading: false,
@@ -20,7 +21,8 @@ const initialState: ClientsState = {
     cepData:false,
     error: false,
     enderecoCodigo:100000000000,
-    fknVendasidCliente:90000000
+    fknVendasidCliente:90000000,
+    fknVendasIdContato:10000000000,
 };
 
 const ClientsReducer = createSlice({
@@ -43,12 +45,14 @@ const ClientsReducer = createSlice({
             state.cepData = false;
         },
         enderecoCodigoNumber:(state)=>{
-            console.log("enderecoCodigoNumber",state.enderecoCodigo);
             state.enderecoCodigo = state.enderecoCodigo + 1
         },
         fknVendasidClienteNumber:(state)=>{
-            console.log("fknVendasidClienteNumber",state.fknVendasidCliente);
             state.fknVendasidCliente = state.fknVendasidCliente + 1
+        },
+        fknVendasidContatoNumber:(state)=>{
+            console.log("fknVendasidContatoNumber",state.fknVendasIdContato);
+            state.fknVendasIdContato = state.fknVendasIdContato + 1
         }
     },
     extraReducers: (builder) => {
@@ -91,6 +95,6 @@ const ClientsReducer = createSlice({
     },
 });
 
-export const { setChaveCredentials, clearClienteCadastro,setLodingOn,setLodingOff,clearCEPsearchData,enderecoCodigoNumber,fknVendasidClienteNumber} = ClientsReducer.actions;
+export const { setChaveCredentials, clearClienteCadastro,setLodingOn,setLodingOff,clearCEPsearchData,enderecoCodigoNumber,fknVendasidClienteNumber,fknVendasidContatoNumber} = ClientsReducer.actions;
 export const selectUser = (state: any) => state.clients;
 export default ClientsReducer.reducer;

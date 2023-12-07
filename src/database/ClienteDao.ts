@@ -57,13 +57,11 @@ const insertCliente = (data: any, realm: any) => {
         })
         return 1
     } catch (error) {
-        console.log("Create Cliente error", error);
         return 0
     }
 }
 const insertSingleCliente = (item: any, realm: any) => {
-    console.log("insertSingleCliente payload", item);
-
+    
     const data = {
         _id: new Realm.BSON.ObjectId(),
         idClienteWeb: item.idClienteWeb,
@@ -103,20 +101,17 @@ const insertSingleCliente = (item: any, realm: any) => {
         dtUltCon: item.dtUltCon ? moment(item.dtUltCon).format('yyyy-MM-DD HH:mm:ss') : null,
         idProspeccaoFK: item.idProspeccaoFK ? item.idProspeccaoFK : 0,
     }
-    console.log("AFter processing payload for cliente", data);
-
+    
     try {
         realm.write(() => {
             realm.create('cliente', data);
         })
         return 1
     } catch (error) {
-        console.log("Create Cliente error", error);
         return 0
     }
 }
 const deleteCliente = (realm: any) => {
-    console.log("deleteCliente called");
     try {
         realm.write(() => {
             const allClientes = realm.objects('cliente');
@@ -124,7 +119,6 @@ const deleteCliente = (realm: any) => {
         })
         return 1
     } catch (error) {
-        console.log("Delete Cliente error", error);
         return 0
     }
 }
