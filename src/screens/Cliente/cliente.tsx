@@ -15,11 +15,19 @@ import * as NavigationServicec from '../../navigation/NavigationService';
 import { realmContext } from "../../database/database";
 import { createAgenda } from "../../database/AgendaTable";
 import Dropdown from "../../components/common/CustomDropdown";
+import { useDispatch, useSelector } from "react-redux";
+import { fknVendasidClienteNumber } from "../../store/reducer/clientsReducer";
+import { ActivityIndicator } from "react-native";
 
 
 const Cliente = (props: any) => {
     const { navigation } = props && props;
     const realm = realmContext.useRealm();
+
+    const dispatch = useDispatch<any>();
+    const loginData: any = useSelector((state: any) => state.loginReducer);
+    const fknIdEmpresa = loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa;
+
     const [onSearchIconClick, setOnSearchIconClick] = useState<boolean>(false);
     const [searchTextValue, setSearchTextValue] = useState<string>('');
     const [orderByModal, setOrderByModal] = useState<boolean>(false);
@@ -28,161 +36,112 @@ const Cliente = (props: any) => {
     const [filterCheckboxChecked, setFilterCheckboxChecked] = useState<any>(false);
     const [selectedDropdownFilter, setDropdownFilter] = useState('ativo');
 
+    const [clientList, setClientList] = useState([]);
+    const [limit, setLimit] = useState<number>(10);
+    const [lastOffset, setLastOffset] = useState<number>(0);
+    const [loading,setLoading] = useState<boolean>(false);
+
+    const enderecoRealm:any = realm.objects('endereco');
+    const contatoRealm:any = realm.objects('contato');
+
+    // console.log("EnderecoRealm",enderecoRealm);
+    // console.log("\nContatoRealm ",contatoRealm);
+
+    // const results: any = realm.objects('endereco')
+    //         .filtered('idEmpresaFK = $0 AND idClienteFK = $1', fknIdEmpresa, fknIdCliente).sorted('endFaturamento', true);
+    
+    
 
 
-    const data = [
-        {
-            "idAgendaWeb": 5,
-            "idAgenda": 6,
-            "assunto": "FINAL DO TREINAMENTO ",
-            "contato": "GI",
-            "dtProgramada": "2019-10-10 17:17:00",
-            "notifica": true,
-            "dtNotifica": "2019-10-10 17:14:00",
-            "downloadAndroid": true,
-            "idAgendaERP": 1000329201910101717,
-            "downloadERP": false,
-            "remessa": 0,
-            "codUsuario": 7,
-            "idClienteFK": 329,
-            "idResultado": 0,
-            "idVendedor": 11,
-            "idProspeccaoFK": 0,
-            "idEmpresaFK": 0,
-            "compositekey": '11-329-2019-10-10 17:17:00',
-            "enviar": 123,
-            "android": 145
-        },
-        {
-            "idAgendaWeb": 7,
-            "idAgenda": 8,
-            "assunto": "FINAL DO TREINAMETNO",
-            "contato": "MARCO",
-            "dtProgramada": "2020-11-09 12:00:00",
-            "notifica": true,
-            "dtNotifica": "2020-11-09 11:58:00",
-            "downloadAndroid": true,
-            "idAgendaERP": 1000329202011091200,
-            "downloadERP": false,
-            "remessa": 0,
-            "codUsuario": 7,
-            "idClienteFK": 329,
-            "idResultado": 0,
-            "idVendedor": 11,
-            "idProspeccaoFK": 0,
-            "idEmpresaFK": 0,
-            "compositekey": '11-329-2020-11-09 12:00:00',
-            "enviar": 124,
-            "android": 345
-        },
-        {
-            "idAgendaWeb": 5,
-            "idAgenda": 6,
-            "assunto": "FdsdINAL DO TREINAMENTO ",
-            "contato": "GI",
-            "dtProgramada": "2019-10-10 17:17:00",
-            "notifica": true,
-            "dtNotifica": "2019-10-10 17:14:00",
-            "downloadAndroid": true,
-            "idAgendaERP": 1000329201910101717,
-            "downloadERP": false,
-            "remessa": 0,
-            "codUsuario": 7,
-            "idClienteFK": 329,
-            "idResultado": 0,
-            "idVendedor": 11,
-            "idProspeccaoFK": 0,
-            "idEmpresaFK": 0,
-            "compositekey": '11-329-2019-10-10 17:17:00',
-            "enviar": 123,
-            "android": 145
-        },
-        {
-            "idAgendaWeb": 7,
-            "idAgenda": 8,
-            "assunto": "FIsdsaNAL DO TREINAMETNO",
-            "contato": "MARCO",
-            "dtProgramada": "2020-11-09 12:00:00",
-            "notifica": true,
-            "dtNotifica": "2020-11-09 11:58:00",
-            "downloadAndroid": true,
-            "idAgendaERP": 1000329202011091200,
-            "downloadERP": false,
-            "remessa": 0,
-            "codUsuario": 7,
-            "idClienteFK": 329,
-            "idResultado": 0,
-            "idVendedor": 11,
-            "idProspeccaoFK": 0,
-            "idEmpresaFK": 0,
-            "compositekey": '11-329-2020-11-09 12:00:00',
-            "enviar": 124,
-            "android": 345
-        },
-        {
-            "idAgendaWeb": 5,
-            "idAgenda": 6,
-            "assunto": "FINAL dsdDO TREINAMENTO ",
-            "contato": "GI",
-            "dtProgramada": "2019-10-10 17:17:00",
-            "notifica": true,
-            "dtNotifica": "2019-10-10 17:14:00",
-            "downloadAndroid": true,
-            "idAgendaERP": 1000329201910101717,
-            "downloadERP": false,
-            "remessa": 0,
-            "codUsuario": 7,
-            "idClienteFK": 329,
-            "idResultado": 0,
-            "idVendedor": 11,
-            "idProspeccaoFK": 0,
-            "idEmpresaFK": 0,
-            "compositekey": '11-329-2019-10-10 17:17:00',
-            "enviar": 123,
-            "android": 145
-        },
-        {
-            "idAgendaWeb": 7,
-            "idAgenda": 8,
-            "assunto": "FINAL DO fdfTREINAMETNO",
-            "contato": "MARCO",
-            "dtProgramada": "2020-11-09 12:00:00",
-            "notifica": true,
-            "dtNotifica": "2020-11-09 11:58:00",
-            "downloadAndroid": true,
-            "idAgendaERP": 1000329202011091200,
-            "downloadERP": false,
-            "remessa": 0,
-            "codUsuario": 7,
-            "idClienteFK": 329,
-            "idResultado": 0,
-            "idVendedor": 11,
-            "idProspeccaoFK": 0,
-            "idEmpresaFK": 0,
-            "compositekey": '11-329-2020-11-09 12:00:00',
-            "enviar": 124,
-            "android": 345
-        }
-    ]
+   
     const drawerOpen = () => {
         navigation.openDrawer();
     };
-    function onRealmChange() {
-        console.log("Something changed!",realm.objects('cliente'));
+    const generateEnderecoData = (idClienteWeb:any) =>{
+        const results: any = realm.objects('endereco')
+                .filtered('idEmpresaFK = $0 AND idClienteFK = $1 AND endFaturamento = $2 ', fknIdEmpresa, idClienteWeb,1);
+        console.log("Results",results);
+        if(results.length){
+            return results;
+        }
+        return null;
+    }
+    const generateClienteData = (item:any) =>{
+        const payload ={
+            "_id":item._id,
+            "atualizado":item.atualizado,
+            "celular":item.celular,
+            "cnae":item.cnae,
+            "cpfCnpj":item.cpfCnpj,
+            "dtCadastro":item.dtCadastro,
+            "dtFundacao":item.dtFundacao,
+            "dtUltCon":item.dtUltCon,
+            "dtUltOrc":item.dtUltOrc,
+            "dtUltVen":item.dtUltVen,
+            "email":item.email,
+            "emailNfe":item.emailNfe,
+            "enviado":item.enviado,
+            "fantasia":item.fantasia,
+            "fax":item.fax,
+            "idClassificacaoFK":item.idClassificacaoFK,
+            "idCliente":item.idCliente,
+            "idClienteWeb":item.idClienteWeb,
+            "idEmpresaFK":item.idEmpresaFK,
+            "idPortadorFK":item.idPortadorFK,
+            "idPrazoPagamentoFK":item.idPrazoPagamentoFK,
+            "idProspeccaoFK":item.idProspeccaoFK,
+            "idRamoFK":item.idRamoFK,
+            "idRegiaoFK":item.idRegiaoFK,
+            "idSegmentoFK":item.idSegmentoFK,
+            "idSituacaoFK":item.idSituacaoFK,
+            "idTransportadoraFK":item.idTransportadoraFK,
+            "idVendedor":item.idVendedor,
+            "novoCadastro":item.novoCadastro,
+            "obsCadastral":item.obsCadastral,
+            "permiteAltPortador":item.permiteAltPortador,
+            "permiteAltPrazoPgto":item.permiteAltPrazoPgto,
+            "razaoSocial":item.razaoSocial,
+            "rgIe":item.rgIe,
+            "tabelaPadrao":item.tabelaPadrao,
+            "telefone":item.telefone,
+            "tipo":item.tipo,
+            "enderecoData":generateEnderecoData(item.idClienteWeb)
+         }
+         return payload;
+    }
+    const fetchClienteData = async() =>{
+        const clienteRealm:any = realm.objects('cliente').slice(0, limit);
+        if (clienteRealm.length) {
+            setTimeout(()=>{
+                const data = clienteRealm.map((item:any)=>{
+                    const payload = generateClienteData(item);
+                    return payload
+                });
+                setClientList(data);
+                setLoading(false);
+            },500);
+        }
     }
     useEffect(() => {
-        try {
-            realm.addListener("change", onRealmChange);
-        } catch (error) {
-            console.error(
-                `An exception was thrown within the change listener: ${error}`
-            );
-        }
-        // Remember to remove the listener when you're done!
-        return () => {
-            realm.removeListener("change", onRealmChange);
-        };
-    }, [realmContext]);
+        fetchClienteData()
+    }, [limit]);
+
+    // function onRealmChange(clienteRealm: any, changes: any) {
+    //     console.log("Something changed!",realm.objects('cliente'));
+    // }
+    // useEffect(() => {
+    //     try {
+    //         clienteRealm.addListener("change", onRealmChange);
+    //     } catch (error) {
+    //         console.error(
+    //             `An exception was thrown within the change listener: ${error}`
+    //         );
+    //     }
+    //     // Remember to remove the listener when you're done!
+    //     return () => {
+    //         clienteRealm.removeListener("change", onRealmChange);
+    //     };
+    // }, [realmContext]);
     const onSearchIcon = () => {
         setOnSearchIconClick(!onSearchIconClick);
     }
@@ -195,7 +154,7 @@ const Cliente = (props: any) => {
     }
 
     const onOrderApplyChanges = (value: any) => {
-        console.log("Value selected", value);
+        console.log("Value selected-", value);
         setOrderByModal(false);
         setSelectedOrderValue(value);
     }
@@ -213,13 +172,16 @@ const Cliente = (props: any) => {
     }
 
     const onFabButtonClick = () => {
+        dispatch(fknVendasidClienteNumber())
         navigation.navigate('clienteRegister');
     }
 
-    const onListItemClick = () => {
-        navigation.navigate('clienteRegister', {
-            clienteEdit: true
-        });
+    const onListItemClick = (item:any) => {
+        console.log("onListItemClick",item.enderecoData);
+        
+        // navigation.navigate('clienteRegister', {
+        //     clienteEdit: true
+        // });
     }
     const FabButton = () => (
         <FAB
@@ -230,6 +192,33 @@ const Cliente = (props: any) => {
         />
     );
 
+    const handleLoadMoreCliente = () => {
+        setLimit(prev => prev + 10);
+        setLoading(true);
+    }
+    const handleScroll = (event: any) => {
+        const currentOffset = event.nativeEvent.contentOffset.y;
+        if (currentOffset > lastOffset) {
+            console.log("Calling down");
+        } else if (currentOffset < lastOffset) {
+            console.log("Calling up");
+            if (limit > 10)
+                setLimit(prev => prev - 10);
+        }
+        // Update the last offset for the next scroll event
+        setLastOffset(currentOffset);
+    };
+
+    const renderFooter = () => {
+        if (!loading) return null;
+    
+        return (
+          <View style={{ paddingVertical: 20 }}>
+            <ActivityIndicator animating size="large" color={'#f76345'} />
+          </View>
+        );
+      };
+    
     return (
         <View style={styles.mainContainer}>
             <Appbar.Header statusBarHeight={0} style={[style.appBarStyles]}>
@@ -307,21 +296,26 @@ const Cliente = (props: any) => {
                     }}
                 />
                 <View style={{ width: '100%' }}>
+                    {clientList.length > 0 ?
                     <FlatList
-                        data={data}
-                        keyExtractor={(item) => item.assunto}
+                        data={clientList}
+                        keyExtractor={(item:any) => item._id}
                         style={{ width: '100%' }}
+                        onEndReached={handleLoadMoreCliente}
+                        onEndReachedThreshold={0.1}
+                        onScroll={handleScroll}
+                        ListFooterComponent={renderFooter}
                         contentContainerStyle={{ paddingBottom: theme.verticalScale(200) }}
-                        renderItem={(item) => {
+                        renderItem={({ item }:any) => {
                             return (
-                                <TouchableOpacity onPress={() => { onListItemClick() }} style={styles.mainTileContainer}>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <View>
+                                <TouchableOpacity onPress={() => { onListItemClick(item) }} style={styles.mainTileContainer}>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+                                        <View style={{ width: '95%' }}>
                                             <Text style={[styles.textTile, { fontWeight: 'bold' }]}>100010802</Text>
-                                            <Text style={styles.textTile}>GEBIT</Text>
-                                            <Text style={styles.textTile}>GEBIT</Text>
+                                            <Text style={styles.textTile}>{item.razaoSocial || ''}</Text>
+                                            <Text style={styles.textTile}>{item.fantasia || ''}</Text>
                                         </View>
-                                        <View>
+                                        <View style={{ width: '5%' }}>
                                             <TouchableOpacity onPress={() => { setOrderByModal(true) }}>
                                                 <IconCommunity
                                                     name={'dots-vertical'}
@@ -332,7 +326,7 @@ const Cliente = (props: any) => {
                                         </View>
                                     </View>
                                     <View>
-                                        <Text style={styles.textTile}>WEG EQUIPAMENTOS ELETRICOS S/A - MOTORES</Text>
+                                        <Text style={styles.textTile}>{`${item.enderecoData[0].cidade} - ${item.enderecoData[0].bairro}`}</Text>
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                             <View style={styles.labelValueContainer}>
                                                 <Text style={styles.textLabelTile}>UC : </Text>
@@ -355,8 +349,9 @@ const Cliente = (props: any) => {
                                 </TouchableOpacity>
                             );
                         }}
-                    />
-
+                    /> : 
+                    <View></View>
+                    }
                 </View>
             </View>
 

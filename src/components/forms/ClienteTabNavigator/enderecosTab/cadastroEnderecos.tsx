@@ -126,7 +126,7 @@ const EnderecosCadastro = ({ navigation, route }: any) => {
     }, [cadastroClienteData.enderecoCodigo]);
 
     useEffect(() => {
-        if (cadastroClienteData && cadastroClienteData.cepData && cadastroClienteData.cepData.FKN && cadastroClienteData.cepData.FKN.cep.length > 0) {
+        if (cadastroClienteData && cadastroClienteData.cepData && cadastroClienteData.cepData.FKN && cadastroClienteData.cepData.FKN.cep && cadastroClienteData.cepData.FKN.cep.length > 0) {
             const { endereco, cep, bairro, cidade, uf, complemento } = cadastroClienteData.cepData.FKN.cep && cadastroClienteData.cepData.FKN.cep[0] && cadastroClienteData.cepData.FKN.cep[0].cep && cadastroClienteData.cepData.FKN.cep[0].cep[0];
             setRua(endereco.toUpperCase());
             setComplemento(complemento.toUpperCase());

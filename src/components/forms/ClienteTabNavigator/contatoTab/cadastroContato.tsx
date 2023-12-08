@@ -12,7 +12,7 @@ import BottomSheetCustom from "../../../common/CutomBottomSheet";
 import BottomSheet from '@gorhom/bottom-sheet';
 import CutomSearchTextInputIcon from "../../../common/CutomSearchTextInputIcon";
 import { useSelector } from "react-redux";
-import { formatNumericDate, isValidDate } from "../../../../utils/globalFunctions";
+import { formatDateAniversario, formatNumericDate, isValidDate } from "../../../../utils/globalFunctions";
 import { realmContext } from "../../../../database/database";
 import { ShowToastMessage } from "../../../../utils/ShowToastMessage";
 import Toast from "react-native-toast-message";
@@ -167,7 +167,7 @@ const ContatoCadastro = ({ navigation,route }: any) => {
             idCliente:fknIdCliente,
             nome: nome,
             telefone: telefone,
-            aniversario: aniversario,
+            aniversario: aniversario ?  formatDateAniversario(aniversario) : '',
             email: email,
             observacoes: observacoes,
             idDepartamento: departamento.idDepartamento,

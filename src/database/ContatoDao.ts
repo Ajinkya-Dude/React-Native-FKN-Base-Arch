@@ -4,22 +4,26 @@ const generatePayload = (data: any, loginData: any) => {
     const Data = [];
     if (data && data.length) {
         for (const item of data) {
-            Data.push({
-                _id: new Realm.BSON.ObjectId(),
-                idContatoWeb: item.idContatoWeb,
-                idContato: item.idContato,
-                nome: String(item.nome).toString(),
-                telefone: item.telefone ? String(item.telefone).toString() : '',
-                aniversario: item.aniversario ? String(formatDateAniversario(item.aniversario)).toString() : '',
-                email: item.email ? String(item.email).toString() : '',
-                observacoes: item.observacoes ? String(item.observacoes).toString() : '',
-                novoContato: item.novoContato ? 1 : 0,
-                idDepartamentoFK: item.idDepartamento,
-                atualizado: item.atualizado ? 1 : 0,
-                idClienteFK: item.idCliente,
-                enviado: item.enviar ? 1 : 0,
-                idEmpresaFK: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa
-            })
+            try {
+                Data.push({
+                    _id: new Realm.BSON.ObjectId(),
+                    idContatoWeb: item.idContatoWeb,
+                    idContato: item.idContato,
+                    nome: String(item.nome).toString(),
+                    telefone: item.telefone ? String(item.telefone).toString() : '',
+                    aniversario: item.aniversario ? String(item.aniversario).toString() : '',
+                    email: item.email ? String(item.email).toString() : '',
+                    observacoes: item.observacoes ? String(item.observacoes).toString() : '',
+                    novoContato: item.novoContato ? 1 : 0,
+                    idDepartamentoFK: item.idDepartamento,
+                    atualizado: item.atualizado ? 1 : 0,
+                    idClienteFK: item.idCliente,
+                    enviado: item.enviar ? 1 : 0,
+                    idEmpresaFK: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa
+                })
+            } catch (e) {
+                console.log("Error from loop", e);
+            }
         }
     } else {
         Data.push({
@@ -58,24 +62,24 @@ const insertContato = (data: any, realm: any, loginData: any) => {
 }
 const updateContato = (data: any, realm: any, loginData: any) => {
     const results: any = realm.objects('contato')
-    .filtered('idEmpresaFK = $0 AND idClienteFK = $1 AND idContatoWeb= $2', loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa, data.idCliente,data.idContatoWeb);
-    
-    const Data:any = generatePayload(data, loginData);
+        .filtered('idEmpresaFK = $0 AND idClienteFK = $1 AND idContatoWeb= $2', loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa, data.idCliente, data.idContatoWeb);
+
+    const Data: any = generatePayload(data, loginData);
     try {
         realm.write(() => {
             results[0].idContatoWeb = Data[0].idContatoWeb,
-            results[0].idContato = Data[0].idContato,
-            results[0].nome = Data[0].nome,
-            results[0].telefone = Data[0].telefone,
-            results[0].novoContato = Data[0].novoContato,
-            results[0].atualizado = Data[0].atualizado,
-            results[0].idClienteFK = Data[0].idClienteFK,
-            results[0].idEmpresaFK = Data[0].idEmpresaFK,
-            results[0].enviado = Data[0].enviado,
-            results[0].idDepartamentoFK = Data[0].idDepartamentoFK,
-            results[0].observacoes = Data[0].observacoes,
-            results[0].aniversario = Data[0].aniversario,
-            results[0].email = Data[0].email
+                results[0].idContato = Data[0].idContato,
+                results[0].nome = Data[0].nome,
+                results[0].telefone = Data[0].telefone,
+                results[0].novoContato = Data[0].novoContato,
+                results[0].atualizado = Data[0].atualizado,
+                results[0].idClienteFK = Data[0].idClienteFK,
+                results[0].idEmpresaFK = Data[0].idEmpresaFK,
+                results[0].enviado = Data[0].enviado,
+                results[0].idDepartamentoFK = Data[0].idDepartamentoFK,
+                results[0].observacoes = Data[0].observacoes,
+                results[0].aniversario = Data[0].aniversario,
+                results[0].email = Data[0].email
         })
         return 1
     } catch (error) {

@@ -10,7 +10,18 @@ export const SearchCEPRequest = createAsyncThunk('searchCEPRequest', async (payl
         console.log("Response Search CEP calling", payload,"urlParamsHelper", urlParamsHelper(payload),"\nURL",`http://fknvendas.fknmobile.com.br:8991/ws-cep/ws/cep/listar?${urlParamsHelper(payload)}&formato=JSON`);
         const response: any = await get(`http://fknvendas.fknmobile.com.br:8991/ws-cep/ws/cep/listar?${urlParamsHelper(payload)}&formato=JSON`);
         console.log("Response Search CEP", response.data);
-        return response.data
+        if(response.data && response.data.FKN && response.data.FKN.Processamento && response.data.FKN.Processamento.codigoRetorno == 5){
+            Alert.alert(FKNconstants.message,FKNconstants.cepNotFound,
+                [
+                    {
+                        text: 'Ok',
+                        onPress: () => console.log('Ok Pressed'),
+                        style: 'cancel',
+                    },
+                ])
+        }else{
+            return response.data
+        }
     } catch (error:any) {
         console.log("Error Search CEP", error);
         if (error.response) {

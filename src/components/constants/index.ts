@@ -94,7 +94,6 @@ export const FKNconstants = {
     orderModalTitle:'Ordenar',
     orderOk:'OK',
     orderCancel:'CANCELAR',
-    clientecardCuritiba:'CURITIBA',
     //Cliente Order Values
     code:'Código',
     fantasy:'Fantasia',
@@ -176,6 +175,8 @@ export const FKNconstants = {
     bairro:'Bairro',
     cidade:'Cidade',
     uf:'UF',
+
+    cepNotFound:'Endereço não localizado!',
 
     endereco:'Endereço',
 

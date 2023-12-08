@@ -21,7 +21,7 @@ const Enderecostab = ({ navigation }: any) => {
 
     //const fknIdEndereco = cadastroClienteData.enderecoCodigo;
     const fknIdCliente = cadastroClienteData.fknVendasidCliente || 90000023;
-    const fknIdEmpresa = 10002//loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa;
+    const fknIdEmpresa = loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa;
     const isFocused = useIsFocused();
 
     const [enderecoList, setEnderecoList] = useState([]);
