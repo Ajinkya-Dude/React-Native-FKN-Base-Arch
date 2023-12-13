@@ -1,4 +1,6 @@
+import ClassificacaoClienteModalHelper from "./ClassificacaoClienteMo";
 import ClienteModalHelper from "./ClienteMO";
+import ClienteMediaModalHelper from "./ClienteMediaMo";
 import ContatoModalHelper from "./ContatoMo";
 import DepartmentoModalHelper from "./DepartmentoMo";
 import EnderecoModalHelper from "./EnderecoMO";
@@ -16,7 +18,7 @@ const RealmHelper = (type: string, data: any, realm: any, loginData: any) => {
 
     switch (type) {
         case 'clientsRequest/fulfilled':
-            ClienteModalHelper(data, realm);
+            ClienteModalHelper(data, realm,loginData);
             break;
         case 'ramosRequest/fulfilled':
             RamoModalHelper(data, realm, loginData);
@@ -52,7 +54,14 @@ const RealmHelper = (type: string, data: any, realm: any, loginData: any) => {
             DepartmentoModalHelper(data, realm, loginData);
             break;
         case 'situacoesRequest/fulfilled':
-            SituacaoModalHelper(data,realm,loginData);
+            SituacaoModalHelper(data, realm, loginData);
+            break;
+        case 'classificacaoClienteRequest/fulfilled':
+            ClassificacaoClienteModalHelper(data, realm, loginData);
+            break;
+        case 'clienteMediaRequest/fulfilled':
+            ClienteMediaModalHelper(data, realm, loginData);
+            break;
         default:
             console.log("Type of api call", type);
 

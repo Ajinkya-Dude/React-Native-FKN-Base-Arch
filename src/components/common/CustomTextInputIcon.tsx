@@ -17,6 +17,7 @@ interface TextInputFieldIconProps {
     iconName?:string,
     onSubmitTextInput?:()=>void,
     onFocusTextInput?:()=>void,
+    editable?:boolean,
 }
 const TextInputFieldIcon: React.FC<TextInputFieldIconProps> = ({
     fieldName='',
@@ -28,7 +29,8 @@ const TextInputFieldIcon: React.FC<TextInputFieldIconProps> = ({
     maxLength=undefined,
     iconName,
     onSubmitTextInput,
-    onFocusTextInput
+    onFocusTextInput,
+    editable=true
 }) => {
     return (
         <View style={{width:'100%',justifyContent:'space-between',flexDirection:'row',marginBottom:5}}>
@@ -43,6 +45,7 @@ const TextInputFieldIcon: React.FC<TextInputFieldIconProps> = ({
                 maxLength={maxLength || undefined}
                 onSubmitEditing={onSubmitTextInput}
                 onFocus={onFocusTextInput}
+                editable={editable}
             />
             <TouchableOpacity onPress={()=>onIconClick(fieldName)} style={styles.iconContainer}>
                 <Icon

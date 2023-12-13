@@ -1,5 +1,6 @@
 export const FKNconstants = {
-    message:'Mensagem:',
+    message:'Mensagem :',
+    alert:'Alerta :',
     yes:'Sim',
     no:'Não',
 
@@ -94,6 +95,14 @@ export const FKNconstants = {
     orderModalTitle:'Ordenar',
     orderOk:'OK',
     orderCancel:'CANCELAR',
+
+    clienteListEmpty1:'Não encontramos clientes para este filtro.',
+    clienteListEmpty2:'Tente alterar os filtros da sua busca.',
+
+    clienteAddressEmpty:'Favor, cadastrar um Endereço de Faturamento e um de Entrega!',
+    clienteBillingAddressEmpty:'Favor, cadastrar um Endereço de Faturamento e um de Entrega!',
+    clienteContatoEmpty:'Favor, cadastrar um Contato!',
+    clienteNewRegistrationError:'Novo cadastro, não é possível atualizar!',
     //Cliente Order Values
     code:'Código',
     fantasy:'Fantasia',
@@ -151,7 +160,8 @@ export const FKNconstants = {
     ultimoContato:'Último Contato',
     ultimoOrcamento:'Último Orçamento',
     ultimoVenda:'Último Venda',
-
+    clienteObservacao:'Observação',
+    bloackedCliente:'Cliente bloqueado, com restrição para compra.',
     insertClienteSuccessfully:'Criado com sucesso!',
 
 

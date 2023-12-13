@@ -1,17 +1,23 @@
 import Realm from 'realm';
 const generatePayload = (data: any, loginData: any) => {
     const Data = [];
+    console.log("Generate payload", data);
+
     if (data && data.length > 0) {
         for (const item of data) {
-            Data.push({
-                idSituacao: item.idSituacao,
-                descricao: String(item.descricao).toString(),
-                ativo: item.ativo ? 1 : 0,
-                cor: String(item.cor).toString(),
-                rejeitaPedido: item.rejeitaPedido ? 1 : 0,
-                rejeitarOrcamento: item.rejeitarOrcamento ? 1 : 0,
-                idEmpresaFK: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa
-            })
+            try {
+                Data.push({
+                    idSituacao: item.idSituacao,
+                    descricao: String(item.descricao).toString(),
+                    ativo: item.ativo ? 1 : 0,
+                    cor: String(item.cor).toString(),
+                    rejeitaPedido: item.rejeitaPedido ? 1 : 0,
+                    rejeitarOrcamento: item.rejeitarOrcamento ? 1 : 0,
+                    idEmpresaFK: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa
+                })
+            } catch (e) {
+                console.log("Error from loop", e);
+            }
         }
     } else {
         Data.push({

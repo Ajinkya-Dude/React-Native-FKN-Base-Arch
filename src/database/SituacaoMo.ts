@@ -12,7 +12,8 @@ const SituacaoModalHelper = (data: any, realm: any,loginData:any) => {
     else {
         const dataSituacao = data && data.FKN && data.FKN.situacoes && data.FKN.situacoes?.[0] && data.FKN.situacoes?.[0].situacao;
         deleteSituacao(realm);
-        insertSituacao(dataSituacao,realm,loginData);
+        const returnValue = insertSituacao(dataSituacao,realm,loginData);
+        console.log("type of data-----return value",returnValue);
     }
     console.log("type of data", type, data);
 }

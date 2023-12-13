@@ -16,8 +16,8 @@ function ClienteNavigatorTabs({props}:any) {
       tabBarIndicatorStyle:{backgroundColor:theme.COLORS.GREEN_DARK}
     }}>
       <Tab.Screen name={FKNconstants.clienteTab} component={ClienteTabNavigator} initialParams={(props && props.route && props.route.params) || {}} />
-      <Tab.Screen name={FKNconstants.enderecosTab} component={EnderecosTabNavigator} />
-      <Tab.Screen name={FKNconstants.contatoTab} component={ContatoTabNavigator} />
+      <Tab.Screen name={FKNconstants.enderecosTab} component={EnderecosTabNavigator} initialParams={(props && props.route && props.route.params) || {}}/>
+      <Tab.Screen name={FKNconstants.contatoTab} component={ContatoTabNavigator} initialParams={(props && props.route && props.route.params) || {}}/>
     </Tab.Navigator>
   );
 }

@@ -50,7 +50,13 @@ const styles = StyleSheet.create({
         fontFamily: theme.FONTFAMILY.MEDIUM,
         fontSize: theme.SIZES.MEDIUM,
         color: theme.COLORS.BLACK
-    }
+    },
+    emptyTextTile: {
+        fontFamily: theme.FONTFAMILY.MEDIUM,
+        fontSize: theme.SIZES.LARGE,
+        color: theme.COLORS.BLACK,
+        fontWeight:'bold'
+    },
 });
 
 export default styles;

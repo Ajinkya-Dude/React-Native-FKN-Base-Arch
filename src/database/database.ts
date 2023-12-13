@@ -17,9 +17,11 @@ import SaldoFilial from "./SaldoFilialSchema";
 import Endereco from "./EnderecoSchema";
 import Departamento from "./DepartmentoSchema";
 import Situacao from "./SituacaoSchema";
+import ClassificacaoCliente from "./ClassificacaoClienteSchema";
+import ClienteMedia from "./ClienteMediaSchema";
 
 export const realmConfig: Realm.Configuration = {
-    schema: [Agenda,Cliente,Ramo,Regio,Portador,Transportadora,Segmento,PrazoPagamento,Contato,Tabela,TabelaFaixa,Produto,PrecoFilial,SaldoFilial,Endereco,Departamento,Situacao],
+    schema: [Agenda,Cliente,Ramo,Regio,Portador,Transportadora,Segmento,PrazoPagamento,Contato,Tabela,TabelaFaixa,Produto,PrecoFilial,SaldoFilial,Endereco,Departamento,Situacao,ClassificacaoCliente,ClienteMedia],
     schemaVersion:1
 };
 export const realmContext = createRealmContext(realmConfig);

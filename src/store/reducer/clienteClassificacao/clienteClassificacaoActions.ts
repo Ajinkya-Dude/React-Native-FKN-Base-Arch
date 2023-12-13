@@ -1,18 +1,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api, { get, post } from "../../../api";
 import { Alert } from "react-native";
-import * as NavigationService from '../../../navigation/NavigationService';
 import urlParamsHelper from "../../../components/common/UrlParamsHelper";
 import { FKNconstants } from "../../../components/constants";
 
-export const ClassificationRequest = createAsyncThunk('classificationRequest', async (payload?: any) => {
+export const ClassificacaoClienteRequest = createAsyncThunk('classificacaoClienteRequest', async (payload?: any) => {
     try {
-        console.log("Response classification calling", payload,"urlParamsHelper", urlParamsHelper(payload.classification));
-        const response: any = await get(`${payload.url}classificacao/listar?${urlParamsHelper(payload.classification)}`);
-        console.log("Response classification", JSON.stringify(response.data));
-        return response.data;
+        console.log("Response classificacaoCliente calling", payload,"urlParamsHelper", urlParamsHelper(payload.classificacaoCliente));
+        const response: any = await get(`${payload.url}classificacaoCliente/listar?${urlParamsHelper(payload.classificacaoCliente)}`);
+        console.log("Response classificacaoCliente", JSON.stringify(response.data));
+        return response.data
     } catch (error:any) {
-        console.log("Error classification", error);
+        console.log("Error classificacaoCliente", error);
         if (error.response) {
             // The request was made and the server responded with a status code
             // that falls out of the range of 2xx
@@ -36,5 +35,6 @@ export const ClassificationRequest = createAsyncThunk('classificationRequest', a
             // Something happened in setting up the request that triggered an Error
             console.log('Error:', error.message);
           }
+
     }
 })

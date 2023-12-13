@@ -12,29 +12,75 @@ import { FKNconstants } from '../../../constants';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { enderecoCodigoNumber } from '../../../../store/reducer/clientsReducer';
-const Enderecostab = ({ navigation }: any) => {
+const Enderecostab = ({ navigation, route }: any) => {
     const realm = realmContext.useRealm();
+    const isEdit = (route && route.params && route.params.clienteEdit) || false;
     const dispatch = useDispatch<any>();
 
     const loginData: any = useSelector((state: any) => state.loginReducer);
     const cadastroClienteData: any = useSelector((state: any) => state.clientsReducer);
 
     //const fknIdEndereco = cadastroClienteData.enderecoCodigo;
-    const fknIdCliente = cadastroClienteData.fknVendasidCliente || 90000023;
+    //const fknIdCliente = cadastroClienteData.fknVendasidCliente || 90000023;
     const fknIdEmpresa = loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa;
     const isFocused = useIsFocused();
 
     const [enderecoList, setEnderecoList] = useState([]);
+    const [fknIdCliente, setFknIdCliente] = useState('');
+
+    
+    useEffect(() => {
+        if (isEdit && cadastroClienteData.selectedCliente) {
+            const {
+                _id, atualizado, celular, cnae, cpfCnpj, dtCadastro, dtFundacao, dtUltCon, dtUltOrc, dtUltVen, email, emailNfe, enderecoData, enviado, fantasia, fax,
+                idClassificacaoFK,
+                idCliente,
+                idClienteWeb,
+                idEmpresaFK,
+                idPortadorFK,
+                idPrazoPagamentoFK,
+                idProspeccaoFK,
+                idRamoFK,
+                idRegiaoFK,
+                idSegmentoFK,
+                idSituacaoFK,
+                idTransportadoraFK,
+                idVendedor,
+                novoCadastro,
+                obsCadastral,
+                permiteAltPortador,
+                permiteAltPrazoPgto,
+                razaoSocial,
+                rgIe,
+                tabelaPadrao,
+                telefone,
+                tipo,
+                uc,
+                uo,
+                uv
+            } = cadastroClienteData.selectedCliente;
+            setFknIdCliente(idClienteWeb);
+        } else if (cadastroClienteData.fknVendasidCliente) {
+            setFknIdCliente(cadastroClienteData.fknVendasidCliente);
+        }
+    }, [cadastroClienteData]);
 
     useEffect(() => {
-        const results: any = realm.objects('endereco')
-            .filtered('idEmpresaFK = $0 AND idClienteFK = $1', fknIdEmpresa, fknIdCliente).sorted('endFaturamento', true);
-        setEnderecoList(results);
-    }, [isFocused]);
+        if (fknIdCliente !== '') {
+            console.log("fknIdCliente",fknIdCliente);
+            
+            const results: any = realm.objects('endereco')
+                .filtered('idEmpresaFK = $0 AND idClienteFK = $1', fknIdEmpresa, fknIdCliente).sorted('endFaturamento', true);
+            setEnderecoList(results);
+       }
+    }, [isFocused,fknIdCliente]);
 
     const onFabButtonClick = () => {
         dispatch(enderecoCodigoNumber())
-        navigation.navigate('enderecosCadastro');
+        navigation.navigate('enderecosCadastro',{
+            enderecoEdit: false,
+            fknIdCliente:fknIdCliente
+        });
     }
     const FabButton = () => (
         <FAB
@@ -48,7 +94,8 @@ const Enderecostab = ({ navigation }: any) => {
     const onItemClick = (item: object) => {
         navigation.navigate('enderecosCadastro', {
             enderecoItem: item,
-            enderecoEdit: true
+            enderecoEdit: true,
+            fknIdCliente:fknIdCliente
         });
     }
     const onMapIconClick = (item: any) => {
