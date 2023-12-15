@@ -2,6 +2,7 @@ import moment from "moment";
 import { dateFormat } from "../../../../utils/globalFunctions";
 
 export const SetPayload = ({
+    fknIdCliente,
     razaoSocial,
     fantasia,
     tipo,
@@ -24,13 +25,14 @@ export const SetPayload = ({
     idCliente,
     atualizado,
     obsCadastro,
-    dtCadastro,
+    dataCadastro,
     permiteAltPortador,
     permiteAltPrazoPgto,
     idSituacao,
     idProspeccaoFK,
     idEmpresa,
-    idVendedor
+    vendedor,
+    classificacao
 }: any) => {
 
     // Extract day, month, and year
@@ -38,34 +40,35 @@ export const SetPayload = ({
     const [_, day, month, year] = idFundacao && idFundacao.match(dateFormat);
 
     let payload = {
-        idClienteWeb: idClienteWeb ? idClienteWeb : 0,
-        idCliente: idCliente ? idCliente : 0,
+        idClienteWeb:fknIdCliente,
+        idCliente:fknIdCliente,
         razaoSocial: razaoSocial,
         fantasia: fantasia,
         tipo: tipo,
         cpfCnpj: cpfCnpj,
-        rgIe: rgIe,
         telefone: telefone,
         celular: celular,
-        fax: fax,
+        fax: fax ? fax : '',
         email: email,
         emailNfe: emailNfe,
-        obsCadastro: obsCadastro ? obsCadastro : null,
-        dtCadastro: dtCadastro ? dtCadastro : moment(new Date()).format('yyyy-MM-DD HH:mm:ss'),
+        obsCadastro: obsCadastro ? obsCadastro : '',
+        dtCadastro: dataCadastro ? dataCadastro : moment(new Date()).format('yyyy-MM-DD HH:mm:ss'),
         atualizado: atualizado === true ? 1 : 0,
         cnae: cnae,
-        permiteAltPortador: permiteAltPortador === true ? 1 : 0,
-        permiteAltPrazoPgto: permiteAltPrazoPgto === true ? 1 : 0,
+        permiteAltPortador: permiteAltPortador ? 1 : 0,
+        permiteAltPrazoPgto: permiteAltPrazoPgto  ? 1 : 0,
         idRamo: idRamo ? idRamo : 0,
         idRegiao: idRegiao ? idRegiao : 0,
         idSituacao: idSituacao ? idSituacao : 1,
-        idPortador: idPortador ? idPortador : 0,
-        idPrazo: idPrazo ? idPrazo : 0,
-        idTransportadora: idTransportadora ? idTransportadora : 0,
-        idSegmento: idSegmento ? idSegmento : 0,
+        idPortador: idPortador ? idPortador.idPortador : 0,
+        idPrazo: idPrazo ? idPrazo.idPrazoPagamento : 0,
+        idTransportadora: idTransportadora ? idTransportadora.idTransportadora : 0,
+        idSegmento: idSegmento ? idSegmento.idSegmento : 0,
         idProspeccaoFK: idProspeccaoFK ? idProspeccaoFK : 0,
         idEmpresa: idEmpresa ? idEmpresa : null,
-        vendedores: idVendedor ? idVendedor : 0
+        vendedores: vendedor ? vendedor : 0,
+        rgIe:rgIe,
+        idClassificacaoFK:classificacao ? classificacao.idClassificacao : 0
     }
     // if(idClienteWeb){
     //     Object.assign(payload,{idClienteWeb:idClienteWeb})

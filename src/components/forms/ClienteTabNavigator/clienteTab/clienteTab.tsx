@@ -21,15 +21,15 @@ import { checkInternetConnection, formatCnpj, formatCpf, formatNumericDate, isCN
 import { realmContext } from '../../../../database/database';
 import Loader from '../../../common/Loader';
 import { clearCpfCnpjData } from '../../../../store/reducer/cpfCnpjReducer';
-import { deleteCliente, insertSingleCliente } from '../../../../database/ClienteDao';
+import { cpfCnpjExists, deleteCliente, insertSingleCliente, updateCliente } from '../../../../database/ClienteDao';
 import DeviceInfo from 'react-native-device-info';
 import { FKNconstants } from '../../../constants';
 import { SetPayload } from './payload';
 import { ClienteCadastroRequest } from '../../../../store/reducer/clientsReducer/clienteCadastroActions';
-import clientsReducer, { clearClienteCadastro, setLodingOff, setLodingOn } from '../../../../store/reducer/clientsReducer';
+import clientsReducer, { clearClienteCadastro, enderecoCodigoNumber, setCnpjAddressStored, setLodingOff, setLodingOn } from '../../../../store/reducer/clientsReducer';
 import Toast from 'react-native-toast-message';
 import { ShowToastMessage } from '../../../../utils/ShowToastMessage';
-
+import { insertEndereco } from '../../../../database/EnderecoDao';
 const Clientetab = ({ navigation, route }: any) => {
     const isEdit = route && route.params && route.params.clienteEdit;
     const registerData: any = useSelector((state: any) => state.registerReducer);
@@ -38,17 +38,15 @@ const Clientetab = ({ navigation, route }: any) => {
     const cnpjData: any = useSelector((state: any) => state.cpfCnpjReducer);
 
     const cadastroClienteData: any = useSelector((state: any) => state.clientsReducer);
-
-    // console.log("cadastroClienteData", cadastroClienteData);
-
+    const fknIdEmpresa = loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa;
 
 
     const dispatch = useDispatch<any>();
     const realm = realmContext.useRealm();
 
-    const [clienteCodigo, setClienteCodigo] = useState('');
+    const [fknIdCliente, setFknIdCliente] = useState('');
     const [dataCadastro, setDataCadastro] = useState('');
-    const [situacao, setSituacao] = useState('');
+    const [situacao, setSituacao] = useState<any>('');
     const [tipo, setTipo] = useState('JURIDICO');
     const [cpfCnpj, setCpfCnpj] = useState('');
     const [razaoSocial, setRazaoSocial] = useState('');
@@ -57,8 +55,9 @@ const Clientetab = ({ navigation, route }: any) => {
     const [email, setEmail] = useState('');
     const [emailNfe, setEmailNfe] = useState('');
     const [idFundacao, setIdFundacao] = useState('');
+    const [observacao, setObservacoes] = useState('');
     const [cnae, setCnae] = useState('');
-    const [classificacao, setClassificao] = useState('');
+    const [classificacao, setClassificao] = useState<any>('');
     const [idPortador, setIdPortador] = useState<any>('');
     const [idPrazo, setIdPrazo] = useState<any>('');
     const [idTransportadora, setIdTransportadora] = useState<any>('');
@@ -80,7 +79,10 @@ const Clientetab = ({ navigation, route }: any) => {
     const [idRamoError, setIdRamoError] = useState(false);
     const [contatoError, SetContatoError] = useState(false);
     const [idFundacaoError, setIdFundacaoError] = useState(false);
-
+    const [ultContato, setUltContato] = useState('');
+    const [ultOrcamento, setUltOrcamento] = useState('');
+    const [ultVenda, setUltVenda] = useState('');
+    const [tabelaPadrao, setTabelaPadrao] = useState('');
     const [openSheet, setOpenSheet] = useState(false);
     const [searchType, setSearchType] = useState('');
     const [searchedData, setSearchedData] = useState([]);
@@ -90,17 +92,50 @@ const Clientetab = ({ navigation, route }: any) => {
 
     const [cnpjSearchCalled, setCnpjSearchCalled] = useState(false);
 
+    const [novoCadastro, setNovoCadastro] = useState<boolean>(true);
+    const [permiteAltPortador, setPermiteAltPortador] = useState('');
+    const [permiteAltPrazoPgto, setPermiteAltPrazoPgto] = useState('');
+    const [vendedor, setVendedor] = useState('');
+
+    const [showObservacao,SetShowObservacao] = useState<boolean>(false);
+
     const ramoData: any = realm.objects('ramo');
     const segmentoData: any = realm.objects('segmento');
     const regiaoData: any = realm.objects('regiao');
     const portadorData: any = realm.objects('portador');
     const transportadoraData: any = realm.objects('transportadora');
     const prazoPagamentoData: any = realm.objects('prazoPagamento');
+    const classificacaoClienteRealm: any = realm.objects('classificacaoCliente');
+    const ParametroRealm: any = realm.objects('parametro');
+    const parameterData = ParametroRealm.length > 0 ? ParametroRealm[0] : null;
+
+    const ocultarObsCadCliente = parameterData != null ? parameterData.ocultarObsCadCliente : false;
+
+    const situacaoData: any = realm.objects('situacao');
+    //console.log("parameterData---", situacaoData);
 
     const isLoading = cnpjData.loading || cadastroClienteData.loading;
 
     //console.log("Realm store --", realm.objects('segmento'), "\nRamo", realm.objects('ramo'), "\nRegiao", realm.objects('regiao'), "\nportadora", realm.objects('portador'), "\ntransportadora", realm.objects('transportadora'));
 
+    const onGoback = () => {
+        navigation.pop()
+    }
+
+    const AlertOnClienteRegister = () => {
+        Alert.alert(FKNconstants.message, FKNconstants.afterClienteRegistrationAsk, [
+            {
+                text: FKNconstants.no,
+                onPress: () => onGoback(),
+                style: 'cancel',
+            },
+            {
+                text: FKNconstants.yes,
+                onPress: () => onGoback(),
+                style: 'default',
+            }
+        ])
+    }
     useEffect(() => {
         if (cadastroClienteData && cadastroClienteData.clienteCadastro && cadastroClienteData.clienteCadastro.FKN) {
             const { FKN } = cadastroClienteData.clienteCadastro;
@@ -108,7 +143,215 @@ const Clientetab = ({ navigation, route }: any) => {
                 insertClienteToDb({ enviar: false })
             }
         }
-    }, [cadastroClienteData])
+    }, [cadastroClienteData]);
+    const filterPortadorItem = (id: any) => {
+        const portadorData = realm.objects('portador')
+        if (portadorData.length) {
+            const data = portadorData.filtered('idPortador = $0 AND idEmpresaFK = $1', id, fknIdEmpresa);
+            if (data.length) {
+                return data[0];
+            } else {
+                return ''
+            }
+        }
+        return '';
+    }
+    const filterPrazoItem = (id: any) => {
+        if (prazoPagamentoData.length) {
+            const data = prazoPagamentoData.filtered('idPrazoPagamento = $0 AND idEmpresaFK = $1', id, fknIdEmpresa);
+            if (data.length) {
+                return data[0];
+            } else {
+                return ''
+            }
+        }
+        return '';
+    }
+    const filterTransportadoraItem = (id: any) => {
+        if (transportadoraData.length) {
+            const data = transportadoraData.filtered('idTransportadora = $0 AND idEmpresaFK = $1', id, fknIdEmpresa);
+            if (data.length) {
+                return data[0];
+            } else {
+                return ''
+            }
+        }
+        return '';
+    }
+    const filterRegiaoItem = (id: any) => {
+        if (regiaoData.length) {
+            const data = regiaoData.filtered('idRegiao = $0 AND idEmpresaFK = $1', id, fknIdEmpresa);
+            if (data.length) {
+                return data[0];
+            } else {
+                return ''
+            }
+        }
+        return '';
+    }
+    const filterRamoItem = (id: any) => {
+        if (ramoData.length) {
+            const data = ramoData.filtered('idRamo = $0 AND idEmpresaFK = $1', id, fknIdEmpresa);
+            if (data.length) {
+                return data[0];
+            } else {
+                return ''
+            }
+        }
+        return '';
+    }
+    const filterSegmentoItem = (id: any) => {
+        if (segmentoData.length) {
+            const data = segmentoData.filtered('idSegmento = $0 AND idEmpresaFK = $1', id, fknIdEmpresa);
+            if (data.length) {
+                return data[0];
+            } else {
+                return ''
+            }
+        }
+        return '';
+    }
+    const filterSituacaoItem = (id: any) => {
+        if (situacaoData.length) {
+            const data = situacaoData.filtered('idSituacao = $0 AND idEmpresaFK = $1', id, fknIdEmpresa);
+            if (data.length) {
+                if (data[0].descricao === 'BLOQUEADO') {
+                    AlertOnInvalidField()
+                }
+                return data[0];
+            } else {
+                return '';
+            }
+        }
+        return '';
+    }
+    const filterClassificacaoClienteItem = (id: any) => {
+        if (classificacaoClienteRealm.length) {
+            const data = classificacaoClienteRealm.filtered('idClassificacao = $0 AND idEmpresaFK = $1', id, fknIdEmpresa);
+            if (data.length) {
+                return data[0];
+            } else {
+                return ''
+            }
+        }
+        return '';
+    }
+    const AlertOnInvalidField = () => {
+        Alert.alert(FKNconstants.alert, FKNconstants.bloackedCliente, [
+            {
+                text: 'Ok',
+                onPress: () => console.log('Ok Pressed'),
+                style: 'cancel',
+            },
+        ])
+    }
+
+    useEffect(() => {
+        if (isEdit && cadastroClienteData.selectedCliente) {
+            const {
+                _id, atualizado, celular, cnae, cpfCnpj, dtCadastro, dtFundacao, dtUltCon, dtUltOrc, dtUltVen, email, emailNfe, enderecoData, enviado, fantasia, fax,
+                idClassificacaoFK,
+                idCliente,
+                idClienteWeb,
+                idEmpresaFK,
+                idPortadorFK,
+                idPrazoPagamentoFK,
+                idProspeccaoFK,
+                idRamoFK,
+                idRegiaoFK,
+                idSegmentoFK,
+                idSituacaoFK,
+                idTransportadoraFK,
+                idVendedor,
+                novoCadastro,
+                obsCadastral,
+                permiteAltPortador,
+                permiteAltPrazoPgto,
+                razaoSocial,
+                rgIe,
+                tabelaPadrao,
+                telefone,
+                tipo,
+                uc,
+                uo,
+                uv
+            } = cadastroClienteData.selectedCliente;
+            console.log("idVendedor", idVendedor);
+
+            setClassificao(idClassificacaoFK ? filterClassificacaoClienteItem(idClassificacaoFK) : '')
+            setDataCadastro(dtCadastro);
+            setTipo(tipo);
+            setCpfCnpj(cpfCnpj);
+            setEmail(email);
+            setEmailNfe(emailNfe);
+            setFantasia(fantasia);
+            setCelular(celular);
+            setTelefone(telefone);
+            setFax(fax);
+            setRgIe(rgIe);
+            setRazaoSocial(razaoSocial);
+
+            setIdFundacao(dtFundacao ? moment(dtFundacao).format('DD/MM/yyyy') : '');
+            if (cnae) {
+                setCnae(cnae)
+            }
+            setFknIdCliente(idClienteWeb);
+            setIdPortador(filterPortadorItem(idPortadorFK));
+            setIdPrazo(filterPrazoItem(idPrazoPagamentoFK));
+            setIdTransportadora(filterTransportadoraItem(idTransportadoraFK));
+            setIdRegiao(filterRegiaoItem(idRegiaoFK));
+            setIdRamo(filterRamoItem(idRamoFK));
+            setIdSegmento(filterSegmentoItem(idSegmentoFK));
+            if(ocultarObsCadCliente){
+                SetShowObservacao(false)
+            }else{
+                SetShowObservacao(true);
+                setObservacoes(obsCadastral);
+            }
+            setUltContato(dtUltCon ? moment(dtUltCon).format('DD/MM/yyyy') : '');
+            setUltOrcamento(dtUltOrc ? moment(dtUltOrc).format('DD/MM/yyyy') : '');
+            setUltVenda(dtUltVen ? moment(dtUltVen).format('DD/MM/yyyy') : '');
+            if (filterSituacaoItem(idSituacaoFK) !== '') {
+                setSituacao(filterSituacaoItem(idSituacaoFK))
+            } else {
+                const idSituacao = parameterData != null ? parameterData.idSituacao : false;
+                setSituacao(filterSituacaoItem(idSituacao));
+            }
+            setTabelaPadrao(tabelaPadrao),
+                setNovoCadastro(novoCadastro ? true : false);
+            setPermiteAltPortador(permiteAltPortador);
+            setPermiteAltPrazoPgto(permiteAltPrazoPgto);
+            setVendedor(idVendedor);
+        } else if (cadastroClienteData.fknVendasidCliente) {
+            setFknIdCliente(cadastroClienteData.fknVendasidCliente);
+            const idTransportadoraPadrao = parameterData != null ? parameterData.idTransportadoraPadrao : false;
+            const idPrazoPadrao = parameterData != null ? parameterData.idPrazoPadrao : false;
+            const idPortadorPadrao = parameterData != null ? parameterData.idPortadorPadrao : false;
+            const idClassificacao = parameterData != null ? parameterData.idClassificacaoPadrao : false;
+            const idSituacao = parameterData != null ? parameterData.idSituacao : false;
+            if (idTransportadoraPadrao) {
+                setIdTransportadora(filterTransportadoraItem(idTransportadoraPadrao))
+            }
+            if (idPrazoPadrao) {
+                setIdPrazo(filterPrazoItem(idPrazoPadrao));
+            }
+            if (idPortadorPadrao) {
+                setIdPortador(filterPortadorItem(idPortadorPadrao));
+            }
+            if (idClassificacao) {
+                setClassificao(filterClassificacaoClienteItem(idClassificacao))
+            }
+            if (idSituacao) {
+                console.log("filterSituacaoItem------", filterSituacaoItem(idSituacao));
+                setSituacao(filterSituacaoItem(idSituacao))
+            }else{
+                setSituacao({
+                    "descricao": "PRE-CADASTR",
+                    "idSituacao": 3,
+                })
+            }
+        }
+    }, [cadastroClienteData.selectedCliente])
 
     useEffect(() => {
         GetDeviceUniqueID();
@@ -122,8 +365,9 @@ const Clientetab = ({ navigation, route }: any) => {
     }
     useEffect(() => {
         if (cnpjData && cnpjData.data && cnpjData.data[0] && cnpjData.data[0].cnpj) {
-            console.log("cnpjData--", JSON.stringify(cnpjData.data));
-            const { razao_social, telefone_1, telefone_2, num_fax, email, cnae_fiscal, nome_fantasia } = cnpjData.data[0];
+            const { razao_social, ddd_1, telefone_1, ddd_2, ddd_fax, telefone_2, num_fax, email, cnae_fiscal, nome_fantasia, bairro, cep, complemento, numero, uf, logradouro, municipio } = cnpjData.data[0];
+            console.log("CNPJ data from api", cnpjData.data, "cadastroClienteData", cadastroClienteData.cnpjAddress);
+
             setEmail(email);
             setRazaoSocial(razao_social);
             setTelefone(telefone_1);
@@ -132,7 +376,28 @@ const Clientetab = ({ navigation, route }: any) => {
             setCnae(cnae_fiscal);
             setFantasia(nome_fantasia);
 
-
+            const payload: any = {
+                idEnderecoWeb: cadastroClienteData.enderecoCodigo,
+                idEndereco: cadastroClienteData.enderecoCodigo,
+                endFaturamento: 1,
+                nome: 'Cobrança',
+                endereco: logradouro,
+                numero: numero,
+                complemento: complemento,
+                cep: cep,
+                bairro: bairro,
+                cidade: municipio,
+                estado: uf,
+                // atualizado: item.atualizado ? 1 : 0, // at update time set it to true
+                idCliente: fknIdCliente,
+                idEmpresa: fknIdEmpresa,
+                novoEndereco: true, // at register set it to true
+                enviar: true,
+            }
+            if (!cadastroClienteData.cnpjAddress && insertEndereco(payload, realm, loginData)) {
+                dispatch(setCnpjAddressStored(true));
+                dispatch(enderecoCodigoNumber());
+            }
             dispatch(clearCpfCnpjData());
         }
     }, [cnpjData]);
@@ -140,7 +405,6 @@ const Clientetab = ({ navigation, route }: any) => {
     const bottomSheetRef = useRef<BottomSheet>(null);
 
     const openBottomSheet = (item: any) => {
-        console.log("openBottomSheet--", item);
 
         if (bottomSheetRef.current) {
             bottomSheetRef.current.expand();
@@ -168,7 +432,6 @@ const Clientetab = ({ navigation, route }: any) => {
         openBottomSheet(item);
     }
     const onEraserClick = (item: any) => {
-        console.log("onEraserClick", item);
         if (item === 'idPortador') {
             setIdPortador('');
         } else if (item === 'idPrazo') {
@@ -178,8 +441,6 @@ const Clientetab = ({ navigation, route }: any) => {
         }
     }
     const closeBottomSheet = () => {
-        console.log("closeBottomSheet called");
-
         if (bottomSheetRef.current) {
             bottomSheetRef.current.close();
         }
@@ -189,6 +450,7 @@ const Clientetab = ({ navigation, route }: any) => {
     const insertClienteToDb = async ({ enviar }: any) => {
 
         let payload = SetPayload({
+            fknIdCliente,
             razaoSocial,
             fantasia,
             tipo,
@@ -208,29 +470,30 @@ const Clientetab = ({ navigation, route }: any) => {
             idTransportadora,
             idSegmento,
             idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+            permiteAltPortador,
+            permiteAltPrazoPgto,
+            classificacao
         });
-        const payloadCliente = { ...payload, enviar: enviar, novoCadastro: true }
-        console.log("Calling insertClienteToDb----------------------->");
+        const permAltPortadorPrazo = parameterData != null ? parameterData.permAltPortadorPrazo : false;
+        if(permAltPortadorPrazo){
+            payload["permiteAltPortador"] = 1;
+            payload["permiteAltPrazoPgto"] = 1;
+        }
+        const payloadCliente = { ...payload, enviar: enviar, novoCadastro: novoCadastro }
 
-        const value = await insertSingleCliente(payloadCliente, realm);
+        const value = await insertSingleCliente(payloadCliente, realm, loginData);
         if (value) {
             dispatch(setLodingOff());
             dispatch(clearClienteCadastro());
-            ShowToastMessage({ type: 'success', message1: FKNconstants.insertClienteSuccessfully })
+            ShowToastMessage({ type: 'success', message1: FKNconstants.insertClienteSuccessfully });
+            AlertOnClienteRegister();
         } else {
             dispatch(setLodingOff());
+            ShowToastMessage({ type: 'error', message1: FKNconstants.insertClienteError });
+            return
         }
     }
 
-    const AlertOnInvalidField = (message: string) => {
-        Alert.alert(FKNconstants.message, message, [
-            {
-                text: 'Ok',
-                onPress: () => console.log('Ok Pressed'),
-                style: 'cancel',
-            },
-        ])
-    }
 
     const checkCpfCnpjValid = () => {
         if (tipo === 'JURIDICO' && !isCNPJ(cpfCnpj.replaceAll('.', '').replace('/', '').replace('-', '').slice(0, 14))) {
@@ -245,10 +508,19 @@ const Clientetab = ({ navigation, route }: any) => {
         return false;
     }
 
+    const onAddressEmptyAlert = (message: string) => {
+        Alert.alert(FKNconstants.message, message, [
+            {
+                text: 'Ok',
+                onPress: () => console.log('Ok Pressed'),
+                style: 'cancel',
+            },
+        ])
+    }
+
     const onFabButtonClick = async () => {
 
         //deleteCliente(realm);
-        console.log("IdFundacao", idFundacao, cpfCnpj, "format", "------");
 
         const internetCheck = await checkInternetConnection();
 
@@ -303,15 +575,50 @@ const Clientetab = ({ navigation, route }: any) => {
             setIdFundacaoError(false);
         }
         if (!cpfCnpj.length || !razaoSocial.length || !fantasia.length || !rgIe.length || (!telefone.length && !celular.length && !fax.length) || !email.length || !emailNfe.length || !idRegiao || !idRamo || (idFundacao && !isValidDate(idFundacao))) {
-            console.log("Clikc", !idRegiao.length);
             return;
         }
         if (checkCpfCnpjValid()) {
             return
         }
+        if (!isEdit) {
+            if (cpfCnpjExists(realm, cpfCnpj, fknIdEmpresa)) {
+                onAddressEmptyAlert(FKNconstants.alreadyRegisteredCpfCnpj);
+                return;
+            }
+        }
+        const resultsEndereco: any = realm.objects('endereco')
+            .filtered('idEmpresaFK = $0 AND idClienteFK = $1', fknIdEmpresa, fknIdCliente);
+        if (resultsEndereco.length > 0) {
+            let temEnd = false;
+            let temFat = false;
+            for (const item of resultsEndereco) {
+                if (item.endFaturamento)
+                    temFat = true;
+                else
+                    temEnd = true;
+
+                if (temEnd && temFat) {
+                    break;
+                }
+            }
+            if (!temEnd || !temFat) {
+                onAddressEmptyAlert(FKNconstants.clienteBillingAddressEmpty);
+                return;
+            }
+        } else {
+            onAddressEmptyAlert(FKNconstants.clienteAddressEmpty);
+            return;
+        }
+        const resultsContato: any = realm.objects('contato')
+            .filtered('idEmpresaFK = $0 AND idClienteFK = $1', fknIdEmpresa, fknIdCliente);
+        if (resultsContato.length <= 0) {
+            onAddressEmptyAlert(FKNconstants.clienteContatoEmpty);
+            return;
+        }
 
 
-        let payload = SetPayload({
+        let payload: any = SetPayload({
+            fknIdCliente,
             razaoSocial,
             fantasia,
             tipo,
@@ -331,10 +638,15 @@ const Clientetab = ({ navigation, route }: any) => {
             idTransportadora,
             idSegmento,
             idEmpresa: loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa,
+            permiteAltPortador,
+            permiteAltPrazoPgto,
+            dataCadastro,
+            classificacao,
+            vendedor
         });
-        // if(tabelaPadrao){
-        //     Object.assign(payload,{tabelaPadrao:tabelaPadrao})
-        // }
+        if (tabelaPadrao) {
+            payload["tabelaPadrao"] = tabelaPadrao;
+        }
         const newPayload = {
             cliente: {
                 ...payload,
@@ -343,11 +655,30 @@ const Clientetab = ({ navigation, route }: any) => {
             },
             url: registerData && registerData.data.FKN.url
         }
-        console.log("Payload----------->", payload);
+
         if (isEdit) {
+            console.log("Cliente Insert payload", novoCadastro);
+            const bloqAtuCliente = parameterData != null ? parameterData.bloqAtuCliente : false;
+            if (novoCadastro) {
+                ShowToastMessage({ type: 'error', message1: FKNconstants.clienteNewRegistrationError });
+                return;
+            }else if(bloqAtuCliente){
+                ShowToastMessage({ type: 'error', message1: FKNconstants.clienteUpdateNotAllowed });
+                return;
+            } else {
+                payload["enviar"] = true;
+                payload["atualizado"] = true;
+                console.log("Update cliente Payload", payload);
+                const success: any = await updateCliente(payload, realm, loginData);
+                if (success) {
+                    ShowToastMessage({ type: 'success', message1: FKNconstants.updatedSuccessfully });
+                } else {
+                    ShowToastMessage({ type: 'error', message1: FKNconstants.updateError });
+                }
+            }
 
         } else {
-            if (internetCheck) {
+            if (!internetCheck) {
                 dispatch(setLodingOn());
                 dispatch(ClienteCadastroRequest(newPayload));
             } else {
@@ -355,6 +686,7 @@ const Clientetab = ({ navigation, route }: any) => {
                 insertClienteToDb({ enviar: true });
             }
         }
+
 
     }
 
@@ -367,19 +699,15 @@ const Clientetab = ({ navigation, route }: any) => {
         />
     );
     const onTipoSelect = (value: any) => {
-        console.log("onTipoSelect", value);
         setTipo(value);
         setCpfCnpj('')
     }
-    console.log("cpf number outer", cpfCnpj);
 
     const onChangeFieldValue = (value: string, fieldName: string) => {
         if (fieldName === 'cpfcnpj') {
             if (tipo !== 'JURIDICO') {
-                // if (value.length < 12)
                 setCpfCnpj(formatCpf(value))
             } else {
-                // if (value.length < 15)
                 setCpfCnpj(formatCnpj(value))
                 setCnpjSearchCalled(false);
             }
@@ -416,6 +744,8 @@ const Clientetab = ({ navigation, route }: any) => {
             setCnae(value);
         } else if (fieldName === 'classificacao') {
             setClassificao(value.toUpperCase());
+        } else if (fieldName === 'observacao') {
+            setObservacoes(value)
         }
     }
 
@@ -439,7 +769,6 @@ const Clientetab = ({ navigation, route }: any) => {
         }
         setCnpjSearchCalled(true);
         dispatch(CpfCnpjSearchRequest(payload));
-
     }
     const onDial = (phone: any) => {
         let phoneNumber = phone;
@@ -451,7 +780,6 @@ const Clientetab = ({ navigation, route }: any) => {
         Linking.openURL(phoneNumber)
     }
     const onIconClick = (type: string) => {
-        console.log("onIconClick", type);
         if (type === 'cpfcnpj') {
             onCpfCnpjSearch()
         } else if (type === 'telefone') {
@@ -467,9 +795,7 @@ const Clientetab = ({ navigation, route }: any) => {
 
     }
     const onSelectFromBottomSheet = (item: any) => {
-        console.log("onSelectFromBottomSheet", item, searchType);
         if (searchType === 'idRamo') {
-            console.log("onSelectFromBottomSheet-----", item, searchType);
             setIdRamo(item)
         } else if (searchType === 'idTransportadora') {
             setIdTransportadora(item)
@@ -487,9 +813,8 @@ const Clientetab = ({ navigation, route }: any) => {
 
     const onFocusCNPJSearch = async () => {
         const internetCheck = await checkInternetConnection();
-        console.log("onFocusCnpjSearch", "internet", internetCheck);
 
-        if (!cnpjSearchCalled && internetCheck) {
+        if (!cnpjSearchCalled && internetCheck && !isEdit) {
             onCpfCnpjSearch()
         }
     }
@@ -513,7 +838,7 @@ const Clientetab = ({ navigation, route }: any) => {
                                     <Text style={[styles.fieldLabel, { color: razaoSocialError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.clienteIdCodigo}</Text>
                                     <CustomTextInput
                                         fieldName='clienteCodigo'
-                                        value={clienteCodigo}
+                                        value={fknIdCliente}
                                         onChangeFieldValue={onChangeFieldValue}
                                         editable={false}
                                     />
@@ -522,7 +847,7 @@ const Clientetab = ({ navigation, route }: any) => {
                                     <Text style={[styles.fieldLabel, { color: razaoSocialError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.clienteDataCadastro}</Text>
                                     <CustomTextInput
                                         fieldName='dataCadastro'
-                                        value={dataCadastro}
+                                        value={dataCadastro ? moment(dataCadastro).format('DD/MM/yyyy') : ''}
                                         onChangeFieldValue={onChangeFieldValue}
                                         editable={false}
                                     />
@@ -542,7 +867,7 @@ const Clientetab = ({ navigation, route }: any) => {
                                     <Text style={[styles.fieldLabel, { color: razaoSocialError ? theme.COLORS.ERROR : theme.COLORS.BLACK, marginBottom: theme.moderateScale(10) }]}>{FKNconstants.clienteSituacao}</Text>
                                     <CustomTextInput
                                         fieldName='situacao'
-                                        value={situacao}
+                                        value={situacao ? situacao.descricao : ''}
                                         onChangeFieldValue={onChangeFieldValue}
                                         editable={false}
                                     />
@@ -566,6 +891,8 @@ const Clientetab = ({ navigation, route }: any) => {
                             onIconClick={onIconClick}
                             type='number-pad'
                             maxLength={tipo != 'JURIDICO' ? 14 : 18}
+                            editable={isEdit ? false : true}
+                            onSubmitTextInput={() => onFocusCNPJSearch()}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
@@ -659,6 +986,17 @@ const Clientetab = ({ navigation, route }: any) => {
                         />
                         {idFundacaoError && <Text style={[styles.fieldLabel, { color: theme.COLORS.ERROR }]}>{FKNconstants.dataFundacaoValid}</Text>}
                     </View>
+                    {showObservacao &&
+                        <View style={styles.fieldContainer}>
+                            <Text style={[styles.fieldLabel, { color: emailNfeError ? theme.COLORS.ERROR : theme.COLORS.BLACK }]}>{FKNconstants.clienteObservacao}</Text>
+                            <CustomTextInput
+                                fieldName='observacao'
+                                value={observacao}
+                                onChangeFieldValue={onChangeFieldValue}
+                                onFocusTextInput={() => onFocusCNPJSearch()}
+                                maxLength={599}
+                            />
+                        </View>}
                     <View style={styles.fieldContainer}>
                         <Text style={styles.fieldLabel}>{FKNconstants.cnae}</Text>
                         <CustomTextInput
@@ -674,8 +1012,9 @@ const Clientetab = ({ navigation, route }: any) => {
                         <Text style={styles.fieldLabel}>{FKNconstants.classificacao}</Text>
                         <CustomTextInput
                             fieldName='classificacao'
-                            value={classificacao}
+                            value={classificacao ? `${classificacao.sigla} - ${classificacao.descricao}` : ''}
                             onChangeFieldValue={onChangeFieldValue}
+                            editable={false}
                         />
                     </View>
                     <View style={styles.fieldContainer}>
@@ -743,8 +1082,8 @@ const Clientetab = ({ navigation, route }: any) => {
                             <View style={styles.fieldContainer}>
                                 <Text style={styles.fieldLabel}>{FKNconstants.tabelaPadrao}</Text>
                                 <CustomTextInput
-                                    fieldName='classificacao'
-                                    value={classificacao}
+                                    fieldName='tabelaPadrao'
+                                    value={tabelaPadrao}
                                     onChangeFieldValue={onChangeFieldValue}
                                     placeholder={FKNconstants.tabelaPadrao}
                                     editable={false}
@@ -753,8 +1092,8 @@ const Clientetab = ({ navigation, route }: any) => {
                             <View style={styles.fieldContainer}>
                                 <Text style={styles.fieldLabel}>{FKNconstants.ultimoContato}</Text>
                                 <CustomTextInput
-                                    fieldName='classificacao'
-                                    value={classificacao}
+                                    fieldName='dtUltCon'
+                                    value={ultContato}
                                     placeholder={FKNconstants.ultimoContato}
                                     onChangeFieldValue={onChangeFieldValue}
                                     editable={false}
@@ -763,8 +1102,8 @@ const Clientetab = ({ navigation, route }: any) => {
                             <View style={styles.fieldContainer}>
                                 <Text style={styles.fieldLabel}>{FKNconstants.ultimoOrcamento}</Text>
                                 <CustomTextInput
-                                    fieldName='classificacao'
-                                    value={classificacao}
+                                    fieldName='dtUltOrc'
+                                    value={ultOrcamento}
                                     placeholder={FKNconstants.ultimoOrcamento}
                                     onChangeFieldValue={onChangeFieldValue}
                                     editable={false}
@@ -773,8 +1112,8 @@ const Clientetab = ({ navigation, route }: any) => {
                             <View style={styles.fieldContainer}>
                                 <Text style={styles.fieldLabel}>{FKNconstants.ultimoVenda}</Text>
                                 <CustomTextInput
-                                    fieldName='classificacao'
-                                    value={classificacao}
+                                    fieldName='dtUltVen'
+                                    value={ultVenda}
                                     placeholder={FKNconstants.ultimoVenda}
                                     onChangeFieldValue={onChangeFieldValue}
                                     editable={false}

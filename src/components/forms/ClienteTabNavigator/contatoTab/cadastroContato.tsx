@@ -107,9 +107,10 @@ const ContatoCadastro = ({ navigation,route }: any) => {
     }, [route && route.params]);
 
     useEffect(() => {
-        if (cadastroClienteData.fknVendasIdContato) {
+        
+        if (cadastroClienteData.fknVendasIdContato && !route.params.contatoEdit) {
             setCodigoIdContato(cadastroClienteData.fknVendasIdContato);
-            setFknIdCliente(cadastroClienteData.fknVendasidCliente);
+            setFknIdCliente(route.params.fknIdCliente);
         }
     }, [cadastroClienteData]);
     const onGoback = () => {

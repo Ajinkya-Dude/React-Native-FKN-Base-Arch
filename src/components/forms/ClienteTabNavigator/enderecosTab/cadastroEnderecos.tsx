@@ -118,10 +118,9 @@ const EnderecosCadastro = ({ navigation, route }: any) => {
 
 
     useEffect(() => {
-        if (cadastroClienteData.enderecoCodigo && route.params === undefined) {
+        if (cadastroClienteData.enderecoCodigo && !route.params.enderecoEdit) {
             setCodigoIdEndereco(cadastroClienteData.enderecoCodigo);
-            setFknIdCliente(cadastroClienteData.fknVendasidCliente);
-
+            setFknIdCliente(route.params.fknIdCliente);
         }
     }, [cadastroClienteData.enderecoCodigo]);
 

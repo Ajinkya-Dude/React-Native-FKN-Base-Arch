@@ -4,6 +4,7 @@ import ClienteMediaModalHelper from "./ClienteMediaMo";
 import ContatoModalHelper from "./ContatoMo";
 import DepartmentoModalHelper from "./DepartmentoMo";
 import EnderecoModalHelper from "./EnderecoMO";
+import ParametroModalHelper from "./ParametroMo";
 import PortadorModalHelper from "./PortadorMo";
 import PrazoPagamentoModalHelper from "./PrazoPagamentoMo";
 import ProdutoModalHelper from "./ProdutoMO";
@@ -61,6 +62,9 @@ const RealmHelper = (type: string, data: any, realm: any, loginData: any) => {
             break;
         case 'clienteMediaRequest/fulfilled':
             ClienteMediaModalHelper(data, realm, loginData);
+            break;
+        case 'parameterRequest/fulfilled':
+            ParametroModalHelper(data,realm);
             break;
         default:
             console.log("Type of api call", type);

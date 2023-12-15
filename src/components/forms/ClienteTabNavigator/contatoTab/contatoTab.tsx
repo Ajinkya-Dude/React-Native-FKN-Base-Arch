@@ -11,8 +11,10 @@ import { FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { FKNconstants } from '../../../constants';
 
-const Contatotab = ({ navigation }: any) => {
+const Contatotab = ({ navigation,route }: any) => {
 
+    const isEdit = (route && route.params && route.params.clienteEdit) || false;
+    
     const isFocused = useIsFocused();
     const dispatch = useDispatch<any>();
     const realm = realmContext.useRealm();
@@ -21,15 +23,44 @@ const Contatotab = ({ navigation }: any) => {
     const cadastroClienteData: any = useSelector((state: any) => state.clientsReducer);
     const fknIdEmpresa = loginData.verifyData.FKN.vendedores[0].vendedor.empresas[0].empresa.idEmpresa;
 
-    const [codigoIdContato, setCodigoIdContato] = useState<number>();
     const [fknIdCliente, setFknIdCliente] = useState('');
 
 
     const [contatoList, setContatoList] = useState([]);
 
+
     useEffect(() => {
-        if (cadastroClienteData.fknVendasIdContato) {
-            setCodigoIdContato(cadastroClienteData.fknVendasIdContato);
+        if (isEdit && cadastroClienteData.selectedCliente) {
+            const {
+                _id, atualizado, celular, cnae, cpfCnpj, dtCadastro, dtFundacao, dtUltCon, dtUltOrc, dtUltVen, email, emailNfe, enderecoData, enviado, fantasia, fax,
+                idClassificacaoFK,
+                idCliente,
+                idClienteWeb,
+                idEmpresaFK,
+                idPortadorFK,
+                idPrazoPagamentoFK,
+                idProspeccaoFK,
+                idRamoFK,
+                idRegiaoFK,
+                idSegmentoFK,
+                idSituacaoFK,
+                idTransportadoraFK,
+                idVendedor,
+                novoCadastro,
+                obsCadastral,
+                permiteAltPortador,
+                permiteAltPrazoPgto,
+                razaoSocial,
+                rgIe,
+                tabelaPadrao,
+                telefone,
+                tipo,
+                uc,
+                uo,
+                uv
+            } = cadastroClienteData.selectedCliente;
+            setFknIdCliente(idClienteWeb);
+        } else if (cadastroClienteData.fknVendasIdContato) {
             setFknIdCliente(cadastroClienteData.fknVendasidCliente);
         }
     }, [cadastroClienteData]);
@@ -44,7 +75,10 @@ const Contatotab = ({ navigation }: any) => {
 
     const onFabButtonClick = () => {
         dispatch(fknVendasidContatoNumber());
-        navigation.navigate('contatoCadastro')
+        navigation.navigate('contatoCadastro',{
+            contatoEdit: false,
+            fknIdCliente:fknIdCliente
+        })
     }
     const FabButton = () => (
         <FAB
@@ -57,7 +91,8 @@ const Contatotab = ({ navigation }: any) => {
     const onItemClick = (item: object) => {
         navigation.navigate('contatoCadastro', {
             contatoItem: item,
-            contatoEdit: true
+            contatoEdit: true,
+            fknIdCliente:fknIdCliente
         });
     }
     const getDepartmentoFromId = (idDepartamento: any) => {

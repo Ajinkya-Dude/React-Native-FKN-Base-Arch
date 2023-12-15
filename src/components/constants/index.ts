@@ -103,6 +103,7 @@ export const FKNconstants = {
     clienteBillingAddressEmpty:'Favor, cadastrar um Endereço de Faturamento e um de Entrega!',
     clienteContatoEmpty:'Favor, cadastrar um Contato!',
     clienteNewRegistrationError:'Novo cadastro, não é possível atualizar!',
+    clienteUpdateNotAllowed:'Não é permitido atualizar o cliente!',
     //Cliente Order Values
     code:'Código',
     fantasy:'Fantasia',
@@ -163,6 +164,9 @@ export const FKNconstants = {
     clienteObservacao:'Observação',
     bloackedCliente:'Cliente bloqueado, com restrição para compra.',
     insertClienteSuccessfully:'Criado com sucesso!',
+    insertClienteError:'Falha ao cadastrar cliente!',
+    alreadyRegisteredCpfCnpj:'Cliente já cadastrado em sua carteira com este CPF/CNPJ!',
+    afterClienteRegistrationAsk:'Deseja inserir Pedido para este cliente?',
 
 
     // Cliente Register Tabs
@@ -196,6 +200,7 @@ export const FKNconstants = {
     askGenerateShippingAddress:'Deseja gerar endereço de entrega com base neste endereço?',
     createdSuccessfully:'Criado com Sucesso!',
     updatedSuccessfully:'Atualizado com Sucesso!',
+    updateError:'Falha ao atualizar!',
     // Invalid Error
     cepInvalid:'Por Favor Insira Um CEP Válido',
     cepInvalid2:'Favor, campo CEP com no mínimo 8 dígitos!',
@@ -219,7 +224,10 @@ export const FKNconstants = {
     
 
     // Cliente Bottom Sheet
-    searchPlaceholderSheet:'Selecione um'
+    searchPlaceholderSheet:'Selecione um',
 
+    // Error messages
+    onErrorCpfCnpj : 'Empresa não localizada!',
+    onErrorCEP:'Endereço não localizado!',
 
 }

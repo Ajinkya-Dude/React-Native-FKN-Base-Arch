@@ -32,6 +32,14 @@ export const CpfCnpjSearchRequest = createAsyncThunk('cpfCnpjRequest', async (pa
           } else if (error.request) {
             // The request was made but no response was received
             console.log('Request made but no response received:', error.request);
+            Alert.alert(FKNconstants.message,FKNconstants.onErrorCpfCnpj,
+                [
+                    {
+                        text: 'Ok',
+                        onPress: () => console.log('Ok Pressed'),
+                        style: 'cancel',
+                    },
+                ])
           } else {
             // Something happened in setting up the request that triggered an Error
             console.log('Error:', error.message);

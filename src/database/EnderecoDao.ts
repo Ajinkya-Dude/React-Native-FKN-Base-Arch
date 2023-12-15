@@ -57,6 +57,8 @@ const insertEndereco = (data: any, realm: any, loginData: any) => {
         })
         return 1
     } catch (error) {
+        console.log(" insertEndereco Error",error);
+        
         return 0
     }
 }

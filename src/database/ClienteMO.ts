@@ -1,6 +1,6 @@
 import { deleteCliente, insertCliente } from "./ClienteDao";
 
-const ClienteModalHelper = (data: any, realm: any) => {
+const ClienteModalHelper = (data: any, realm: any,loginData:any) => {
     const type = typeof data;
     const dataNotFound = (data && data.FKN && data.FKN.Processamento && data.FKN.Processamento.codigoRetorno);
     if (!(dataNotFound === 2)) {
@@ -11,7 +11,7 @@ const ClienteModalHelper = (data: any, realm: any) => {
     else {
         const dataCliente = data && data.FKN && data.FKN.clientes && data.FKN.clientes?.[0] && data.FKN.clientes?.[0].cliente;
         deleteCliente(realm);
-        insertCliente(dataCliente,realm);
+        insertCliente(dataCliente,realm,loginData);
     }
 }
 
