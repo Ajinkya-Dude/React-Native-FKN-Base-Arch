@@ -38,7 +38,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
-  <string>Allow FKN Vendas to access photos and media on your device?</string>
+	<string>Allow FKN Vendas to access photos and media on your device?</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Outfit-Regular.ttf</string>

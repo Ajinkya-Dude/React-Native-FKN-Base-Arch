@@ -8,12 +8,32 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* FKNVendasTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* FKNVendasTests.m */; };
-		0C80B921A6F3F58F76C31292 /* libPods-FKNVendas.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-FKNVendas.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		7699B88040F8A987B510C191 /* libPods-FKNVendas-FKNVendasTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-FKNVendas-FKNVendasTests.a */; };
+		187875BB2B4C01C700FC5C8E /* OpenSSL.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 187875BA2B4C01C700FC5C8E /* OpenSSL.xcframework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		F4D135412AD66087000DF531 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D135402AD66008000DF531 /* MaterialIcons.ttf */; };
+		F4D135422AD6611C000DF531 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D1352E2AD66008000DF531 /* Fontisto.ttf */; };
+		F4D135432AD66120000DF531 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D135302AD66008000DF531 /* Feather.ttf */; };
+		F4D135442AD66128000DF531 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D1352F2AD66008000DF531 /* Octicons.ttf */; };
+		F4D135452AD6612D000DF531 /* FontAwesome6_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D135312AD66008000DF531 /* FontAwesome6_Regular.ttf */; };
+		F4D135462AD66130000DF531 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D135322AD66008000DF531 /* Entypo.ttf */; };
+		F4D135472AD66140000DF531 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D135332AD66008000DF531 /* FontAwesome5_Brands.ttf */; };
+		F4D135482AD66140000DF531 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D135342AD66008000DF531 /* MaterialCommunityIcons.ttf */; };
+		F4D135492AD66140000DF531 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D135352AD66008000DF531 /* AntDesign.ttf */; };
+		F4D1354A2AD66140000DF531 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D135362AD66008000DF531 /* Foundation.ttf */; };
+		F4D1354B2AD66140000DF531 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D135372AD66008000DF531 /* Ionicons.ttf */; };
+		F4D1354C2AD66140000DF531 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D135382AD66008000DF531 /* FontAwesome5_Solid.ttf */; };
+		F4D1354D2AD66140000DF531 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D135392AD66008000DF531 /* FontAwesome5_Regular.ttf */; };
+		F4D1354E2AD66140000DF531 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D1353A2AD66008000DF531 /* FontAwesome.ttf */; };
+		F4D1354F2AD66140000DF531 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D1353B2AD66008000DF531 /* Zocial.ttf */; };
+		F4D135502AD66140000DF531 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D1353C2AD66008000DF531 /* EvilIcons.ttf */; };
+		F4D135512AD66140000DF531 /* FontAwesome6_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D1353D2AD66008000DF531 /* FontAwesome6_Solid.ttf */; };
+		F4D135522AD66140000DF531 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D1353E2AD66008000DF531 /* SimpleLineIcons.ttf */; };
+		F4D135532AD66151000DF531 /* FontAwesome6_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4D1353F2AD66008000DF531 /* FontAwesome6_Brands.ttf */; };
+		F826302ED736C5F8033AAB65 /* libPods-FKNVendas-FKNVendasTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF02F4D27C7B0FED6DAC2B73 /* libPods-FKNVendas-FKNVendasTests.a */; };
+		FEA43629885111F26869459A /* libPods-FKNVendas.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 923436C7FB12B6CD67B5210C /* libPods-FKNVendas.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,14 +56,34 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = FKNVendas/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = FKNVendas/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = FKNVendas/main.m; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-FKNVendas-FKNVendasTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FKNVendas-FKNVendasTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B4392A12AC88292D35C810B /* Pods-FKNVendas.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FKNVendas.debug.xcconfig"; path = "Target Support Files/Pods-FKNVendas/Pods-FKNVendas.debug.xcconfig"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-FKNVendas.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FKNVendas.release.xcconfig"; path = "Target Support Files/Pods-FKNVendas/Pods-FKNVendas.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-FKNVendas-FKNVendasTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FKNVendas-FKNVendasTests.debug.xcconfig"; path = "Target Support Files/Pods-FKNVendas-FKNVendasTests/Pods-FKNVendas-FKNVendasTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-FKNVendas.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FKNVendas.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		187875BA2B4C01C700FC5C8E /* OpenSSL.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = OpenSSL.xcframework; path = "Pods/OpenSSL-Universal/Frameworks/OpenSSL.xcframework"; sourceTree = "<group>"; };
+		1AEBD3B8809EC0CB20FC3C99 /* Pods-FKNVendas.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FKNVendas.debug.xcconfig"; path = "Target Support Files/Pods-FKNVendas/Pods-FKNVendas.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = FKNVendas/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-FKNVendas-FKNVendasTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FKNVendas-FKNVendasTests.release.xcconfig"; path = "Target Support Files/Pods-FKNVendas-FKNVendasTests/Pods-FKNVendas-FKNVendasTests.release.xcconfig"; sourceTree = "<group>"; };
+		8FD48A336339A5B6BDB6D7F8 /* Pods-FKNVendas-FKNVendasTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FKNVendas-FKNVendasTests.debug.xcconfig"; path = "Target Support Files/Pods-FKNVendas-FKNVendasTests/Pods-FKNVendas-FKNVendasTests.debug.xcconfig"; sourceTree = "<group>"; };
+		923436C7FB12B6CD67B5210C /* libPods-FKNVendas.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FKNVendas.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8EC1E23685771E1463E6725 /* Pods-FKNVendas.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FKNVendas.release.xcconfig"; path = "Target Support Files/Pods-FKNVendas/Pods-FKNVendas.release.xcconfig"; sourceTree = "<group>"; };
+		CF02F4D27C7B0FED6DAC2B73 /* libPods-FKNVendas-FKNVendasTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FKNVendas-FKNVendasTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4F40B59F58986C75AC62DBC /* Pods-FKNVendas-FKNVendasTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FKNVendas-FKNVendasTests.release.xcconfig"; path = "Target Support Files/Pods-FKNVendas-FKNVendasTests/Pods-FKNVendas-FKNVendasTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F4D1352E2AD66008000DF531 /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fontisto.ttf; sourceTree = "<group>"; };
+		F4D1352F2AD66008000DF531 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
+		F4D135302AD66008000DF531 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Feather.ttf; sourceTree = "<group>"; };
+		F4D135312AD66008000DF531 /* FontAwesome6_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome6_Regular.ttf; sourceTree = "<group>"; };
+		F4D135322AD66008000DF531 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Entypo.ttf; sourceTree = "<group>"; };
+		F4D135332AD66008000DF531 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5_Brands.ttf; sourceTree = "<group>"; };
+		F4D135342AD66008000DF531 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
+		F4D135352AD66008000DF531 /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AntDesign.ttf; sourceTree = "<group>"; };
+		F4D135362AD66008000DF531 /* Foundation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Foundation.ttf; sourceTree = "<group>"; };
+		F4D135372AD66008000DF531 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
+		F4D135382AD66008000DF531 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5_Solid.ttf; sourceTree = "<group>"; };
+		F4D135392AD66008000DF531 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5_Regular.ttf; sourceTree = "<group>"; };
+		F4D1353A2AD66008000DF531 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
+		F4D1353B2AD66008000DF531 /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zocial.ttf; sourceTree = "<group>"; };
+		F4D1353C2AD66008000DF531 /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EvilIcons.ttf; sourceTree = "<group>"; };
+		F4D1353D2AD66008000DF531 /* FontAwesome6_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome6_Solid.ttf; sourceTree = "<group>"; };
+		F4D1353E2AD66008000DF531 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SimpleLineIcons.ttf; sourceTree = "<group>"; };
+		F4D1353F2AD66008000DF531 /* FontAwesome6_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome6_Brands.ttf; sourceTree = "<group>"; };
+		F4D135402AD66008000DF531 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-FKNVendas-FKNVendasTests.a in Frameworks */,
+				F826302ED736C5F8033AAB65 /* libPods-FKNVendas-FKNVendasTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,7 +99,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-FKNVendas.a in Frameworks */,
+				187875BB2B4C01C700FC5C8E /* OpenSSL.xcframework in Frameworks */,
+				FEA43629885111F26869459A /* libPods-FKNVendas.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +127,7 @@
 		13B07FAE1A68108700A75B9A /* FKNVendas */ = {
 			isa = PBXGroup;
 			children = (
+				F4D1352D2AD66008000DF531 /* Fonts */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -99,9 +141,10 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				187875BA2B4C01C700FC5C8E /* OpenSSL.xcframework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-FKNVendas.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-FKNVendas-FKNVendasTests.a */,
+				923436C7FB12B6CD67B5210C /* libPods-FKNVendas.a */,
+				CF02F4D27C7B0FED6DAC2B73 /* libPods-FKNVendas-FKNVendasTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -140,12 +183,38 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-FKNVendas.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-FKNVendas.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-FKNVendas-FKNVendasTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-FKNVendas-FKNVendasTests.release.xcconfig */,
+				1AEBD3B8809EC0CB20FC3C99 /* Pods-FKNVendas.debug.xcconfig */,
+				A8EC1E23685771E1463E6725 /* Pods-FKNVendas.release.xcconfig */,
+				8FD48A336339A5B6BDB6D7F8 /* Pods-FKNVendas-FKNVendasTests.debug.xcconfig */,
+				D4F40B59F58986C75AC62DBC /* Pods-FKNVendas-FKNVendasTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		F4D1352D2AD66008000DF531 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				F4D1352E2AD66008000DF531 /* Fontisto.ttf */,
+				F4D1352F2AD66008000DF531 /* Octicons.ttf */,
+				F4D135302AD66008000DF531 /* Feather.ttf */,
+				F4D135312AD66008000DF531 /* FontAwesome6_Regular.ttf */,
+				F4D135322AD66008000DF531 /* Entypo.ttf */,
+				F4D135332AD66008000DF531 /* FontAwesome5_Brands.ttf */,
+				F4D135342AD66008000DF531 /* MaterialCommunityIcons.ttf */,
+				F4D135352AD66008000DF531 /* AntDesign.ttf */,
+				F4D135362AD66008000DF531 /* Foundation.ttf */,
+				F4D135372AD66008000DF531 /* Ionicons.ttf */,
+				F4D135382AD66008000DF531 /* FontAwesome5_Solid.ttf */,
+				F4D135392AD66008000DF531 /* FontAwesome5_Regular.ttf */,
+				F4D1353A2AD66008000DF531 /* FontAwesome.ttf */,
+				F4D1353B2AD66008000DF531 /* Zocial.ttf */,
+				F4D1353C2AD66008000DF531 /* EvilIcons.ttf */,
+				F4D1353D2AD66008000DF531 /* FontAwesome6_Solid.ttf */,
+				F4D1353E2AD66008000DF531 /* SimpleLineIcons.ttf */,
+				F4D1353F2AD66008000DF531 /* FontAwesome6_Brands.ttf */,
+				F4D135402AD66008000DF531 /* MaterialIcons.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,12 +224,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "FKNVendasTests" */;
 			buildPhases = (
-				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
+				3ACDE47D7A5FADF52535E948 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */,
-				F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */,
+				22E9E93846FF1B608D25EECA /* [CP] Embed Pods Frameworks */,
+				C3D5077C7FAD29811C672183 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -176,14 +245,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "FKNVendas" */;
 			buildPhases = (
-				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
+				98226188506773D52A328E6F /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
-				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				4F316AE22D73D19DFF960D8E /* [CP] Embed Pods Frameworks */,
+				28A0187467E059A02D5BB4FD /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -242,6 +311,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4D135532AD66151000DF531 /* FontAwesome6_Brands.ttf in Resources */,
+				F4D135472AD66140000DF531 /* FontAwesome5_Brands.ttf in Resources */,
+				F4D135482AD66140000DF531 /* MaterialCommunityIcons.ttf in Resources */,
+				F4D135492AD66140000DF531 /* AntDesign.ttf in Resources */,
+				F4D1354A2AD66140000DF531 /* Foundation.ttf in Resources */,
+				F4D1354B2AD66140000DF531 /* Ionicons.ttf in Resources */,
+				F4D1354C2AD66140000DF531 /* FontAwesome5_Solid.ttf in Resources */,
+				F4D1354D2AD66140000DF531 /* FontAwesome5_Regular.ttf in Resources */,
+				F4D1354E2AD66140000DF531 /* FontAwesome.ttf in Resources */,
+				F4D1354F2AD66140000DF531 /* Zocial.ttf in Resources */,
+				F4D135502AD66140000DF531 /* EvilIcons.ttf in Resources */,
+				F4D135512AD66140000DF531 /* FontAwesome6_Solid.ttf in Resources */,
+				F4D135522AD66140000DF531 /* SimpleLineIcons.ttf in Resources */,
+				F4D135462AD66130000DF531 /* Entypo.ttf in Resources */,
+				F4D135452AD6612D000DF531 /* FontAwesome6_Regular.ttf in Resources */,
+				F4D135442AD66128000DF531 /* Octicons.ttf in Resources */,
+				F4D135432AD66120000DF531 /* Feather.ttf in Resources */,
+				F4D135422AD6611C000DF531 /* Fontisto.ttf in Resources */,
+				F4D135412AD66087000DF531 /* MaterialIcons.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
@@ -252,7 +340,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -262,28 +350,45 @@
 			name = "Bundle React Native code and images";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
+		22E9E93846FF1B608D25EECA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FKNVendas/Pods-FKNVendas-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-FKNVendas-FKNVendasTests/Pods-FKNVendas-FKNVendasTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FKNVendas/Pods-FKNVendas-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-FKNVendas-FKNVendasTests/Pods-FKNVendas-FKNVendasTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FKNVendas/Pods-FKNVendas-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FKNVendas-FKNVendasTests/Pods-FKNVendas-FKNVendasTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
+		28A0187467E059A02D5BB4FD /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FKNVendas/Pods-FKNVendas-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FKNVendas/Pods-FKNVendas-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FKNVendas/Pods-FKNVendas-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3ACDE47D7A5FADF52535E948 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -305,9 +410,26 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
+		4F316AE22D73D19DFF960D8E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FKNVendas/Pods-FKNVendas-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FKNVendas/Pods-FKNVendas-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FKNVendas/Pods-FKNVendas-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		98226188506773D52A328E6F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
 			files = (
 			);
 			inputFileListPaths = (
@@ -322,46 +444,12 @@
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-FKNVendas-checkManifestLockResult.txt",
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FKNVendas-FKNVendasTests/Pods-FKNVendas-FKNVendasTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FKNVendas-FKNVendasTests/Pods-FKNVendas-FKNVendasTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FKNVendas-FKNVendasTests/Pods-FKNVendas-FKNVendasTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FKNVendas/Pods-FKNVendas-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FKNVendas/Pods-FKNVendas-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FKNVendas/Pods-FKNVendas-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
+		C3D5077C7FAD29811C672183 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -380,7 +468,7 @@
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputFileListPaths = (
@@ -392,7 +480,7 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
 			showEnvVarsInLog = 0;
@@ -430,7 +518,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-FKNVendas-FKNVendasTests.debug.xcconfig */;
+			baseConfigurationReference = 8FD48A336339A5B6BDB6D7F8 /* Pods-FKNVendas-FKNVendasTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -457,7 +545,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-FKNVendas-FKNVendasTests.release.xcconfig */;
+			baseConfigurationReference = D4F40B59F58986C75AC62DBC /* Pods-FKNVendas-FKNVendasTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -481,11 +569,12 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-FKNVendas.debug.xcconfig */;
+			baseConfigurationReference = 1AEBD3B8809EC0CB20FC3C99 /* Pods-FKNVendas.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 539SPY2H6M;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = FKNVendas/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -498,7 +587,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = FKNVendas.com;
 				PRODUCT_NAME = FKNVendas;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -508,11 +597,12 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-FKNVendas.release.xcconfig */;
+			baseConfigurationReference = A8EC1E23685771E1463E6725 /* Pods-FKNVendas.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 539SPY2H6M;
 				INFOPLIST_FILE = FKNVendas/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -524,7 +614,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = FKNVendas.com;
 				PRODUCT_NAME = FKNVendas;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

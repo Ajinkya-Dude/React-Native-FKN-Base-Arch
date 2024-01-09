@@ -71,8 +71,6 @@ project.ext.vectoricons = [
         iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf','FontAwesome.ttf','AntDesign.ttf','Entypo.ttf','Feather.ttf','Ionicons.ttf','Octicons.ttf','MaterialCommunityIcons.ttf','Foundation.ttf' ] // Name of the font files you want to copy
 ]
 
-apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle");
-
 android {
     ndkVersion rootProject.ext.ndkVersion
 
@@ -111,7 +109,6 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.squareup.okhttp3', module:'okhttp'
